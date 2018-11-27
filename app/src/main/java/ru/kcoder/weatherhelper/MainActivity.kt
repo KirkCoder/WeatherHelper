@@ -1,4 +1,4 @@
-package helper.weather.kcoder.ru.weatherhelper
+package ru.kcoder.weatherhelper
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -7,7 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
+//http://api.openweathermap.org/data/2.5/forecast?q=London&APPID=10fad01b4946d8ffa0c27d14d69a0333
+//api.openweathermap.org/data/2.5/forecast?lat=35&lon=139
+//API_KEY = "10fad01b4946d8ffa0c27d14d69a0333"
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
+
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

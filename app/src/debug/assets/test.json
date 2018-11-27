@@ -1,0 +1,122 @@
+{
+  "cod": "200",
+  "message": 0.0476,
+  "cnt": 3,
+  "list": [
+    {
+      "dt": 1543266000,
+      "main": {
+        "temp": 277.8,
+        "temp_min": 277.8,
+        "temp_max": 278.263,
+        "pressure": 1021.67,
+        "sea_level": 1029.54,
+        "grnd_level": 1021.67,
+        "humidity": 98,
+        "temp_kf": -0.46
+      },
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10n"
+        }
+      ],
+      "clouds": {
+        "all": 92
+      },
+      "wind": {
+        "speed": 2.11,
+        "deg": 357.5
+      },
+      "rain": {
+        "3h": 0.0225
+      },
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2018-11-26 21:00:00"
+    },
+    {
+      "dt": 1543276800,
+      "main": {
+        "temp": 277.54,
+        "temp_min": 277.54,
+        "temp_max": 277.883,
+        "pressure": 1022.33,
+        "sea_level": 1030.05,
+        "grnd_level": 1022.33,
+        "humidity": 100,
+        "temp_kf": -0.34
+      },
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10n"
+        }
+      ],
+      "clouds": {
+        "all": 92
+      },
+      "wind": {
+        "speed": 1.22,
+        "deg": 345.502
+      },
+      "rain": {
+        "3h": 0.04
+      },
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2018-11-27 00:00:00"
+    },
+    {
+      "dt": 1543287600,
+      "main": {
+        "temp": 277.49,
+        "temp_min": 277.49,
+        "temp_max": 277.715,
+        "pressure": 1022.47,
+        "sea_level": 1030.28,
+        "grnd_level": 1022.47,
+        "humidity": 100,
+        "temp_kf": -0.23
+      },
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10n"
+        }
+      ],
+      "clouds": {
+        "all": 80
+      },
+      "wind": {
+        "speed": 1.26,
+        "deg": 313.001
+      },
+      "rain": {
+        "3h": 0.05
+      },
+      "sys": {
+        "pod": "n"
+      },
+      "dt_txt": "2018-11-27 03:00:00"
+    }
+  ],
+  "city": {
+    "id": 2643743,
+    "name": "London",
+    "coord": {
+      "lat": 51.5073,
+      "lon": -0.1277
+    },
+    "country": "GB",
+    "population": 1000000
+  }
+}
