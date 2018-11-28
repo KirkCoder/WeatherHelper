@@ -21,16 +21,16 @@ val networkModule = module {
         builder.build()
     }
     single { GsonConverterFactory.create() }
-    single { RetrofitBuilder(get(), get()).build() }
+    single { RetrofitBuilder(get()).build() }
 }
 
 val databaseModule = module {
-    single { getArmDgmRoomDatabase(get()) }
+    single { getWeatherHelperDb(get()) }
 }
 
-private fun getArmDgmRoomDatabase(context: Context): WeatherHelperRoomDb {
+private fun getWeatherHelperDb(context: Context): WeatherHelperRoomDb {
     return Room.databaseBuilder(
-        context, WeatherHelperRoomDb::class.java, WeatherHelperRoomDb.DATABASE
+            context, WeatherHelperRoomDb::class.java, WeatherHelperRoomDb.DATABASE
     ).build()
 }
 

@@ -3,10 +3,16 @@ package ru.kcoder.weatherhelper
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
+import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 //http://api.openweathermap.org/data/2.5/forecast?q=London&APPID=10fad01b4946d8ffa0c27d14d69a0333
@@ -20,6 +26,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
+// todo test logic
+            val w: WeatherRepository = get()
+
+            GlobalScope.launch(Dispatchers.IO){
+                val ww = w.getWeatherByCoordinate(35.0, 139.0)
+                val i = 0
+            }
+
 
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
