@@ -1,17 +1,34 @@
 package ru.kcoder.weatherhelper.data.entity.weather
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(
+    tableName = "data"
+)
 class Data {
 
+    var weatherHolderId: Long = 0L
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+
     var dt: Long? = null
-    var main: Main? = null
-    var weather: List<Weather>? = null
-    var clouds: Clouds? = null
-    var wind: Wind? = null
-    var sys: Sys? = null
     @SerializedName("dt_txt")
     var dtTxt: String? = null
+
+    @Ignore
+    var weather: List<Weather>? = null
+    @Ignore
+    var clouds: Clouds? = null
+    @Ignore
+    var sys: Sys? = null
+    @Ignore
+    var wind: Wind? = null
+    @Ignore
+    var main: Main? = null
+    @Ignore
     var rain: Rain? = null
 
 }

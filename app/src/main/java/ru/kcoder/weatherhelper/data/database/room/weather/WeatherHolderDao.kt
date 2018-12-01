@@ -1,18 +1,18 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.*
+import ru.kcoder.weatherhelper.data.database.room.BaseDao
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 @Dao
-interface WeatherHolderDao {
+interface WeatherHolderDao: BaseDao<WeatherHolder> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrReplace(item: WeatherHolder)
+    @Query("SELECT * FROM weather_holder")
+    fun getWeatherHolders(): List<WeatherHolder>
 
-    @Delete
-    fun delete(item: WeatherHolder)
+    @Query("SELECT * FROM weather_holder WHERE  id = :id LIMIT 1")
+    fun getWeatherHolderById(id: Long): WeatherHolder?
 
+    @Query("SELECT id FROM weather_holder WHERE lat = :lat AND lon = :lon LIMIT 1")
+    fun getWeatherHolderId(lat: Double, lon: Double): Long?
 }

@@ -4,6 +4,7 @@ import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
+import ru.kcoder.weatherhelper.toolkit.android.WrongApiResponse
 
 class WeatherRepositoryImpl(
     val network: WeatherNetworkSource,
@@ -11,10 +12,40 @@ class WeatherRepositoryImpl(
 ) : WeatherRepository {
 
     override fun getWeatherByCoordinate(lat: Double, lon: Double): WeatherHolder {
-        // todo test logic
-        return network
-            .getWeatherByCoordinate(lat, lon, BuildConfig.API_KEY)
-            .execute().body()!!
+        val weatherHolder = network.getWeatherByCoordinate(lat, lon, BuildConfig.API_KEY)
+            .execute().body()
+        if (weatherHolder?.cod != null && weatherHolder.cod.equals("200")) {
+            weatherHolder.lat = lat
+            weatherHolder.lon = lon
+            var whId: Long? = null
+            whId = database.getWeatherHolderId(lat, lon)
+            if (whId != null) {
+                database.dropOldWeatherHolderChildren(whId)
+                database.updateWeatherHolder(weatherHolder.apply { id = whId as Long })
+            } else {
+                database.insertWeatherHolder(weatherHolder)
+                whId = database.getWeatherHolderId(lat, lon)
+            }
+            if (whId != null) {
+                weatherHolder.id = whId
+                weatherHolder.city?.weatherHolderId = whId
+                weatherHolder.data?.forEach {
+                    it.weatherHolderId = whId
+                    it.weather?.forEach { weather -> weather.weatherHolderId = whId }
+                    it.clouds?.weatherHolderId = whId
+                    it.sys?.weatherHolderId = whId
+                    it.wind?.weatherHolderId = whId
+                    it.main?.weatherHolderId = whId
+                    it.rain?.weatherHolderId = whId
+                }
+                database.insertWeatherHolderChildrens(weatherHolder)
+            }
+            return weatherHolder
+        }
+        throw WrongApiResponse()
     }
 
+    override fun getAllWeather(): List<WeatherHolder> {
+        return database.getWeatherHolders()
+    }
 }

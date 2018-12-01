@@ -19,6 +19,6 @@ class WeatherHolderInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("helper.weather.kcoder.ru.weatherhelper", appContext.packageName)
+        assertEquals("helper.weatherHolder.kcoder.ru.weatherhelper", appContext.packageName)
     }
 }

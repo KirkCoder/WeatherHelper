@@ -3,6 +3,7 @@ package ru.kcoder.weatherhelper.data.entity.weather
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "weather_holder"
@@ -21,6 +22,7 @@ class WeatherHolder {
     var cnt: Double? = null
 
     @Ignore
+    @SerializedName("list")
     var data: List<Data>? = null
     @Ignore
     var city: City? = null
