@@ -13,11 +13,11 @@
             tools:ignore="GoogleAppIndexingWarning"
             android:name="ru.kcoder.weatherhelper.MyApp"
             android:usesCleartextTraffic = "true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" tools:targetApi="m">
         <activity
-                android:name="ru.kcoder.weatherhelper.MainActivity"
+                android:name="ru.kcoder.weatherhelper.presentation.main.MainActivity"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
