@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 
-class WeatherListViewModel(
+class ViewModelWeatherList(
     private val listInteractor: WeatherListInteractor
 ): ViewModel() {
 
@@ -16,7 +16,7 @@ class WeatherListViewModel(
         listInteractor.getAllWeather {
             weatherList.value = it
         }
-        listInteractor.getWeatherByCoordinat(85.583637, -144.876133){
+        listInteractor.getWeatherByCoordinat(35.0, 139.0){
             weather.value = it
         }
     }

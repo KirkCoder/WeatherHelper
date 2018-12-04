@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(
-    tableName = "data"
+    tableName = "list"
 )
 class Data {
 

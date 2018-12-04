@@ -21,6 +21,11 @@ object AppRouter {
         )
     }
 
+
+    fun showWeatherDetailFragment(activity: FragmentActivity) {
+
+    }
+
     private fun showNewFragment(
         activity: FragmentActivity,
         frameLayoutId: Int,

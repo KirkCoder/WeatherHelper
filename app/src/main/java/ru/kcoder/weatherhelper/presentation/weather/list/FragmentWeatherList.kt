@@ -1,16 +1,33 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
+import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 class FragmentWeatherList : BaseFragment() {
-    val vm: WeatherListViewModel by viewModel()
+
+    private val listViewModel: ViewModelWeatherList by viewModel()
+
+    private val adapter = AdapterWeatherList {
+        showDetailFragment()
+    }
+
+    private fun showDetailFragment() {
+        activity?.let {
+            AppRouter.showWeatherDetailFragment(it)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_weather_list, container, false)
+        return inflater.inflate(R.layout.weather_list_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,6 +38,18 @@ class FragmentWeatherList : BaseFragment() {
     private fun initView(view: View) {
         setHasOptionsMenu(true)
         addCompatActivity?.title = resources.getString(R.string.app_name)
+        initRecycler(view.context)
+        fab.setOnClickListener {
+            Snackbar.make(view, "Жопа", 100).show()
+        }
+    }
+
+    private fun initRecycler(context: Context) {
+        recyclerViewWeatherList.layoutManager = LinearLayoutManager(context)
+        recyclerViewWeatherList.adapter = adapter
+        listViewModel.weatherList.observe(this, Observer { list ->
+            list?.let { adapter.setData(it) }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

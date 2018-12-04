@@ -2,12 +2,13 @@ package ru.kcoder.weatherhelper.presentation.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 //http://api.openweathermap.org/data/2.5/forecast?q=London&APPID=10fad01b4946d8ffa0c27d14d69a0333
-//api.openweathermap.org/data/2.5/forecast?lat=35&lon=139
+//http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139&APPID=10fad01b4946d8ffa0c27d14d69a0333
 //API_KEY = "10fad01b4946d8ffa0c27d14d69a0333"
 //    45.04484, 38.97603
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_activity)
 
         if (savedInstanceState == null){
             AppRouter.showMainFragment(this)

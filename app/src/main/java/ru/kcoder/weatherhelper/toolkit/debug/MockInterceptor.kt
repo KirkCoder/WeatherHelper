@@ -10,7 +10,7 @@ import java.io.IOException
  * 1. Put json file in debug assets folder
  * 2. name of file should start by the name of REST request
  * (get/post/delete etc...) and url after base url, change "/" to "_" {@see BuildConfig.API_URL}
- * WeatherHolder: get request for url "http://api.openweathermap.org/data/2.5/forecast?q=London",
+ * WeatherHolder: get request for url "http://api.openweathermap.org/list/2.5/forecast?q=London",
  * name of file should be mock_server_get_forecast?q=London
  * If file with method name not exist in assets folder, redirecting request to server
  */

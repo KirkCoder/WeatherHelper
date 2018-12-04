@@ -8,6 +8,6 @@ import ru.kcoder.weatherhelper.data.entity.weather.Data
 @Dao
 interface DataDao: BaseDao<Data> {
 
-    @Query("SELECT * FROM data WHERE weatherHolderId = :id")
+    @Query("SELECT * FROM list WHERE weatherHolderId = :id")
     fun getDataByWeatherHolderId(id: Long): List<Data>
 }

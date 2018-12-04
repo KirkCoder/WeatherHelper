@@ -2,19 +2,19 @@ package ru.kcoder.weatherhelper.presentation.main
 
 import android.os.Bundle
 import org.koin.android.viewmodel.ext.android.viewModel
-import ru.kcoder.weatherhelper.presentation.weather.list.WeatherListViewModel
+import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherList
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import android.view.*
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.main_fragment.*
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 
 class MainFragment : BaseFragment() {
-    val vm: WeatherListViewModel by viewModel()
+    val vm: ViewModelWeatherList by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

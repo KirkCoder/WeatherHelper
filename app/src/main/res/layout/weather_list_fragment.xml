@@ -2,11 +2,14 @@
 <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewWeatherList"
+            tools:listitem = "@layout/weather_list_adapter_item"
+            android:layout_margin="@dimen/layout_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -16,5 +19,5 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/fragment_weather_list_fab_ico"/>
+            app:srcCompat="@drawable/weather_list_fragment_fab_ico"/>
 </android.support.design.widget.CoordinatorLayout>
