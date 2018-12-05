@@ -1,6 +1,7 @@
 package ru.kcoder.weatherhelper.data.database.weather
 
 import ru.kcoder.weatherhelper.data.database.room.WeatherHelperRoomDb
+import ru.kcoder.weatherhelper.data.database.room.weather.*
 import ru.kcoder.weatherhelper.data.entity.weather.*
 
 class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDbSource {
@@ -18,16 +19,15 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
     }
 
     override fun dropOldWeatherHolderChildren(id: Long) {
-        val weatherHolder = getWeatherHolder(id)
-        if (weatherHolder != null) {
-            bindWeatherHolder(weatherHolder)
-            weatherHolder.city?.let {
-                it.coord?.let { coord -> database.coord().delete(coord) }
-                database.city().delete(it)
-                Unit
-            }
-            weatherHolder.data?.let { dropData(it) }
-        }
+       database.city().deleteAllByWeatherHolderId(id)
+        database.clouds().deleteAllByWeatherHolderId(id)
+        database.coord().deleteAllByWeatherHolderId(id)
+        database.data().deleteAllByWeatherHolderId(id)
+        database.main().deleteAllByWeatherHolderId(id)
+        database.rain().deleteAllByWeatherHolderId(id)
+        database.sys().deleteAllByWeatherHolderId(id)
+        database.weather().deleteAllByWeatherHolderId(id)
+        database.wind().deleteAllByWeatherHolderId(id)
     }
 
     override fun insertWeatherHolderChildrens(weatherHolder: WeatherHolder) {

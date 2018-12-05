@@ -10,4 +10,7 @@ interface MainDao: BaseDao<Main> {
 
     @Query("SELECT * FROM main WHERE weatherHolderId = :id")
     fun getMainByWeatherHolderId(id: Long): Main?
+
+    @Query("DELETE FROM main WHERE weatherHolderId = :id")
+    fun deleteAllByWeatherHolderId(id: Long)
 }

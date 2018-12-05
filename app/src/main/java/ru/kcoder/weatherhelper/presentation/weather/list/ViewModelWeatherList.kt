@@ -16,7 +16,7 @@ class ViewModelWeatherList(
         listInteractor.getAllWeather {
             weatherList.value = it
         }
-        listInteractor.getWeatherByCoordinat(35.0, 139.0){
+        listInteractor.getWeatherByCoordinat(45.04484, 38.97603){
             weather.value = it
         }
     }

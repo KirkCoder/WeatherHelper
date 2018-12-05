@@ -10,4 +10,7 @@ interface RainDao: BaseDao<Rain> {
 
     @Query("SELECT * FROM rain WHERE weatherHolderId = :id")
     fun getRainByWeatherHolderId(id: Long): Rain?
+
+    @Query("DELETE FROM rain WHERE weatherHolderId = :id")
+    fun deleteAllByWeatherHolderId(id: Long)
 }

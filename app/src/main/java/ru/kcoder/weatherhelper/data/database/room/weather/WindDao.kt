@@ -10,4 +10,7 @@ interface WindDao: BaseDao<Wind> {
 
     @Query("SELECT * FROM wind WHERE weatherHolderId = :id")
     fun getWindByWeatherHolderId(id: Long): Wind?
+
+    @Query("DELETE FROM wind WHERE weatherHolderId = :id")
+    fun deleteAllByWeatherHolderId(id: Long)
 }
