@@ -40,7 +40,9 @@ class FragmentWeatherList : BaseFragment() {
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
         fab.setOnClickListener {
-            Snackbar.make(view, "Жопа", 100).show()
+            activity?.let {
+                AppRouter.showAddNewWeatherFragment(it)
+            }
         }
     }
 

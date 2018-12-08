@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import ru.kcoder.weatherhelper.presentation.main.MainActivity
 import ru.kcoder.weatherhelper.presentation.main.MainFragment
+import ru.kcoder.weatherhelper.presentation.weather.add.FragmentAddNewWeather
 import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
 
 object AppRouter {
@@ -21,9 +22,15 @@ object AppRouter {
         )
     }
 
-
     fun showWeatherDetailFragment(activity: FragmentActivity) {
 
+    }
+
+    fun showAddNewWeatherFragment(activity: FragmentActivity){
+        showNewFragment(
+            activity, MainFragment.FRAGMENT_CONTAINER,
+            FragmentAddNewWeather.newInstance(), FragmentAddNewWeather.TAG, true
+        )
     }
 
     private fun showNewFragment(
