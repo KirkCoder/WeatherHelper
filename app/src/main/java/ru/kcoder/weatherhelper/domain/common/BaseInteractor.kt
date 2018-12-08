@@ -9,7 +9,11 @@ import ru.kcoder.weatherhelper.toolkit.android.WrongApiResponse
 
 abstract class BaseInteractor {
 
-    fun <R, B> loading(repository: R, load: R.() -> B, callback: (B?, Throwable?) -> Unit) {
+    fun <R, B> loading(
+        repository: R,
+        load: R.() -> B,
+        callback: (data: B?, error: Throwable?) -> Unit
+    ) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val job = GlobalScope.async(Dispatchers.IO) { load.invoke(repository) }
@@ -24,7 +28,10 @@ abstract class BaseInteractor {
         }
     }
 
-    fun <R, B> loadingProgress(repository: R, load: R.() -> B, callback: (B?, Throwable?, Int) -> Unit) {
+    fun <R, B> loadingProgress(
+        repository: R,
+        load: R.() -> B, callback: (data: B?, error: Throwable?, status: Int) -> Unit
+    ) {
         callback(null, null, LOADING)
         loading(repository, load) { data, error ->
             data?.let { callback(it, null, DONE) }

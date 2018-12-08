@@ -15,4 +15,7 @@ interface WeatherHolderDao: BaseDao<WeatherHolder> {
 
     @Query("SELECT id FROM weather_holder WHERE lat = :lat AND lon = :lon LIMIT 1")
     fun getWeatherHolderId(lat: Double, lon: Double): Long?
+
+    @Query("SELECT position FROM weather_holder ORDER BY position DESC LIMIT 1")
+    fun getLastPosition(): Int
 }

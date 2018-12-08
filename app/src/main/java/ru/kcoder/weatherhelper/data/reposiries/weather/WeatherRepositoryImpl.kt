@@ -3,6 +3,7 @@ package ru.kcoder.weatherhelper.data.reposiries.weather
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
+import ru.kcoder.weatherhelper.domain.weather.list.WeatherModel
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.WrongApiResponse
 
@@ -19,11 +20,15 @@ class WeatherRepositoryImpl(
             weatherHolder.lon = lon
             var whId: Long? = null
             whId = database.getWeatherHolderId(lat, lon)
+            val pos = database.getLastPosition() + 1
             if (whId != null) {
                 database.dropOldWeatherHolderChildren(whId)
-                database.updateWeatherHolder(weatherHolder.apply { id = whId as Long })
+                database.updateWeatherHolder(weatherHolder.apply {
+                    id = whId as Long
+                    position = pos
+                })
             } else {
-                database.insertWeatherHolder(weatherHolder)
+                database.insertWeatherHolder(weatherHolder.apply { position = pos })
                 whId = database.getWeatherHolderId(lat, lon)
             }
             if (whId != null) {
@@ -45,7 +50,9 @@ class WeatherRepositoryImpl(
         throw WrongApiResponse()
     }
 
-    override fun getAllWeather(): List<WeatherHolder> {
-        return database.getWeatherHolders()
+    override fun getAllWeather(): WeatherModel {
+        val list = database.getWeatherHolders()
+        val map = list.asSequence().associateBy({it.id},{it.position})
+        return WeatherModel(list, map)
     }
 }

@@ -6,16 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.weather_list_adapter_item.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.domain.weather.list.WeatherModel
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 class AdapterWeatherList(private val callback: (Long) -> Unit) : RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private val list = mutableListOf<WeatherHolder>()
+    private var positionMap = mutableMapOf<Long, Int>()
 
-    fun setData(data: List<WeatherHolder>) {
-        list.clear()
-        list.addAll(data)
-        notifyDataSetChanged()
+    fun setData(data: WeatherModel) {
+        if (list.isEmpty()){
+            list.addAll(data.list)
+            positionMap.putAll(data.map)
+            notifyDataSetChanged()
+        } else {
+            val position = positionMap[data.updatedWeatherHolderId]
+            if (position != null && data.list.isNotEmpty()){
+                list[position] = data.list[0]
+                notifyItemChanged(position)
+            }
+        }
     }
 
     override fun onCreateViewHolder(root: ViewGroup, p1: Int): ViewHolder {

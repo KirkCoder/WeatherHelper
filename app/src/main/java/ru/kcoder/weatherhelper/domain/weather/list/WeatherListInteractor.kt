@@ -6,5 +6,5 @@ interface WeatherListInteractor {
 
     fun getWeatherByCoordinat(lat: Double, lon: Double, callback: (WeatherHolder) -> Unit)
 
-    fun getAllWeather(callback: (List<WeatherHolder>) -> Unit)
+    fun getAllWeather(callback: (WeatherModel) -> Unit)
 }
