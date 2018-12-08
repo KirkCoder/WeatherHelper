@@ -1,6 +1,10 @@
 package ru.kcoder.weatherhelper.presentation.main
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
@@ -22,13 +26,41 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        if (savedInstanceState == null){
+        requestPermission()
+
+        if (savedInstanceState == null) {
             AppRouter.showMainFragment(this)
         }
     }
 
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 1 &&
+            !(grantResults.isNotEmpty() && grantResults[0]
+                    == PackageManager.PERMISSION_GRANTED)
+        ) {
+            requestPermission()
+        }
+        return
+    }
+
     override fun onBackPressed() {
-        if(currentFragment?.onBackPressed() != false){
+        if (currentFragment?.onBackPressed() != false) {
             super.onBackPressed()
         }
         currentFragment?.onBackPressed() ?: super.onBackPressed()
