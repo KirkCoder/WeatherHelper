@@ -40,8 +40,8 @@ class FragmentWeatherList : BaseFragment() {
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
         fab.setOnClickListener { _ ->
-            parentFragment?.let {
-                AppRouter.showAddNewWeatherFragment(it.childFragmentManager)
+            activity?.let {
+                AppRouter.showAddNewWeatherFragment(it)
             }
         }
     }

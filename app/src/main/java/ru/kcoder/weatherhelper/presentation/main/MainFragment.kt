@@ -21,9 +21,7 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (childFragmentManager.fragments.isEmpty()) {
-            activity?.let {
-                AppRouter.showWeatherListFragment(childFragmentManager)
-            }
+            AppRouter.showWeatherListFragment(childFragmentManager)
         }
     }
 

@@ -13,10 +13,6 @@ object AppRouter {
         activity.supportFragmentManager.beginTransaction()
             .replace(MainActivity.FRAGMENT_CONTAINER, MainFragment.newInstance(), MainFragment.TAG)
             .commit()
-//        showNewFragment(
-//            activity, MainActivity.FRAGMENT_CONTAINER,
-//            MainFragment.newInstance(), MainFragment.TAG, false
-//        )
     }
 
     fun showWeatherListFragment(fragmentManager: FragmentManager) {
@@ -26,15 +22,29 @@ object AppRouter {
         )
     }
 
-    fun showAddNewWeatherFragment(fragmentManager: FragmentManager){
+    fun showAddNewWeatherFragment(activity: FragmentActivity) {
+        val fragmentManager = getFragmentManager(activity)
+
         showNewFragment(
             fragmentManager, MainFragment.FRAGMENT_CONTAINER,
-            FragmentAddNewWeather.newInstance(), FragmentAddNewWeather.TAG, true
+            FragmentAddNewWeather.newInstance(),
+            FragmentAddNewWeather.TAG, true
         )
     }
 
     fun showWeatherDetailFragment(activity: FragmentActivity) {
 
+    }
+
+    private fun getFragmentManager(activity: FragmentActivity): FragmentManager {
+        var hostFragment: Fragment? = null
+        val fragments = activity.supportFragmentManager.fragments
+        if (fragments.isNotEmpty()) {
+            hostFragment = fragments[0]
+        }
+        val fragmentManager = hostFragment?.childFragmentManager
+            ?: activity.supportFragmentManager
+        return fragmentManager
     }
 
     private fun showNewFragment(
