@@ -9,10 +9,13 @@ import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
 
 object AppRouter {
     fun showMainFragment(activity: FragmentActivity) {
-        showNewFragment(
-            activity, MainActivity.FRAGMENT_CONTAINER,
-            MainFragment.newInstance(), MainFragment.TAG, false
-        )
+        activity.supportFragmentManager.beginTransaction()
+            .replace(MainActivity.FRAGMENT_CONTAINER, MainFragment.newInstance(), MainFragment.TAG)
+            .commit()
+//        showNewFragment(
+//            activity, MainActivity.FRAGMENT_CONTAINER,
+//            MainFragment.newInstance(), MainFragment.TAG, false
+//        )
     }
 
     fun showWeatherListFragment(activity: FragmentActivity) {

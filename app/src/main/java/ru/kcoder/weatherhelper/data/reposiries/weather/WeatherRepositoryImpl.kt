@@ -20,15 +20,16 @@ class WeatherRepositoryImpl(
             weatherHolder.lon = lon
             var whId: Long? = null
             whId = database.getWeatherHolderId(lat, lon)
-            val pos = database.getLastPosition() + 1
             if (whId != null) {
                 database.dropOldWeatherHolderChildren(whId)
                 database.updateWeatherHolder(weatherHolder.apply {
                     id = whId as Long
-                    position = pos
+                    position = database.getWeatherHolderPosition(id)
                 })
             } else {
-                database.insertWeatherHolder(weatherHolder.apply { position = pos })
+                database.insertWeatherHolder(weatherHolder.apply {
+                    position = database.getLastPosition()?.let { it + 1 } ?: 0
+                })
                 whId = database.getWeatherHolderId(lat, lon)
             }
             if (whId != null) {

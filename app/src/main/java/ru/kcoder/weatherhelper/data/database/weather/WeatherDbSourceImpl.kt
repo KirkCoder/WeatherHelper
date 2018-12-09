@@ -47,8 +47,12 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
 
     }
 
-    override fun getLastPosition(): Int {
+    override fun getLastPosition(): Int? {
         return database.weatherHolder().getLastPosition()
+    }
+
+    override fun getWeatherHolderPosition(id: Long): Int {
+        return database.weatherHolder().getWeatherHolderPosition(id)
     }
 
     override fun getWeatherHolderId(lat: Double, lon: Double): Long? {
