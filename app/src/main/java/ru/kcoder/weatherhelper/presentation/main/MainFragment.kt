@@ -22,14 +22,23 @@ class MainFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         if (childFragmentManager.fragments.isEmpty()) {
             activity?.let {
-                AppRouter.showWeatherListFragment(it)
+                AppRouter.showWeatherListFragment(childFragmentManager)
             }
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (childFragmentManager.backStackEntryCount > 1) {
+            childFragmentManager.popBackStack()
+            return false
+        }
+        return super.onBackPressed()
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
+
         const val TAG = "main_fragment_tag"
         const val FRAGMENT_CONTAINER = R.id.fragmentMainContainer
     }

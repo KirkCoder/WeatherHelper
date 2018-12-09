@@ -15,8 +15,6 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.MapView
 
 
-
-
 class FragmentAddNewWeather : BaseFragment() {
 
     private lateinit var map: GoogleMap
@@ -33,8 +31,6 @@ class FragmentAddNewWeather : BaseFragment() {
     }
 
     private fun initMap(view: View, savedInstanceState: Bundle?) {
-//        mapView.onCreate(savedInstanceState)
-
         mapView = view.findViewById(R.id.mapView) as MapView
         mapView.onCreate(savedInstanceState)
         try {
@@ -61,31 +57,42 @@ class FragmentAddNewWeather : BaseFragment() {
     }
 
 
+    override fun onResume() {
+        mapView.onResume()
+        super.onResume()
+    }
 
-//    override fun onResume() {
-//        mapView.onResume()
-//        super.onResume()
-//    }
-//
-//    override fun onPause() {
-//        mapView.onPause()
-//        super.onPause()
-//    }
-//
-//    override fun onStop() {
-//        mapView.onStop()
-//        super.onStop()
-//    }
-//
-//    override fun onDestroy() {
-//        mapView.onDestroy()
-//        super.onDestroy()
-//    }
-//
-//    override fun onLowMemory() {
-//        mapView.onLowMemory()
-//        super.onLowMemory()
-//    }
+    override fun onPause() {
+        mapView.onPause()
+        super.onPause()
+    }
+
+    override fun onStart() {
+        mapView.onStart()
+        super.onStart()
+    }
+
+    override fun onStop() {
+        mapView.onStop()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        mapView.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        mapView.onLowMemory()
+        super.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        mapView.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+
 
     companion object {
         const val TAG = "FRAGMENT_ADD_NEW_WEATHER_TAG"

@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.toolkit.android
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentManager
 import ru.kcoder.weatherhelper.presentation.main.MainActivity
 import ru.kcoder.weatherhelper.presentation.main.MainFragment
 import ru.kcoder.weatherhelper.presentation.weather.add.FragmentAddNewWeather
@@ -18,10 +19,17 @@ object AppRouter {
 //        )
     }
 
-    fun showWeatherListFragment(activity: FragmentActivity) {
+    fun showWeatherListFragment(fragmentManager: FragmentManager) {
         showNewFragment(
-            activity, MainFragment.FRAGMENT_CONTAINER,
-            FragmentWeatherList.newInstance(), FragmentWeatherList.TAG
+            fragmentManager, MainFragment.FRAGMENT_CONTAINER,
+            FragmentWeatherList.newInstance(), FragmentWeatherList.TAG, true
+        )
+    }
+
+    fun showAddNewWeatherFragment(fragmentManager: FragmentManager){
+        showNewFragment(
+            fragmentManager, MainFragment.FRAGMENT_CONTAINER,
+            FragmentAddNewWeather.newInstance(), FragmentAddNewWeather.TAG, true
         )
     }
 
@@ -29,21 +37,14 @@ object AppRouter {
 
     }
 
-    fun showAddNewWeatherFragment(activity: FragmentActivity){
-        showNewFragment(
-            activity, MainFragment.FRAGMENT_CONTAINER,
-            FragmentAddNewWeather.newInstance(), FragmentAddNewWeather.TAG, true
-        )
-    }
-
     private fun showNewFragment(
-        activity: FragmentActivity,
+        fragmentManager: FragmentManager,
         frameLayoutId: Int,
         fragment: Fragment,
         tag: String,
         addToBackStack: Boolean = false
     ) {
-        val transaction = activity.supportFragmentManager.beginTransaction()
+        val transaction = fragmentManager.beginTransaction()
 
         transaction.replace(frameLayoutId, fragment, tag)
         if (addToBackStack) {

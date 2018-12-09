@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
@@ -19,7 +18,7 @@ import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 class MainActivity : AppCompatActivity() {
 
     private val currentFragment: BaseFragment?
-        get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as? BaseFragment
+        get() = supportFragmentManager.findFragmentById(R.id.fragmentMainContainer) as? BaseFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
@@ -60,13 +59,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (currentFragment?.onBackPressed() != false) {
+        val res = currentFragment?.onBackPressed() ?: super.onBackPressed()
+        if (res != false) {
             super.onBackPressed()
         }
-        currentFragment?.onBackPressed() ?: super.onBackPressed()
     }
 
     companion object {
-        const val FRAGMENT_CONTAINER = R.id.fragmentContainer
+        const val FRAGMENT_CONTAINER = R.id.fragmentMainContainer
     }
 }
