@@ -12,6 +12,8 @@ import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
+
+
 class FragmentWeatherList : BaseFragment() {
 
     private val listViewModel: ViewModelWeatherList by viewModel()
@@ -40,6 +42,10 @@ class FragmentWeatherList : BaseFragment() {
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
         fab.setOnClickListener { _ ->
+//            val PLACE_PICKER_REQUEST = 1
+//            val builder = PlacePicker.IntentBuilder()
+//
+//            startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
             activity?.let {
                 AppRouter.showAddNewWeatherFragment(it)
             }
