@@ -3,4 +3,6 @@
     <string name="app_name">Weather Helper</string>
     <string name="action_settings">Settings</string>
 
+    <!-- place -->
+    <string name="cant_load_address">No description of the selected location</string>
 </resources>

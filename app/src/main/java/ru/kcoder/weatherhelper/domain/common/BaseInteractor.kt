@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.WrongApiResponse
+import ru.kcoder.weatherhelper.toolkit.debug.log
 
 abstract class BaseInteractor {
 
@@ -18,11 +19,11 @@ abstract class BaseInteractor {
             try {
                 val job = GlobalScope.async(Dispatchers.IO) { load.invoke(repository) }
                 callback(job.await(), null)
-            } catch (e: WrongApiResponse) {
-                if (BuildConfig.DEBUG) e.printStackTrace()
-                callback(null, e)
             } catch (t: Throwable) {
-                if (BuildConfig.DEBUG) t.printStackTrace()
+                if (BuildConfig.DEBUG) {
+                    log(t.message ?: t.toString())
+                    t.printStackTrace()
+                }
                 callback(null, t)
             }
         }

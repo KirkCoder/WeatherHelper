@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import ru.kcoder.weatherhelper.presentation.main.MainActivity
 import ru.kcoder.weatherhelper.presentation.main.MainFragment
-import ru.kcoder.weatherhelper.presentation.weather.add.FragmentAddNewWeather
+import ru.kcoder.weatherhelper.presentation.place.FragmentAddPlace
 import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
 
 object AppRouter {
@@ -22,13 +22,13 @@ object AppRouter {
         )
     }
 
-    fun showAddNewWeatherFragment(activity: FragmentActivity) {
+    fun showAddWeatherFragment(activity: FragmentActivity) {
         val fragmentManager = getFragmentManager(activity)
 
         showNewFragment(
             fragmentManager, MainFragment.FRAGMENT_CONTAINER,
-            FragmentAddNewWeather.newInstance(),
-            FragmentAddNewWeather.TAG, true
+            FragmentAddPlace.newInstance(),
+            FragmentAddPlace.TAG, true
         )
     }
 

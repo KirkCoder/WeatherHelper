@@ -3,7 +3,6 @@ package ru.kcoder.weatherhelper.presentation.weather.list
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import kotlinx.android.synthetic.main.weather_list_fragment.*
@@ -42,12 +41,8 @@ class FragmentWeatherList : BaseFragment() {
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
         fab.setOnClickListener { _ ->
-//            val PLACE_PICKER_REQUEST = 1
-//            val builder = PlacePicker.IntentBuilder()
-//
-//            startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
             activity?.let {
-                AppRouter.showAddNewWeatherFragment(it)
+                AppRouter.showAddWeatherFragment(it)
             }
         }
     }

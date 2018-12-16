@@ -5,10 +5,11 @@ import android.arch.lifecycle.ViewModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherModel
+import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
 class ViewModelWeatherList(
     private val listInteractor: WeatherListInteractor
-) : ViewModel() {
+) : BaseViewModel() {
 
     val weatherList: MutableLiveData<WeatherModel> = MutableLiveData()
     val weather: MutableLiveData<WeatherHolder> = MutableLiveData()
