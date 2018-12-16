@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherModel

@@ -3,11 +3,10 @@ package ru.kcoder.weatherhelper.presentation.place
 import android.arch.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
-import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
 class ViewModelAddPlaceImpl(
     private val interactor: PlaceAddInteractor
-) : BaseViewModel(), ViewModelAddPlace {
+) : ViewModelAddPlace() {
 
     private var markerData: PlaceMarker? = null
         set(value) {
@@ -15,14 +14,23 @@ class ViewModelAddPlaceImpl(
         }
 
     override val markerLiveData: MutableLiveData<PlaceMarker> = MutableLiveData()
-    override val addressLiveData: MutableLiveData<PlaceMarker> = MutableLiveData()
+    override val addedPlaceIdLiveData: MutableLiveData<Long> = MutableLiveData()
 
-    override fun updateViewModel(place: PlaceMarker, isNoAddress: Boolean) {
+    override fun updateViewModel(place: PlaceMarker) {
         markerData = place
-        if (isNoAddress) {
+        if (place.name == null) {
             interactor.getAddress(place.lat, place.lon, {
-
+                markerData = place.apply {
+                    name = it.first
+                    address = it.second
+                }
             }, this::errorCallback)
         }
+    }
+
+    override fun savePlace(place: PlaceMarker) {
+        interactor.savePlace(place, {
+            addedPlaceIdLiveData.value = it
+        }, this::errorCallback)
     }
 }

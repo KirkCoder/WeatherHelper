@@ -12,18 +12,17 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 
-
 class FragmentWeatherList : BaseFragment() {
 
     private val listViewModel: ViewModelWeatherList by viewModel()
 
     private val adapter = AdapterWeatherList {
-        showDetailFragment()
+        showDetailFragment(it)
     }
 
-    private fun showDetailFragment() {
+    private fun showDetailFragment(id: Long) {
         activity?.let {
-            AppRouter.showWeatherDetailFragment(it)
+            AppRouter.showWeatherDetailFragment(it, id)
         }
     }
 

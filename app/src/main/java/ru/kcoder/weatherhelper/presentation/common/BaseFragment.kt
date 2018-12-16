@@ -15,7 +15,7 @@ abstract class BaseFragment : Fragment() {
         return true
     }
 
-    open fun error(resErr: Int) {
+    open fun showError(resErr: Int) {
         view?.let {
             Snackbar
                 .make(it, it.context.resources.getString(resErr), Snackbar.LENGTH_LONG)

@@ -2,7 +2,15 @@
     <!-- common -->
     <string name="app_name">Weather Helper</string>
     <string name="action_settings">Settings</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="error_unexpected">Unexpected error. please reboot application</string>
 
     <!-- place -->
-    <string name="cant_load_address">No description of the selected location</string>
+    <string name="place_common_cant_load_address">No description of the selected location</string>
+    <string name="place_add_dialog_enter_place_name">Enter name of the place</string>
+    <string name="place_add_error">Selected place already added</string>
+
+    <!--weather-->
+    <string name="place_common_cant_connect">Can not connect to server</string>
 </resources>

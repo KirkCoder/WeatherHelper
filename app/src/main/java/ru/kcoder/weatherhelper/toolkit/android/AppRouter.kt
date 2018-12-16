@@ -32,7 +32,7 @@ object AppRouter {
         )
     }
 
-    fun showWeatherDetailFragment(activity: FragmentActivity) {
+    fun showWeatherDetailFragment(activity: FragmentActivity, id: Long) {
 
     }
 

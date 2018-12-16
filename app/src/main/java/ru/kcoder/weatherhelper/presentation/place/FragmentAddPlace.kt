@@ -1,6 +1,7 @@
 package ru.kcoder.weatherhelper.presentation.place
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,12 +22,13 @@ import kotlinx.android.synthetic.main.place_add_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
+import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 
-class FragmentAddPlace : BaseFragment() {
+class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
 
-    private val viewModel: ViewModelAddPlaceImpl by viewModel()
+    private val viewModel: ViewModelAddPlace by viewModel()
     private var map: GoogleMap? = null
     private var mapView: MapView? = null
 
@@ -44,6 +46,7 @@ class FragmentAddPlace : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        subscribeData()
     }
 
     @SuppressLint("MissingPermission") //"smart cast" not work
@@ -91,7 +94,7 @@ class FragmentAddPlace : BaseFragment() {
                         PlaceMarker(
                             place.latLng.latitude, place.latLng.longitude,
                             place.name.toString(), place.address?.toString()
-                        ), false
+                        )
                     )
                     val cameraPosition = CameraPosition.Builder().target(place.latLng).zoom(10f).build()
                     it.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -105,9 +108,41 @@ class FragmentAddPlace : BaseFragment() {
     }
 
     private fun initView() {
-        fabSelectPlace.setOnClickListener {
-
+        fabSelectPlace.setOnClickListener { _ ->
+            viewModel.markerLiveData.observe(this, Observer { place ->
+                place?.let {
+                    if (it.name == null) {
+                        showPlaceDialog()
+                    } else {
+                        selectPlace(it)
+                    }
+                }
+            })
         }
+    }
+
+
+    private fun subscribeData() {
+        viewModel.errorLiveData.observe(this, android.arch.lifecycle.Observer { res ->
+            res?.let { super.showError(it) }
+        })
+
+        viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
+            activity?.let {
+                if (id != null) {
+                    AppRouter.showWeatherDetailFragment(it, id)
+                }
+            }
+        })
+    }
+
+    private fun selectPlace(place: PlaceMarker) {
+        viewModel.savePlace(place)
+    }
+
+    private fun showPlaceDialog() {
+        DialogFragmentAddPlace.newInstance()
+            .show(childFragmentManager, DialogFragmentAddPlace.TAG)
     }
 
     @SuppressLint("RestrictedApi")
@@ -125,8 +160,8 @@ class FragmentAddPlace : BaseFragment() {
         })
     }
 
-    private fun updateViewModel(place: PlaceMarker, isNoAddress: Boolean = true) {
-        viewModel.updateViewModel(place, isNoAddress)
+    private fun updateViewModel(place: PlaceMarker) {
+        viewModel.updateViewModel(place)
     }
 
     override fun onResume() {
@@ -167,6 +202,14 @@ class FragmentAddPlace : BaseFragment() {
             outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle)
         }
         mapView?.onSaveInstanceState(mapViewBundle)
+    }
+
+    override fun selectName(name: String?) {
+        name?.let { mName ->
+            viewModel.markerLiveData.observe(this, Observer { place ->
+                place?.let { selectPlace(it.apply { this.name = mName }) }
+            })
+        }
     }
 
     companion object {

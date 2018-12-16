@@ -7,13 +7,14 @@ import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepositoryImpl
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractorImpl
+import ru.kcoder.weatherhelper.presentation.place.ViewModelAddPlace
 import ru.kcoder.weatherhelper.presentation.place.ViewModelAddPlaceImpl
 import java.util.*
 
 
 val placeModule = module {
-    factory<PlaceRepository> { PlaceRepositoryImpl(get()) }
+    factory<PlaceRepository> { PlaceRepositoryImpl(get(), get()) }
     factory<PlaceAddInteractor> { PlaceAddInteractorImpl(get()) }
     factory { Geocoder(get(), Locale.getDefault()) }
-    viewModel { ViewModelAddPlaceImpl(get()) }
+    viewModel<ViewModelAddPlace> { ViewModelAddPlaceImpl(get()) }
 }

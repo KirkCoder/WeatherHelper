@@ -5,7 +5,8 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherModel
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
-import ru.kcoder.weatherhelper.toolkit.android.WrongApiResponse
+import ru.kcoder.weatherhelper.toolkit.android.LocalException
+import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
 class WeatherRepositoryImpl(
     val network: WeatherNetworkSource,
@@ -48,7 +49,7 @@ class WeatherRepositoryImpl(
             }
             return weatherHolder
         }
-        throw WrongApiResponse()
+        throw LocalException(LocalExceptionMsg.CANT_CONNECT)
     }
 
     override fun getAllWeather(): WeatherModel {

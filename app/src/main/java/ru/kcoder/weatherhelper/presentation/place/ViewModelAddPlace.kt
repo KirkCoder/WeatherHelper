@@ -2,11 +2,13 @@ package ru.kcoder.weatherhelper.presentation.place
 
 import android.arch.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
-interface ViewModelAddPlace {
+abstract class ViewModelAddPlace: BaseViewModel() {
 
-    val markerLiveData: MutableLiveData<PlaceMarker>
-    val addressLiveData: MutableLiveData<PlaceMarker>
+    abstract val markerLiveData: MutableLiveData<PlaceMarker>
+    abstract val addedPlaceIdLiveData: MutableLiveData<Long>
 
-    fun updateViewModel(place: PlaceMarker, isNoAddress: Boolean = true)
+    abstract fun updateViewModel(place: PlaceMarker)
+    abstract fun savePlace(place: PlaceMarker)
 }
