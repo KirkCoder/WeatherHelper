@@ -49,7 +49,7 @@ class FragmentWeatherList : BaseFragment() {
     private fun initRecycler(context: Context) {
         recyclerViewWeatherList.layoutManager = LinearLayoutManager(context)
         recyclerViewWeatherList.adapter = adapter
-        listViewModel.weatherList.observe(this, Observer { list ->
+        listViewModel.weatherListLiveData.observe(this, Observer { list ->
             list?.let { adapter.setData(it) }
         })
     }

@@ -23,10 +23,8 @@ object AppRouter {
     }
 
     fun showAddWeatherFragment(activity: FragmentActivity) {
-        val fragmentManager = getFragmentManager(activity)
-
         showNewFragment(
-            fragmentManager, MainFragment.FRAGMENT_CONTAINER,
+            getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
             FragmentAddPlace.newInstance(),
             FragmentAddPlace.TAG, true
         )
@@ -42,9 +40,8 @@ object AppRouter {
         if (fragments.isNotEmpty()) {
             hostFragment = fragments[0]
         }
-        val fragmentManager = hostFragment?.childFragmentManager
+        return hostFragment?.childFragmentManager
             ?: activity.supportFragmentManager
-        return fragmentManager
     }
 
     private fun showNewFragment(

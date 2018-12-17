@@ -12,4 +12,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="TextStylePrimary" parent="@style/TextAppearance.AppCompat.Body1"/>
+    <style name="TextStyleCaption" parent="@style/TextAppearance.AppCompat.Caption"/>
+    <style name="TextStyleTitle" parent="@style/TextAppearance.AppCompat.Title"/>
 </resources>

@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textViewTitle"
-            tools:text="Weather"
+    <android.support.constraint.ConstraintLayout
+            android:padding="@dimen/layout_padding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewTitle"
+                tools:text="New York"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/TextStylePrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewTimeDescription"
+                tools:text="Mon, 11:00 AM, Mostly Sunny"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+                android:layout_marginTop="@dimen/layout_margin_half"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/textViewTemp"
+                tools:text="25"
+                android:textSize="@dimen/temp_text_size"
+                android:layout_marginTop="@dimen/layout_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/textViewCalvin"
+                app:layout_constraintTop_toTopOf="@+id/textViewTemp"
+                app:layout_constraintStart_toStartOf="@+id/textViewTemp"
+                android:layout_marginStart="@dimen/layout_margin_half"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/textViewIco"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@drawable/ic_sun"
+                android:layout_width="@dimen/temp_text_size"
+                android:layout_height="@dimen/temp_text_size"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
