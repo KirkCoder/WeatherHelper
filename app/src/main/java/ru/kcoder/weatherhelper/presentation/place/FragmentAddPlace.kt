@@ -102,7 +102,8 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             }
 
             override fun onError(status: Status) {
-                log(status.toString())
+                showError(R.string.place_add_error_google_places)
+                log(status.statusMessage ?: status.toString())
             }
         })
     }

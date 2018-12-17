@@ -10,6 +10,7 @@
     <string name="place_common_cant_load_address">No description of the selected location</string>
     <string name="place_add_dialog_enter_place_name">Enter name of the place</string>
     <string name="place_add_error">Selected place already added</string>
+    <string name="place_add_error_google_places">Sorry the service is temporarily unavailable</string>
 
     <!--weather-->
     <string name="place_common_cant_connect">Can not connect to server</string>
