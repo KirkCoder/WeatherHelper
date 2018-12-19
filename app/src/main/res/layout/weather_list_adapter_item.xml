@@ -8,13 +8,13 @@
     <android.support.constraint.ConstraintLayout
             android:padding="@dimen/layout_padding"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
                 tools:text="New York"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/TextStylePrimary"
+                style="@style/TextStyleTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -33,25 +33,66 @@
                 tools:text="25"
                 android:textSize="@dimen/temp_text_size"
                 android:layout_marginTop="@dimen/layout_margin"
+                android:includeFontPadding="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <android.support.v7.widget.AppCompatImageView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/textViewCalvin"
                 app:layout_constraintTop_toTopOf="@+id/textViewTemp"
-                app:layout_constraintStart_toStartOf="@+id/textViewTemp"
+                app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+                tools:text="\u2103"
+                android:textSize="@dimen/tmp_text_size_half"
                 android:layout_marginStart="@dimen/layout_margin_half"
+                android:includeFontPadding="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/textViewIco"
+                app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
+                android:layout_marginTop="@dimen/layout_margin"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
                 tools:src="@drawable/ic_sun"
                 android:layout_width="@dimen/temp_text_size"
                 android:layout_height="@dimen/temp_text_size"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/imageViewRainDescription"
+                android:layout_marginTop="@dimen/layout_margin"
+                tools:drawableStart="@drawable/ic_sun"
+                tools:text="23 km/h Winds"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/layout_padding"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/imageViewWindDescription"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_marginStart="@dimen/layout_margin"
+                tools:drawableStart="@drawable/ic_sun"
+                tools:text="23 km/h Winds"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/layout_padding"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
 
     </android.support.constraint.ConstraintLayout>
 

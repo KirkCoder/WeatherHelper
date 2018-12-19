@@ -131,6 +131,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
             activity?.let {
                 if (id != null) {
+                    AppRouter.removeFromBackStack(it, TAG)
                     AppRouter.showWeatherDetailFragment(it, id)
                 }
             }

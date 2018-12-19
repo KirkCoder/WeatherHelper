@@ -8,8 +8,12 @@ import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSourceImpl
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepositoryImpl
+import ru.kcoder.weatherhelper.domain.weather.detail.WeatherDetailInteractor
+import ru.kcoder.weatherhelper.domain.weather.detail.WeatherDetailInteractorImpl
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractorImpl
+import ru.kcoder.weatherhelper.presentation.weather.detail.ViewModelWeatherDetail
+import ru.kcoder.weatherhelper.presentation.weather.detail.ViewModelWeatherDetailImpl
 import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherList
 import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherListImpl
 
@@ -22,4 +26,9 @@ val weatherModule = module {
 val weatherListModule = module {
     factory<WeatherListInteractor> { WeatherListInteractorImpl(get()) }
     viewModel<ViewModelWeatherList> {ViewModelWeatherListImpl(get())}
+}
+
+val weatherDetailModule = module {
+    factory<WeatherDetailInteractor> { WeatherDetailInteractorImpl(get()) }
+    viewModel<ViewModelWeatherDetail> {ViewModelWeatherDetailImpl(get())}
 }

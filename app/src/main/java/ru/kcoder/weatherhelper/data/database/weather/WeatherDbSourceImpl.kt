@@ -131,4 +131,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
     private fun getRain(weatherHolderId: Long): Rain? {
         return database.rain().getRainByWeatherHolderId(weatherHolderId)
     }
+
+    override fun getSingleWeatherHolder(id: Long): WeatherHolder? {
+        return database.weatherHolder().getWeatherHolderById(id)
+    }
 }

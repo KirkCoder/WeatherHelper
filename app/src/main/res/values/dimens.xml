@@ -3,5 +3,6 @@
     <dimen name="layout_padding">16dp</dimen>
     <dimen name="layout_margin">16dp</dimen>
     <dimen name="layout_margin_half">8dp</dimen>
-    <dimen name="temp_text_size">50sp</dimen>
+    <dimen name="temp_text_size">90sp</dimen>
+    <dimen name="tmp_text_size_half">45sp</dimen>
 </resources>

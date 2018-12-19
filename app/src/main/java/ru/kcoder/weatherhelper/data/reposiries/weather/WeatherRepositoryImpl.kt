@@ -13,48 +13,37 @@ class WeatherRepositoryImpl(
     val database: WeatherDbSource
 ) : WeatherRepository {
 
-    override fun getWeatherByCoordinate(lat: Double, lon: Double): WeatherHolder {
-        val weatherHolder = network.getWeatherByCoordinate(lat, lon, BuildConfig.API_KEY)
-            .execute().body()
-        if (weatherHolder?.cod != null && weatherHolder.cod.equals("200")) {
-            weatherHolder.lat = lat
-            weatherHolder.lon = lon
-            var whId: Long? = null
-            whId = database.getWeatherHolderId(lat, lon)
-            if (whId != null) {
-                database.dropOldWeatherHolderChildren(whId)
-                database.updateWeatherHolder(weatherHolder.apply {
-                    id = whId as Long
-                    position = database.getWeatherHolderPosition(id)
-                })
-            } else {
-                database.insertWeatherHolder(weatherHolder.apply {
-                    position = database.getLastPosition()?.let { it + 1 } ?: 0
-                })
-                whId = database.getWeatherHolderId(lat, lon)
-            }
-            if (whId != null) {
-                weatherHolder.id = whId
-                weatherHolder.city?.weatherHolderId = whId
+    override fun getWeatherById(id: Long): WeatherHolder {
+        database.getSingleWeatherHolder(id)?.let {
+            val weatherHolder = network.getWeatherByCoordinate(it.lat, it.lon, BuildConfig.API_KEY)
+                .execute().body()
+            if (weatherHolder?.cod != null && weatherHolder.cod.equals("200")) {
+                weatherHolder.lat = it.lat
+                weatherHolder.lon = it.lon
+                weatherHolder.id = id
+                weatherHolder.position = it.position
+                weatherHolder.name = it.name
+                database.dropOldWeatherHolderChildren(id)
+                database.updateWeatherHolder(weatherHolder)
+                weatherHolder.city?.weatherHolderId = id
                 weatherHolder.data?.forEach {
-                    it.weatherHolderId = whId
-                    it.weather?.forEach { weather -> weather.weatherHolderId = whId }
-                    it.clouds?.weatherHolderId = whId
-                    it.sys?.weatherHolderId = whId
-                    it.wind?.weatherHolderId = whId
-                    it.main?.weatherHolderId = whId
-                    it.rain?.weatherHolderId = whId
+                    it.weatherHolderId = id
+                    it.weather?.forEach { weather -> weather.weatherHolderId = id }
+                    it.clouds?.weatherHolderId = id
+                    it.sys?.weatherHolderId = id
+                    it.wind?.weatherHolderId = id
+                    it.main?.weatherHolderId = id
+                    it.rain?.weatherHolderId = id
                 }
                 database.insertWeatherHolderChildrens(weatherHolder)
-            }
-            return weatherHolder
-        }
-        throw LocalException(LocalExceptionMsg.CANT_CONNECT)
+                return weatherHolder
+            } else throw LocalException(LocalExceptionMsg.CANT_CONNECT)
+        } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
     override fun getAllWeather(): WeatherModel {
         val list = database.getWeatherHolders()
-        val map = list.asSequence().associateBy({it.id},{it.position})
+        val map = list.asSequence().associateBy({ it.id }, { it.position })
         return WeatherModel(list, map)
     }
 }

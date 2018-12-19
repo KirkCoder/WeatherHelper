@@ -11,4 +11,5 @@ interface WeatherDbSource {
     fun updateWeatherHolder(weatherHolder: WeatherHolder)
     fun insertWeatherHolder(weatherHolder: WeatherHolder)
     fun insertWeatherHolderChildrens(weatherHolder: WeatherHolder)
+    fun getSingleWeatherHolder(id: Long): WeatherHolder?
 }

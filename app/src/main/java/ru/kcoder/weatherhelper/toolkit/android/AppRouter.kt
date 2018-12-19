@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager
 import ru.kcoder.weatherhelper.presentation.main.MainActivity
 import ru.kcoder.weatherhelper.presentation.main.MainFragment
 import ru.kcoder.weatherhelper.presentation.place.FragmentAddPlace
+import ru.kcoder.weatherhelper.presentation.weather.detail.FragmentWeatherDetail
 import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
 
 object AppRouter {
@@ -31,7 +32,11 @@ object AppRouter {
     }
 
     fun showWeatherDetailFragment(activity: FragmentActivity, id: Long) {
-
+        showNewFragment(
+            getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
+            FragmentWeatherDetail.newInstance(id),
+            FragmentWeatherDetail.TAG, true
+        )
     }
 
     private fun getFragmentManager(activity: FragmentActivity): FragmentManager {
@@ -58,5 +63,9 @@ object AppRouter {
             transaction.addToBackStack(tag)
         }
         transaction.commit()
+    }
+
+    fun removeFromBackStack(activity: FragmentActivity, tag: String) {
+        getFragmentManager(activity).popBackStack()
     }
 }

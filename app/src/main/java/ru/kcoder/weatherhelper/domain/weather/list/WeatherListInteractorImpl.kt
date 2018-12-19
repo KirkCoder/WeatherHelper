@@ -11,21 +11,6 @@ class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository
 
     private val updatingList = mutableListOf<WeatherHolder>()
 
-    override fun getWeatherByCoordinat(
-        lat: Double, lon: Double,
-        callback: (WeatherHolder) -> Unit
-    ) {
-        loading(weatherRepository, {
-            getWeatherByCoordinate(lat, lon)
-        }, { data, error ->
-            data?.let { callback(it) }
-            error?.let {
-                log(it.message ?: "fail")
-                it.printStackTrace()
-            }
-        })
-    }
-
     override fun getAllWeather(
         callback: (WeatherModel) -> Unit,
         errorCallback: ((Int) -> Unit)?
@@ -49,7 +34,7 @@ class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository
         if (updatingList.isNotEmpty()) {
             val weatherHolder = updatingList[0]
             loading(weatherRepository, {
-                getWeatherByCoordinate(weatherHolder.lat, weatherHolder.lon)
+                getWeatherById(weatherHolder.id)
             }, { data, error ->
                 data?.let {
                     getAllWeather({ wm ->
