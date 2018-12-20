@@ -1,6 +1,7 @@
 package ru.kcoder.weatherhelper.domain.weather.list
 
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.debug.log

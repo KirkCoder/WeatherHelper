@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.domain.weather.list
+package ru.kcoder.weatherhelper.data.entity.weather
 
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 

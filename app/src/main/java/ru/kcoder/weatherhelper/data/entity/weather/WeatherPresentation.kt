@@ -1,9 +1,9 @@
 package ru.kcoder.weatherhelper.data.entity.weather
 
-class WeatherObserve {
+class WeatherPresentation {
     var dateAndDescription = ""
     var tempNow = "XX"
-    var tempDegree = "\u2103"
+    var degreeThumbnail = "\u2103"
     var IcoConst = SAN
     var humidity = ""
     var wind = ""

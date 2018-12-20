@@ -6,6 +6,8 @@ import okhttp3.OkHttpClient
 import org.koin.dsl.module.module
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.kcoder.weatherhelper.data.database.room.WeatherHelperRoomDb
+import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
+import ru.kcoder.weatherhelper.data.database.settings.SettingsSourceImpl
 import ru.kcoder.weatherhelper.data.network.common.OkHttpBuilder
 import ru.kcoder.weatherhelper.data.network.common.RetrofitBuilder
 
@@ -20,6 +22,10 @@ val networkModule = module {
 
 val databaseModule = module {
     single { getWeatherHelperDb(get()) }
+}
+
+val settingsModule = module {
+    factory<SettingsSource> { SettingsSourceImpl(get()) }
 }
 
 private fun getWeatherHelperDb(context: Context): WeatherHelperRoomDb {

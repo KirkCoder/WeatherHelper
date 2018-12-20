@@ -21,6 +21,7 @@ class MyApp: Application() {
             databaseModule,
             weatherListModule,
             weatherDetailModule,
+            settingsModule,
             placeModule
         ))
     }
