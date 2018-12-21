@@ -3,6 +3,7 @@ package ru.kcoder.weatherhelper.data.reposiries.weather
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.*
+import ru.kcoder.weatherhelper.data.network.common.executeCall
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
@@ -10,38 +11,37 @@ import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDate
 
 class WeatherRepositoryImpl(
-    val network: WeatherNetworkSource,
-    val database: WeatherDbSource,
-    val settingsSource: SettingsSource
+    private val network: WeatherNetworkSource,
+    private val database: WeatherDbSource,
+    settingsSource: SettingsSource
 ) : WeatherRepository {
 
-    val settings = settingsSource.getSettings()
+    private val settings = settingsSource.getSettings()
 
     override fun getWeatherById(id: Long): WeatherHolder {
         database.getSingleWeatherHolder(id)?.let {
-            val weatherHolder = network.getWeatherByCoordinate(it.lat, it.lon, BuildConfig.API_KEY)
-                .execute().body()
-            if (weatherHolder?.cod != null && weatherHolder.cod.equals("200")) {
-                weatherHolder.lat = it.lat
-                weatherHolder.lon = it.lon
-                weatherHolder.id = id
-                weatherHolder.position = it.position
-                weatherHolder.name = it.name
-                database.dropOldWeatherHolderChildren(id)
-                database.updateWeatherHolder(weatherHolder)
-                weatherHolder.city?.weatherHolderId = id
-                weatherHolder.data?.forEach {
-                    it.weatherHolderId = id
-                    it.weather?.forEach { weather -> weather.weatherHolderId = id }
-                    it.clouds?.weatherHolderId = id
-                    it.sys?.weatherHolderId = id
-                    it.wind?.weatherHolderId = id
-                    it.main?.weatherHolderId = id
-                    it.rain?.weatherHolderId = id
-                }
-                database.insertWeatherHolderChildrens(weatherHolder)
-                return weatherHolder
-            } else throw LocalException(LocalExceptionMsg.CANT_CONNECT)
+            val weatherHolder = network
+                .getWeatherByCoordinate(it.lat, it.lon, BuildConfig.API_KEY)
+                .executeCall()
+            weatherHolder.lat = it.lat
+            weatherHolder.lon = it.lon
+            weatherHolder.id = id
+            weatherHolder.position = it.position
+            weatherHolder.name = it.name
+            database.dropOldWeatherHolderChildren(id)
+            database.updateWeatherHolder(weatherHolder)
+            weatherHolder.city?.weatherHolderId = id
+            weatherHolder.data?.forEach {data ->
+                data.weatherHolderId = id
+                data.weather?.forEach { weather -> weather.weatherHolderId = id }
+                data.clouds?.weatherHolderId = id
+                data.sys?.weatherHolderId = id
+                data.wind?.weatherHolderId = id
+                data.main?.weatherHolderId = id
+                data.rain?.weatherHolderId = id
+            }
+            database.insertWeatherHolderChildrens(weatherHolder)
+            return weatherHolder
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 

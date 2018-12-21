@@ -4,11 +4,12 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import ru.kcoder.weatherhelper.data.network.common.ApiResponse
 
 @Entity(
     tableName = "weather_holder"
 )
-class WeatherHolder {
+class WeatherHolder: ApiResponse {
 
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
@@ -18,7 +19,7 @@ class WeatherHolder {
     var name: String = ""
 
 
-    var cod: String? = null
+    override var cod: String? = null
     var message: Double? = null
     var cnt: Double? = null
 
