@@ -8,4 +8,5 @@ class WeatherPresentationHolder {
     var name: String = ""
     var hours = mutableListOf<WeatherPresentation>()
     var days = mutableListOf<WeatherPresentation>()
+    var nights = mutableListOf<WeatherPresentation>()
 }

@@ -65,6 +65,14 @@ class WeatherStringSourceImpl(
     )
 
     override fun getDescriptionByCod(cod: Int): String {
-        return context.resources.getString(stringMap[cod] ?: R.string.empty)
+        return context.getString(stringMap[cod] ?: R.string.empty)
+    }
+
+    override fun getWindDescription(): String {
+        return context.getString(R.string.wind)
+    }
+
+    override fun getHumidityDescription(): String {
+        return context.getString(R.string.humidity)
     }
 }

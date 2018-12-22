@@ -20,15 +20,15 @@ import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherListImp
 val weatherModule = module {
     factory<WeatherNetworkSource> { get<Retrofit>().create(WeatherNetworkSource::class.java) }
     factory<WeatherDbSource> { WeatherDbSourceImpl(get()) }
-    factory<WeatherRepository> { WeatherRepositoryImpl(get(), get(), get()) }
+    factory<WeatherRepository> { WeatherRepositoryImpl(get(), get(), get(), get()) }
 }
 
 val weatherListModule = module {
     factory<WeatherListInteractor> { WeatherListInteractorImpl(get()) }
-    viewModel<ViewModelWeatherList> {ViewModelWeatherListImpl(get())}
+    viewModel<ViewModelWeatherList> { ViewModelWeatherListImpl(get()) }
 }
 
 val weatherDetailModule = module {
     factory<WeatherDetailInteractor> { WeatherDetailInteractorImpl(get()) }
-    viewModel<ViewModelWeatherDetail> {ViewModelWeatherDetailImpl(get())}
+    viewModel<ViewModelWeatherDetail> { ViewModelWeatherDetailImpl(get()) }
 }

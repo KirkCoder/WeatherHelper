@@ -5,15 +5,20 @@ import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.*
 import ru.kcoder.weatherhelper.data.network.common.executeCall
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
+import ru.kcoder.weatherhelper.data.resourses.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
+import ru.kcoder.weatherhelper.toolkit.kotlin.getHour
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDate
+import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDay
+import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatTime
 
 class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
     private val database: WeatherDbSource,
-    settingsSource: SettingsSource
+    settingsSource: SettingsSource,
+    private val stringSource: WeatherStringSource
 ) : WeatherRepository {
 
     private val settings = settingsSource.getSettings()
@@ -31,7 +36,7 @@ class WeatherRepositoryImpl(
             database.dropOldWeatherHolderChildren(id)
             database.updateWeatherHolder(weatherHolder)
             weatherHolder.city?.weatherHolderId = id
-            weatherHolder.data?.forEach {data ->
+            weatherHolder.data?.forEach { data ->
                 data.weatherHolderId = id
                 data.weather?.forEach { weather -> weather.weatherHolderId = id }
                 data.clouds?.weatherHolderId = id
@@ -51,7 +56,7 @@ class WeatherRepositoryImpl(
         return WeatherModel(list, map)
     }
 
-    override fun getWeatherPresentation(id: Long, update: Boolean): WeatherPresentationHolder {
+    override fun getWeatherPresentationHolder(id: Long, update: Boolean): WeatherPresentationHolder {
         val weatherHolder = if (update) {
             getWeatherById(id)
         } else {
@@ -67,10 +72,37 @@ class WeatherRepositoryImpl(
             lat = weather.lat
             lon = weather.lon
             name = weather.name
-            weather.data?.forEach { data ->
+            val data = weather.data
+            bindDaysAndHours(data)
+            weather.data?.forEach { dt ->
                 hours.add(
-                    getWeatherPresentation(data)
+                    getWeatherPresentation(dt)
                 )
+            }
+        }
+    }
+
+    private fun WeatherPresentationHolder.bindDaysAndHours(data: List<Data>?) {
+        if (!data.isNullOrEmpty()) {
+            data[0].dt?.let { long ->
+                val startDayHour = long.getHour()
+                var pos = 0
+                val halfDay = 4
+                var startNextDayPos = (24 - startDayHour) / 3
+                var startNextNightPos = startNextDayPos + halfDay
+
+                val iterator = data.listIterator()
+                while (iterator.hasNext()) {
+                    if (pos < 5) iterator.next().let { hours.add(getWeatherPresentation(it)) }
+                    if (pos == 0) days.add(getWeatherPresentation(iterator.next()))
+                    if (pos == 4) nights.add(getWeatherPresentation(iterator.next()))
+                    if (pos == startNextDayPos) days.add(getWeatherPresentation(iterator.next()))
+                        .also { startNextDayPos = startNextNightPos + halfDay }
+                    if (pos == startNextNightPos) nights.add(getWeatherPresentation(iterator.next()))
+                        .also { startNextNightPos = startNextDayPos + halfDay }
+                    else if (!iterator.hasNext()) nights.add(getWeatherPresentation(iterator.next()))
+                    pos++
+                }
             }
         }
     }
@@ -78,16 +110,25 @@ class WeatherRepositoryImpl(
     private fun getWeatherPresentation(data: Data): WeatherPresentation {
         val weather = WeatherPresentation()
 
-        weather.dateAndDescription = "${data.dt.tryFormatDate()} ${
-        data.weather?.let {
-            if (it.isNotEmpty()) it[0].description
-            else ""
+        with(weather) {
+            dateAndDescription = "${data.dt.tryFormatDate()}, ${
+            data.weather?.let {
+                if (it.isNotEmpty()) it[0].id?.let { id -> stringSource.getDescriptionByCod(id) } ?: ""
+                else ""
+            }
+            }"
+            tempNow = data.main?.temp?.toInt()?.let { it - settings.degreeDifference }?.toString() ?: "XX"
+            degreeThumbnail = settings.degreeThumbnail
+            wind = data.wind?.speed?.toInt()?.toString() ?: ""
+            wind = if (data.wind?.speed != null) {
+                "${data.wind?.speed?.toInt()?.toString()} ${stringSource.getWindDescription()}"
+            } else ""
+            humidity = if (data.main?.humidity != null) {
+                "${data.main?.humidity?.toInt()?.toString()}% ${stringSource.getHumidityDescription()}"
+            } else ""
+            time = data.dt.tryFormatTime()
+            time = data.dt.tryFormatDay()
         }
-        }"
-        weather.tempNow = data.main?.temp?.let { it - settings.degreeDifference }?.toString() ?: ""
-        weather.degreeThumbnail = settings.degreeThumbnail
-        weather.wind = data.wind?.speed?.toInt()?.toString() ?: ""
-        weather.humidity = data.main?.humidity?.toInt()?.toString() ?: ""
 
         return weather
     }

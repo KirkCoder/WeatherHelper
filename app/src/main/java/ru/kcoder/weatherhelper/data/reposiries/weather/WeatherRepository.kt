@@ -9,5 +9,5 @@ interface WeatherRepository {
 
     fun getAllWeather(): WeatherModel
 
-    fun getWeatherPresentation(id: Long, update: Boolean = false): WeatherPresentationHolder
+    fun getWeatherPresentationHolder(id: Long, update: Boolean = false): WeatherPresentationHolder
 }

@@ -7,6 +7,8 @@ class WeatherPresentation {
     var IcoConst = SAN
     var humidity = ""
     var wind = ""
+    var time = ""
+    var day = ""
 
 
     companion object {
