@@ -5,7 +5,8 @@ import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.*
 import ru.kcoder.weatherhelper.data.network.common.executeCall
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
-import ru.kcoder.weatherhelper.data.resourses.WeatherStringSource
+import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSource
+import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
@@ -18,7 +19,8 @@ class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
     private val database: WeatherDbSource,
     settingsSource: SettingsSource,
-    private val stringSource: WeatherStringSource
+    private val stringSource: WeatherStringSource,
+    private val imageSource: ImageResSource
 ) : WeatherRepository {
 
     private val settings = settingsSource.getSettings()
@@ -74,11 +76,6 @@ class WeatherRepositoryImpl(
             name = weather.name
             val data = weather.data
             bindDaysAndHours(data)
-            weather.data?.forEach { dt ->
-                hours.add(
-                    getWeatherPresentation(dt)
-                )
-            }
         }
     }
 
@@ -127,7 +124,13 @@ class WeatherRepositoryImpl(
                 "${data.main?.humidity?.toInt()?.toString()}% ${stringSource.getHumidityDescription()}"
             } else ""
             time = data.dt.tryFormatTime()
-            time = data.dt.tryFormatDay()
+            day = data.dt.tryFormatDay()
+            val isDay = data.dt.getHour() > settings.startNight || data.dt.getHour() < settings.endNight
+            icoRes = data.weather?.let {
+                if (it.isNotEmpty()) {
+                    imageSource.getImageIdByCod(it[0].id, isDay)
+                } else imageSource.getImageIdByCod(null, isDay)
+            } ?: imageSource.getImageIdByCod(null, isDay)
         }
 
         return weather

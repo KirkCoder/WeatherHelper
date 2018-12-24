@@ -28,7 +28,7 @@ fun Long?.tryFormatDay(default: String = ""): String {
     }
 }
 
-fun Long.getHour(default: Int = 0): Int {
+fun Long?.getHour(default: Int = 0): Int {
     return try {
         SimpleDateFormat("HH", Locale.getDefault()).format(this).toInt()
     } catch (e: IllegalArgumentException) {

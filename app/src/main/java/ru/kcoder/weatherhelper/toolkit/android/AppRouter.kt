@@ -31,10 +31,10 @@ object AppRouter {
         )
     }
 
-    fun showWeatherDetailFragment(activity: FragmentActivity, id: Long) {
+    fun showWeatherDetailFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
-            FragmentWeatherDetail.newInstance(id),
+            FragmentWeatherDetail.newInstance(id, needUpdate),
             FragmentWeatherDetail.TAG, true
         )
     }

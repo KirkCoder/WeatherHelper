@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.data.resourses
+package ru.kcoder.weatherhelper.data.resourses.string
 
 interface WeatherStringSource {
     fun getDescriptionByCod(cod: Int): String

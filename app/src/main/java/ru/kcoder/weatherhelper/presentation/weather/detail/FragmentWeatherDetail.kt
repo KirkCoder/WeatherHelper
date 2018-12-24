@@ -17,8 +17,8 @@ class FragmentWeatherDetail : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getLong(ID_KEY)?.let {
-            viewModel.updateWeather(it)
+        arguments?.let {
+            viewModel.updateWeather(it.getLong(ID_KEY), it.getBoolean(NEED_UPDATE))
         }
     }
 
@@ -34,11 +34,11 @@ class FragmentWeatherDetail : BaseFragment() {
     }
 
     private fun subscribeData() {
-        viewModel.weather.observe(this, Observer {weatherHolder ->
-            weatherHolder?.let {
+        viewModel.weather.observe(this, Observer { holder ->
+            holder?.let {
                 textViewTitle.text = it.name
-                textViewTimeDescription.text = it.data?.first()?.dt?.toString() ?: ""
-                textViewTemp.text = it.data?.first()?.main?.tempMin?.toString() ?: "nonono"
+                textViewTimeDescription.text = it.hours[0].dateAndDescription
+                textViewTemp.text = it.hours[0].tempNow
             }
         })
     }
@@ -46,11 +46,13 @@ class FragmentWeatherDetail : BaseFragment() {
     companion object {
         const val TAG = "FRAGMENT_WEATHER_DETAIL_TAG"
         private const val ID_KEY = "id_key"
+        private const val NEED_UPDATE = "need_update_key"
         @JvmStatic
-        fun newInstance(weatherId: Long): FragmentWeatherDetail {
+        fun newInstance(weatherId: Long, needUpdate: Boolean): FragmentWeatherDetail {
             val fragment = FragmentWeatherDetail()
             val bundle = Bundle()
             bundle.putLong(ID_KEY, weatherId)
+            bundle.putBoolean(NEED_UPDATE, needUpdate)
             fragment.arguments = bundle
             return fragment
         }

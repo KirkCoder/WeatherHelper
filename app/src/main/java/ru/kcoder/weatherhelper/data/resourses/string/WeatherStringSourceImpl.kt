@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.data.resourses
+package ru.kcoder.weatherhelper.data.resourses.string
 
 import android.content.Context
 import ru.kcoder.weatherhelper.ru.weatherhelper.R

@@ -54,14 +54,14 @@
             android:layout_marginTop="@dimen/layout_margin_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
-            tools:src="@drawable/ic_sun"
+            tools:src="@drawable/ic_crescent"
             android:layout_width="@dimen/temp_text_size"
             android:layout_height="@dimen/temp_text_size"/>
 
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/imageViewRainDescription"
             android:layout_marginTop="@dimen/layout_margin"
-            tools:drawableStart="@drawable/ic_sun"
+            tools:drawableStart="@drawable/ic_crescent"
             tools:text="23 km/h Winds"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/layout_padding"

@@ -10,8 +10,10 @@ import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSourceImpl
 import ru.kcoder.weatherhelper.data.network.common.OkHttpBuilder
 import ru.kcoder.weatherhelper.data.network.common.RetrofitBuilder
-import ru.kcoder.weatherhelper.data.resourses.WeatherStringSource
-import ru.kcoder.weatherhelper.data.resourses.WeatherStringSourceImpl
+import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSource
+import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSourceImpl
+import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
+import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSourceImpl
 
 val networkModule = module {
     single {
@@ -31,7 +33,8 @@ val settingsModule = module {
 }
 
 val resourceModule = module {
-    factory<WeatherStringSource> { WeatherStringSourceImpl(get()) }
+    factory<WeatherStringSource> { WeatherStringSourceImpl(get())}
+    factory<ImageResSource> { ImageResSourceImpl() }
 }
 
 private fun getWeatherHelperDb(context: Context): WeatherHelperRoomDb {
