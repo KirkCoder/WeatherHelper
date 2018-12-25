@@ -90,14 +90,15 @@ class WeatherRepositoryImpl(
 
                 val iterator = data.listIterator()
                 while (iterator.hasNext()) {
-                    if (pos < 5) iterator.next().let { hours.add(getWeatherPresentation(it)) }
-                    if (pos == 0) days.add(getWeatherPresentation(iterator.next()))
-                    if (pos == 4) nights.add(getWeatherPresentation(iterator.next()))
-                    if (pos == startNextDayPos) days.add(getWeatherPresentation(iterator.next()))
+                    val next = iterator.next()
+                    if (pos < 5) next.let { hours.add(getWeatherPresentation(it)) }
+                    if (pos == 0) days.add(getWeatherPresentation(next))
+                    if (pos == 4) nights.add(getWeatherPresentation(next))
+                    if (pos == startNextDayPos) days.add(getWeatherPresentation(next))
                         .also { startNextDayPos = startNextNightPos + halfDay }
-                    if (pos == startNextNightPos) nights.add(getWeatherPresentation(iterator.next()))
+                    if (pos == startNextNightPos) nights.add(getWeatherPresentation(next))
                         .also { startNextNightPos = startNextDayPos + halfDay }
-                    else if (!iterator.hasNext()) nights.add(getWeatherPresentation(iterator.next()))
+                    else if (!iterator.hasNext()) nights.add(getWeatherPresentation(next))
                     pos++
                 }
             }
@@ -114,7 +115,8 @@ class WeatherRepositoryImpl(
                 else ""
             }
             }"
-            tempNow = data.main?.temp?.toInt()?.let { it - settings.degreeDifference }?.toString() ?: "XX"
+            tempNow = data.main?.temp?.let { it -
+                    settings.degreeDifference }?.toInt()?.toString() ?: "XX"
             degreeThumbnail = settings.degreeThumbnail
             wind = data.wind?.speed?.toInt()?.toString() ?: ""
             wind = if (data.wind?.speed != null) {

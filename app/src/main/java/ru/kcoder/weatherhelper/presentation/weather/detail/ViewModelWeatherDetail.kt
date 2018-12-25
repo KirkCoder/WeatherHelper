@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.weather.detail
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentationHolder
 import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 import ru.kcoder.weatherhelper.presentation.common.SingleLiveData

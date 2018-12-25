@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class AdapterWeatherList(private val callback: (Long) -> Unit) : RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
+class AdapterWeatherList(private val callback: (Long) -> Unit) : androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private val list = mutableListOf<WeatherHolder>()
     private var positionMap = mutableMapOf<Long, Int>()
@@ -48,7 +48,7 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) : RecyclerView.Ad
 
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
     }
 }

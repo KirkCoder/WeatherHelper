@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import ru.kcoder.weatherhelper.data.database.room.BaseDao
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 

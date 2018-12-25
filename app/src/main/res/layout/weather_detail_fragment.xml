@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTitle"
             tools:text="New York"
             app:layout_constraintTop_toTopOf="parent"
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTimeDescription"
             tools:text="Mon, 11:00 AM, Mostly Sunny"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTemp"
             tools:text="25"
             android:textSize="@dimen/temp_text_size"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewCalvin"
             app:layout_constraintTop_toTopOf="@+id/textViewTemp"
             app:layout_constraintStart_toEndOf="@+id/textViewTemp"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/textViewIco"
             app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
             android:layout_marginTop="@dimen/layout_margin_big"
@@ -58,7 +58,7 @@
             android:layout_width="@dimen/temp_text_size"
             android:layout_height="@dimen/temp_text_size"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/imageViewRainDescription"
             android:layout_marginTop="@dimen/layout_margin"
             tools:drawableStart="@drawable/ic_crescent"
@@ -71,14 +71,14 @@
             android:layout_height="wrap_content"/>
 
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/imageViewWindDescription"
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginStart="@dimen/layout_margin"
@@ -92,4 +92,4 @@
             android:layout_height="wrap_content"/>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

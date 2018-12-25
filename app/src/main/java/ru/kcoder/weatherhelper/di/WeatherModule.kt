@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.di
 
-import org.koin.android.viewmodel.ext.koin.viewModel
+import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource

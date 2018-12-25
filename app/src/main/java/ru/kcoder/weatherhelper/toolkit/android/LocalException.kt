@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.toolkit.android
 
-import android.support.annotation.IdRes
+import androidx.annotation.IdRes
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import java.lang.Exception
 

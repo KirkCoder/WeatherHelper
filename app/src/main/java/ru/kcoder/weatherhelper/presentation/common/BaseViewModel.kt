@@ -1,7 +1,7 @@
 package ru.kcoder.weatherhelper.presentation.common
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 abstract class BaseViewModel: ViewModel() {
 

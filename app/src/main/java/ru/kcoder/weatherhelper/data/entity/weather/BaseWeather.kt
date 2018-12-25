@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.data.entity.weather
 
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.PrimaryKey
 
 abstract class BaseWeather {
     @PrimaryKey(autoGenerate = true)

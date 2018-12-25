@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.place
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
 

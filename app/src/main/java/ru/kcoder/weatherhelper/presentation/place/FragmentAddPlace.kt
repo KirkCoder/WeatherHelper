@@ -1,7 +1,7 @@
 package ru.kcoder.weatherhelper.presentation.place
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +19,8 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.place_add_fragment.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.koin.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
@@ -124,7 +125,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
 
 
     private fun subscribeData() {
-        viewModel.errorLiveData.observe(this, android.arch.lifecycle.Observer { res ->
+        viewModel.errorLiveData.observe(this, androidx.lifecycle.Observer { res ->
             res?.let { super.showError(it) }
         })
 
@@ -132,7 +133,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             activity?.let {
                 if (id != null) {
                     AppRouter.removeFromBackStack(it, TAG)
-                    AppRouter.showWeatherDetailFragment(it, id)
+                    AppRouter.showWeatherDetailFragment(it, id, true)
                 }
             }
         })
@@ -149,7 +150,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
 
     @SuppressLint("RestrictedApi")
     private fun setMarker(mMap: GoogleMap) {
-        viewModel.markerLiveData.observe(this, android.arch.lifecycle.Observer {
+        viewModel.markerLiveData.observe(this, androidx.lifecycle.Observer {
             it?.let { place ->
                 mMap.addMarker(
                     MarkerOptions()

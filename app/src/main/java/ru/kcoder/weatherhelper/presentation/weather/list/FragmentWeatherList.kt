@@ -1,12 +1,12 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.*
 import kotlinx.android.synthetic.main.weather_list_fragment.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
@@ -47,15 +47,15 @@ class FragmentWeatherList : BaseFragment() {
     }
 
     private fun initRecycler(context: Context) {
-        recyclerViewWeatherList.layoutManager = LinearLayoutManager(context)
+        recyclerViewWeatherList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerViewWeatherList.adapter = adapter
         listViewModel.weatherListLiveData.observe(this, Observer { list ->
             list?.let { adapter.setData(it) }
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_main, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

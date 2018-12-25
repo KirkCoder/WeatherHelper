@@ -1,25 +1,25 @@
 package ru.kcoder.weatherhelper.presentation.place
 
 import android.app.Dialog
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AppCompatEditText
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
 import android.text.TextUtils
 import android.view.View
 import kotlinx.android.synthetic.main.place_add_dialog_fragment.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class DialogFragmentAddPlace : DialogFragment() {
+class DialogFragmentAddPlace : androidx.fragment.app.DialogFragment() {
 
     private var callback: Callback? = null
     private val viewModel: ViewModelAddPlace by viewModel()
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = when {
             parentFragment is Callback -> parentFragment as Callback
