@@ -1,7 +1,7 @@
 package ru.kcoder.weatherhelper.domain.weather.list
 
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentationHolder
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.debug.log
@@ -10,7 +10,7 @@ import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository) : BaseInteractor(),
     WeatherListInteractor {
 
-    private val updatingList = mutableListOf<WeatherHolder>()
+    private val updatingList = mutableListOf<WeatherPresentationHolder>()
 
     override fun getAllWeather(
         callback: (WeatherModel) -> Unit,
@@ -53,13 +53,12 @@ class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository
     private fun createUpdatingList(model: WeatherModel) {
         val list = model.list
         updatingList.clear()
-        for (weatherHolder in list) {
-            val data = weatherHolder.data
+        for (holder in list) {
+            val data = holder.hours
             if (!data.isNullOrEmpty()
-                && data[0].dt != null
-                && TimeUtils.isThreeHourDifference(data[0].dt!!)
+                && TimeUtils.isThreeHourDifference(data[0].timeLong)
             ) {
-                updatingList.add(weatherHolder)
+                updatingList.add(holder)
             }
         }
     }

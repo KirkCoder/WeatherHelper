@@ -16,10 +16,5 @@ class ViewModelWeatherListImpl(
         listInteractor.getAllWeather ({
             weatherListLiveData.value = it
         }, this::errorCallback)
-
-
-//        listInteractor.getWeatherByCoordinat(45.04484, 38.97603) {
-//            weather.value = it
-//        }
     }
 }

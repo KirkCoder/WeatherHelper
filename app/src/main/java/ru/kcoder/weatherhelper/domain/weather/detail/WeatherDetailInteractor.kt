@@ -7,7 +7,7 @@ interface WeatherDetailInteractor {
         whId: Long,
         forceUpdate: Boolean,
         callback: (WeatherPresentationHolder) -> Unit,
-        statusCallback: (Int) -> Unit,
+        statusCallback: (Boolean) -> Unit,
         errorCallback: (Int) -> Unit
     )
 }

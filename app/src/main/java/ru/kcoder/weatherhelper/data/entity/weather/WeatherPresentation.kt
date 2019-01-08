@@ -11,4 +11,5 @@ class WeatherPresentation {
     var wind = ""
     var time = ""
     var day = ""
+    var timeLong = 0L
 }

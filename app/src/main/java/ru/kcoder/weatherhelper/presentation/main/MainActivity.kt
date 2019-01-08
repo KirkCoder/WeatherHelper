@@ -10,6 +10,7 @@ import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 
 //http://api.openweathermap.org/data/2.5/forecast?q=London&APPID=10fad01b4946d8ffa0c27d14d69a0333
 //http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139&APPID=10fad01b4946d8ffa0c27d14d69a0333
+//http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&APPID=10fad01b4946d8ffa0c27d14d69a0333
 //API_KEY = "10fad01b4946d8ffa0c27d14d69a0333"
 //    45.04484, 38.97603
 
@@ -55,6 +56,13 @@ class MainActivity : AppCompatActivity() {
         if (res != false) {
             super.onBackPressed()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        if (!super.onSupportNavigateUp()) {
+            onBackPressed()
+        }
+        return false
     }
 
     companion object {

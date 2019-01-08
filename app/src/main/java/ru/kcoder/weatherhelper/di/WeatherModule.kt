@@ -12,6 +12,7 @@ import ru.kcoder.weatherhelper.domain.weather.detail.WeatherDetailInteractor
 import ru.kcoder.weatherhelper.domain.weather.detail.WeatherDetailInteractorImpl
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractorImpl
+import ru.kcoder.weatherhelper.presentation.weather.detail.FragmentWeatherDetail
 import ru.kcoder.weatherhelper.presentation.weather.detail.ViewModelWeatherDetail
 import ru.kcoder.weatherhelper.presentation.weather.detail.ViewModelWeatherDetailImpl
 import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherList
@@ -30,5 +31,11 @@ val weatherListModule = module {
 
 val weatherDetailModule = module {
     factory<WeatherDetailInteractor> { WeatherDetailInteractorImpl(get()) }
-    viewModel<ViewModelWeatherDetail> { ViewModelWeatherDetailImpl(get()) }
+    viewModel<ViewModelWeatherDetail> {
+        ViewModelWeatherDetailImpl(
+            get(),
+            getProperty(FragmentWeatherDetail.ID_KEY),
+            getProperty(FragmentWeatherDetail.NEED_UPDATE)
+        )
+    }
 }

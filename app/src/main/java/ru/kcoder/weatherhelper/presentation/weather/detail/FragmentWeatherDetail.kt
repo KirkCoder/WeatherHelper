@@ -6,19 +6,23 @@ import androidx.appcompat.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.weather_common.*
 import kotlinx.android.synthetic.main.weather_detail_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.setProperty
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 class FragmentWeatherDetail : BaseFragment() {
 
-    private val viewModel: ViewModelWeatherDetail by viewModel()
+    private lateinit var viewModel: ViewModelWeatherDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            viewModel.updateWeather(it.getLong(ID_KEY), it.getBoolean(NEED_UPDATE))
+            setProperty(ID_KEY, it.getLong(ID_KEY))
+            setProperty(NEED_UPDATE, it.getBoolean(NEED_UPDATE))
+            viewModel = getViewModel()
         }
     }
 
@@ -30,23 +34,36 @@ class FragmentWeatherDetail : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeData()
+        subscribeUi()
+        initViews()
     }
 
-    private fun subscribeData() {
+    private fun initViews() {
+        swipeLayoutDetail.setOnRefreshListener { viewModel.forceUpdate() }
+    }
+
+    private fun subscribeUi() {
         viewModel.weather.observe(this, Observer { holder ->
             holder?.let {
                 textViewTitle.text = it.name
                 textViewTimeDescription.text = it.hours[0].dateAndDescription
                 textViewTemp.text = it.hours[0].tempNow
+                textViewCalvin.text = it.hours[0].degreeThumbnail
+                imageViewIco.setImageResource(it.hours[0].icoRes)
+                textViewHumidityDescription.text = it.hours[0].humidity
+                textViewWindDescription.text = it.hours[0].wind
             }
+        })
+
+        viewModel.status.observe(this, Observer { status ->
+            status?.let { swipeLayoutDetail.isRefreshing = it }
         })
     }
 
     companion object {
         const val TAG = "FRAGMENT_WEATHER_DETAIL_TAG"
-        private const val ID_KEY = "id_key"
-        private const val NEED_UPDATE = "need_update_key"
+        const val ID_KEY = "id_key"
+        const val NEED_UPDATE = "need_update_key"
         @JvmStatic
         fun newInstance(weatherId: Long, needUpdate: Boolean): FragmentWeatherDetail {
             val fragment = FragmentWeatherDetail()

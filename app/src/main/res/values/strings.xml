@@ -16,7 +16,7 @@
 
 
     <!--weather-->
-    <string name="wind">m/s</string>
+    <string name="wind">m/s Wind</string>
     <string name="humidity">humidity</string>
     <!--weather description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>

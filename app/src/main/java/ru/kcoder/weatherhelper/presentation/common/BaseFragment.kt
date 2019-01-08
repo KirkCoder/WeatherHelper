@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.common
 
 import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseFragment : androidx.fragment.app.Fragment() {

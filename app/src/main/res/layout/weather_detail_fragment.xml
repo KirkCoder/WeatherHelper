@@ -1,95 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayoutDetail"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:padding="@dimen/layout_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+   <include layout="@layout/weather_common"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTitle"
-            tools:text="New York"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/TextStyleTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTimeDescription"
-            tools:text="Mon, 11:00 AM, Mostly Sunny"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-            android:layout_marginTop="@dimen/layout_margin_half"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTemp"
-            tools:text="25"
-            android:textSize="@dimen/temp_text_size"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:includeFontPadding="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewCalvin"
-            app:layout_constraintTop_toTopOf="@+id/textViewTemp"
-            app:layout_constraintStart_toEndOf="@+id/textViewTemp"
-            tools:text="\u2103"
-            android:textSize="@dimen/tmp_text_size_half"
-            android:layout_marginStart="@dimen/layout_margin_half"
-            android:includeFontPadding="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/textViewIco"
-            app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
-            android:layout_marginTop="@dimen/layout_margin_big"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
-            tools:src="@drawable/ic_crescent"
-            android:layout_width="@dimen/temp_text_size"
-            android:layout_height="@dimen/temp_text_size"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/imageViewRainDescription"
-            android:layout_marginTop="@dimen/layout_margin"
-            tools:drawableStart="@drawable/ic_crescent"
-            tools:text="23 km/h Winds"
-            android:gravity="center_vertical"
-            android:drawablePadding="@dimen/layout_padding"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/imageViewWindDescription"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:layout_marginStart="@dimen/layout_margin"
-            tools:drawableStart="@drawable/ic_sun"
-            tools:text="23 km/h Winds"
-            android:gravity="center_vertical"
-            android:drawablePadding="@dimen/layout_padding"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

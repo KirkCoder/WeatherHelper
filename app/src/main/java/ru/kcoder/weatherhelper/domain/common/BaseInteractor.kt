@@ -31,18 +31,12 @@ abstract class BaseInteractor {
 
     fun <R, B> loadingProgress(
         repository: R,
-        load: R.() -> B, callback: (data: B?, error: LocalException?, status: Int) -> Unit
+        load: R.() -> B, callback: (data: B?, error: LocalException?, isLoading: Boolean) -> Unit
     ) {
-        callback(null, null, LOADING)
+        callback(null, null, true)
         loading(repository, load) { data, error ->
-            data?.let { callback(it, null, DONE) }
-            error?.let { callback(null, it, FAIL) }
+            data?.let { callback(it, null, false) }
+            error?.let { callback(null, it, false) }
         }
-    }
-
-    companion object {
-        const val LOADING = 1
-        const val DONE = 2
-        const val FAIL = 2
     }
 }

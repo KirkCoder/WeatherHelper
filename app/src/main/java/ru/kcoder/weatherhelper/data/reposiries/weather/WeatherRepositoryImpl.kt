@@ -10,6 +10,7 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
+import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.kotlin.getHour
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDate
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDay
@@ -53,7 +54,7 @@ class WeatherRepositoryImpl(
     }
 
     override fun getAllWeather(): WeatherModel {
-        val list = database.getWeatherHolders()
+        val list = database.getWeatherHolders().map { mapToPresentation(it) }
         val map = list.asSequence().associateBy({ it.id }, { it.position })
         return WeatherModel(list, map)
     }
@@ -126,6 +127,7 @@ class WeatherRepositoryImpl(
                 "${data.main?.humidity?.toInt()?.toString()}% ${stringSource.getHumidityDescription()}"
             } else ""
             time = data.dt.tryFormatTime()
+            timeLong = data.dt ?: 0L
             day = data.dt.tryFormatDay()
             val isDay = data.dt.getHour() > settings.startNight || data.dt.getHour() < settings.endNight
             icoRes = data.weather?.let {

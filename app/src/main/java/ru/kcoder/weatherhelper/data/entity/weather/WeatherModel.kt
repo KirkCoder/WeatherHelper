@@ -9,7 +9,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
  * @param updatedWeatherHolderId if -1 then all position new
  */
 class WeatherModel(
-    val list: List<WeatherHolder>,
+    val list: List<WeatherPresentationHolder>,
     val map: Map<Long, Int>,
     var updatedWeatherHolderId: Long = -1L
 )
