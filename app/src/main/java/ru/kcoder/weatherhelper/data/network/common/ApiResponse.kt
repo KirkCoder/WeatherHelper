@@ -1,9 +1,9 @@
 package ru.kcoder.weatherhelper.data.network.common
 
 interface ApiResponse {
-    var cod: String?
+    var cod: Int?
 
     companion object {
-        const val OK_RESPONSE = "200"
+        const val OK_RESPONSE = 200
     }
 }

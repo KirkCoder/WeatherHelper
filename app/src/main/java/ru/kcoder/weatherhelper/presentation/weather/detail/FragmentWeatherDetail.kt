@@ -43,7 +43,7 @@ class FragmentWeatherDetail : BaseFragment() {
     }
 
     private fun subscribeUi() {
-        viewModel.weather.observe(this, Observer { holder ->
+        viewModel.weatherPresentation.observe(this, Observer { holder ->
             holder?.let {
                 textViewTitle.text = it.name
                 textViewTimeDescription.text = it.hours[0].dateAndDescription

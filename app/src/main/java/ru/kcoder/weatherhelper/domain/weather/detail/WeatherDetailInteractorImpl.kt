@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.domain.weather.detail
 
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentationHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderPresentation
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 
@@ -12,7 +11,7 @@ class WeatherDetailInteractorImpl(
     override fun updateWeather(
         whId: Long,
         forceUpdate: Boolean,
-        callback: (WeatherPresentationHolder) -> Unit,
+        callback: (WeatherHolderPresentation) -> Unit,
         statusCallback: (Boolean) -> Unit,
         errorCallback: (Int) -> Unit
     ) {

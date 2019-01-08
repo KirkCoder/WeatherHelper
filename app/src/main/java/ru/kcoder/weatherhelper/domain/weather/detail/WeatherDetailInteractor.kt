@@ -1,12 +1,12 @@
 package ru.kcoder.weatherhelper.domain.weather.detail
 
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentationHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderPresentation
 
 interface WeatherDetailInteractor {
     fun updateWeather(
         whId: Long,
         forceUpdate: Boolean,
-        callback: (WeatherPresentationHolder) -> Unit,
+        callback: (WeatherHolderPresentation) -> Unit,
         statusCallback: (Boolean) -> Unit,
         errorCallback: (Int) -> Unit
     )

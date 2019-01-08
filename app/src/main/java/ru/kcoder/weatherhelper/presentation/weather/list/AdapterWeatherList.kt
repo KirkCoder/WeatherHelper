@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.weather_common.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentationHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 class AdapterWeatherList(private val callback: (Long) -> Unit) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
-    private val list = mutableListOf<WeatherPresentationHolder>()
+    private val list = mutableListOf<WeatherHolderPresentation>()
     private var positionMap = mutableMapOf<Long, Int>()
 
     fun setData(data: WeatherModel) {

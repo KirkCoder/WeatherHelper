@@ -4,9 +4,18 @@ import retrofit2.Call
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
+fun <T : ApiResponseFuture> Call<T>.executeCall(): T {
+    this.execute().body()?.let {
+        if (it.cod != null && it.cod.equals(ApiResponseFuture.OK_RESPONSE)) {
+            return it
+        }
+    }
+    throw LocalException(LocalExceptionMsg.CANT_CONNECT)
+}
+
 fun <T : ApiResponse> Call<T>.executeCall(): T {
     this.execute().body()?.let {
-        if (it.cod != null && it.cod.equals("200")) {
+        if (it.cod != null && it.cod == ApiResponse.OK_RESPONSE) {
             return it
         }
     }

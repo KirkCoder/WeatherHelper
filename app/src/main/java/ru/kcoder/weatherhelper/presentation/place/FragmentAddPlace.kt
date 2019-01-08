@@ -20,7 +20,6 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.place_add_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.androidx.viewmodel.ext.koin.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter

@@ -1,12 +1,11 @@
 package ru.kcoder.weatherhelper.data.database.weather
 
 import ru.kcoder.weatherhelper.data.database.room.WeatherHelperRoomDb
-import ru.kcoder.weatherhelper.data.database.room.weather.*
 import ru.kcoder.weatherhelper.data.entity.weather.*
 
 class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDbSource {
 
-    override fun getWeatherHolders(): List<WeatherHolder> {
+    override fun getWeatherHolders(): List<WeatherHolderFuture> {
         val weatherHolders = database.weatherHolder().getWeatherHolders()
         for (wh in weatherHolders) {
             bindWeatherHolder(wh)
@@ -14,7 +13,7 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return weatherHolders
     }
 
-    override fun updateWeatherHolder(weatherHolder: WeatherHolder) {
+    override fun updateWeatherHolder(weatherHolder: WeatherHolderFuture) {
         database.weatherHolder().insertOrReplace(weatherHolder)
     }
 
@@ -30,7 +29,7 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         database.wind().deleteAllByWeatherHolderId(id)
     }
 
-    override fun insertWeatherHolderChildrens(weatherHolder: WeatherHolder) {
+    override fun insertWeatherHolderChildrens(weatherHolder: WeatherHolderFuture) {
         weatherHolder.city?.let { database.city().insertOrReplace(it) }
         weatherHolder.data?.let { dt ->
             database.data().insertOrReplace(dt)
@@ -57,21 +56,21 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getWeatherHolderId(lat, lon)
     }
 
-    override fun insertWeatherHolder(weatherHolder: WeatherHolder) {
+    override fun insertWeatherHolder(weatherHolder: WeatherHolderFuture) {
         database.weatherHolder().insertOrReplace(weatherHolder)
     }
 
-    override fun getSingleWeatherHolder(id: Long): WeatherHolder? {
+    override fun getSingleWeatherHolder(id: Long): WeatherHolderFuture? {
         return database.weatherHolder().getWeatherHolderById(id)
     }
 
-    override fun getWeatherHolder(id: Long): WeatherHolder? {
+    override fun getWeatherHolder(id: Long): WeatherHolderFuture? {
         return database.weatherHolder().getWeatherHolderById(id)?.also {
             bindWeatherHolder(it)
         }
     }
 
-    private fun bindWeatherHolder(wh: WeatherHolder) {
+    private fun bindWeatherHolder(wh: WeatherHolderFuture) {
         wh.city = getCity(wh.id)
         wh.data = getData(wh.id)
     }

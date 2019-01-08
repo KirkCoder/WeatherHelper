@@ -3,7 +3,7 @@ package ru.kcoder.weatherhelper.data.reposiries.place
 import android.location.Geocoder
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderFuture
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
@@ -37,8 +37,8 @@ class PlaceRepositoryImpl(
             ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    private fun mapToWeatherHolder(place: PlaceMarker): WeatherHolder {
-        return WeatherHolder().apply {
+    private fun mapToWeatherHolder(place: PlaceMarker): WeatherHolderFuture {
+        return WeatherHolderFuture().apply {
             lat = place.lat
             lon = place.lon
             name = place.name ?: ""

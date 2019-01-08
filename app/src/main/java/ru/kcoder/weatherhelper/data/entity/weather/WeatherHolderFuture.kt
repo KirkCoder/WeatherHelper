@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import ru.kcoder.weatherhelper.data.network.common.ApiResponse
+import ru.kcoder.weatherhelper.data.network.common.ApiResponseFuture
 
 @Entity(
     tableName = "weather_holder"
 )
-class WeatherHolder: ApiResponse {
+class WeatherHolderFuture: ApiResponseFuture {
 
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

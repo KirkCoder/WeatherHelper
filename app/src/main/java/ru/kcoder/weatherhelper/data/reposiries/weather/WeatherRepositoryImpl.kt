@@ -10,7 +10,6 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
-import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.kotlin.getHour
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDate
 import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDay
@@ -26,7 +25,7 @@ class WeatherRepositoryImpl(
 
     private val settings = settingsSource.getSettings()
 
-    override fun getWeatherById(id: Long): WeatherHolder {
+    override fun getWeatherById(id: Long): WeatherHolderFuture {
         database.getSingleWeatherHolder(id)?.let {
             val weatherHolder = network
                 .getWeatherByCoordinate(it.lat, it.lon, BuildConfig.API_KEY)
@@ -59,7 +58,7 @@ class WeatherRepositoryImpl(
         return WeatherModel(list, map)
     }
 
-    override fun getWeatherPresentationHolder(id: Long, update: Boolean): WeatherPresentationHolder {
+    override fun getWeatherPresentationHolder(id: Long, update: Boolean): WeatherHolderPresentation {
         val weatherHolder = if (update) {
             getWeatherById(id)
         } else {
@@ -68,8 +67,8 @@ class WeatherRepositoryImpl(
         return mapToPresentation(weatherHolder)
     }
 
-    private fun mapToPresentation(weather: WeatherHolder): WeatherPresentationHolder {
-        return WeatherPresentationHolder().apply {
+    private fun mapToPresentation(weather: WeatherHolderFuture): WeatherHolderPresentation {
+        return WeatherHolderPresentation().apply {
             id = weather.id
             position = weather.position
             lat = weather.lat
@@ -80,7 +79,7 @@ class WeatherRepositoryImpl(
         }
     }
 
-    private fun WeatherPresentationHolder.bindDaysAndHours(data: List<Data>?) {
+    private fun WeatherHolderPresentation.bindDaysAndHours(data: List<Data>?) {
         if (!data.isNullOrEmpty()) {
             data[0].dt?.let { long ->
                 val startDayHour = long.getHour()

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "weather"
+    tableName = "weatherPresentation"
 )
 class Weather {
 

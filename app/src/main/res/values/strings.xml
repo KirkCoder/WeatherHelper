@@ -15,10 +15,10 @@
     <string name="place_common_error_cant_connect">Can not connect to server</string>
 
 
-    <!--weather-->
+    <!--weatherPresentation-->
     <string name="wind">m/s Wind</string>
     <string name="humidity">humidity</string>
-    <!--weather description-->
+    <!--weatherPresentation description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>
     <string name="thunderstorm_with_rain">thunderstorm with rain</string>
     <string name="thunderstorm_with_heavy_rain">thunderstorm with heavy rain</string>

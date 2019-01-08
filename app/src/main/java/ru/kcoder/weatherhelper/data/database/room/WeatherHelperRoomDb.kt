@@ -9,7 +9,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.*
     version = 1,
     exportSchema = true,
     entities = [
-        WeatherHolder::class,
+        WeatherHolderFuture::class,
         Data::class,
         Clouds::class,
         Coord::class,

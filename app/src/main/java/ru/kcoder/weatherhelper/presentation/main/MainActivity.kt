@@ -14,6 +14,8 @@ import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 //API_KEY = "10fad01b4946d8ffa0c27d14d69a0333"
 //    45.04484, 38.97603
 
+//TimeZone.getTimeZone("Indian/Kerguelen").rawOffset
+//TimezoneMapper.latLngToTimezoneString(-77.76493239907553, 63.272648490965366)
 class MainActivity : AppCompatActivity() {
 
     private val currentFragment: BaseFragment?

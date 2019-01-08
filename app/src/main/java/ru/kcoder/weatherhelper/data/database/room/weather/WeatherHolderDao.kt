@@ -2,16 +2,16 @@ package ru.kcoder.weatherhelper.data.database.room.weather
 
 import androidx.room.*
 import ru.kcoder.weatherhelper.data.database.room.BaseDao
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderFuture
 
 @Dao
-interface WeatherHolderDao: BaseDao<WeatherHolder> {
+interface WeatherHolderDao: BaseDao<WeatherHolderFuture> {
 
     @Query("SELECT * FROM weather_holder")
-    fun getWeatherHolders(): List<WeatherHolder>
+    fun getWeatherHolders(): List<WeatherHolderFuture>
 
     @Query("SELECT * FROM weather_holder WHERE  id = :id LIMIT 1")
-    fun getWeatherHolderById(id: Long): WeatherHolder?
+    fun getWeatherHolderById(id: Long): WeatherHolderFuture?
 
     @Query("SELECT id FROM weather_holder WHERE lat = :lat AND lon = :lon LIMIT 1")
     fun getWeatherHolderId(lat: Double, lon: Double): Long?
