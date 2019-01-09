@@ -8,7 +8,9 @@ abstract class ViewModelAddPlace: BaseViewModel() {
 
     abstract val markerLiveData: MutableLiveData<PlaceMarker>
     abstract val addedPlaceIdLiveData: MutableLiveData<Long>
+    abstract val fabVisibility: MutableLiveData<Boolean>
 
     abstract fun updateViewModel(place: PlaceMarker)
     abstract fun savePlace(place: PlaceMarker)
+    abstract fun updatePlaceName(name: String?)
 }

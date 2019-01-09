@@ -12,7 +12,7 @@ class ViewModelWeatherDetailImpl(
 ) : ViewModelWeatherDetail() {
 
     override val weatherPresentation: MutableLiveData<WeatherHolderPresentation> = MutableLiveData()
-    override val status: SingleLiveData<Boolean> = SingleLiveData()
+    override val status: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         updateWeather(id, forceUpdate)

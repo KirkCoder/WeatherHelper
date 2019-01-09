@@ -14,4 +14,9 @@ interface PlaceAddInteractor {
         callback: (Long) -> Unit,
         errorCallback: (Int) -> Unit
     )
+
+    fun getUTCoffset(
+        lat: Double, lon: Double,
+        callback: (Int) -> Unit,
+        errorCallback: (Int) -> Unit)
 }

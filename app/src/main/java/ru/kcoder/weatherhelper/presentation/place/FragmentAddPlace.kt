@@ -109,6 +109,16 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
     }
 
     private fun initView() {
+        viewModel.fabVisibility.observe(this, Observer { loading ->
+            loading?.let {
+                if (it) {
+                    fabSelectPlace.visibility = View.VISIBLE
+                } else {
+                    fabSelectPlace.visibility = View.GONE
+                }
+            }
+        })
+
         fabSelectPlace.setOnClickListener { _ ->
             viewModel.markerLiveData.observe(this, Observer { place ->
                 place?.let {
@@ -121,7 +131,6 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             })
         }
     }
-
 
     private fun subscribeData() {
         viewModel.errorLiveData.observe(this, androidx.lifecycle.Observer { res ->
@@ -157,7 +166,6 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
                         .title(place.name).also { option ->
                             place.address?.let { option.snippet(place.address.toString()) }
                         })
-                fabSelectPlace.visibility = View.VISIBLE
             }
         })
     }
@@ -207,11 +215,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
     }
 
     override fun selectName(name: String?) {
-        name?.let { mName ->
-            viewModel.markerLiveData.observe(this, Observer { place ->
-                place?.let { selectPlace(it.apply { this.name = mName }) }
-            })
-        }
+        viewModel.updatePlaceName(name)
     }
 
     companion object {

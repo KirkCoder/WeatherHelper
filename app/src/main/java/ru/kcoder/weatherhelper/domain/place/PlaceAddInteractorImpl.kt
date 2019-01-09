@@ -33,4 +33,16 @@ class PlaceAddInteractorImpl(
             error?.let { errorCallback(it.msg.resourceString) }
         })
     }
+
+    override fun getUTCoffset(
+        lat: Double, lon: Double,
+        callback: (Int) -> Unit,
+        errorCallback: (Int) -> Unit) {
+        loading(repository, {
+            getUTCoffset(lat, lon)
+        }, {data, error ->
+            data?.let { callback(it) }
+            error?.let { errorCallback(it.msg.resourceString) }
+        })
+    }
 }

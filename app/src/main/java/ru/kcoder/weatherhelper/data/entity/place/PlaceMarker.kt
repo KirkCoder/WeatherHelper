@@ -1,17 +1,9 @@
 package ru.kcoder.weatherhelper.data.entity.place
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(
-    tableName = "place"
-)
 data class PlaceMarker(
     val lat: Double,
     val lon: Double,
     var name: String? = null,
-    var address: String? = null
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
-}
+    var address: String? = null,
+    var timeUTCoffset: Int = 0
+)

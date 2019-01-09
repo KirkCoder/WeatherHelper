@@ -4,12 +4,14 @@ import android.location.Geocoder
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderFuture
+import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSource
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
 class PlaceRepositoryImpl(
     private val geocoder: Geocoder,
-    private val weatherDbSource: WeatherDbSource
+    private val weatherDbSource: WeatherDbSource,
+    private val timeZoneSource: TimeZoneSource
 ) : PlaceRepository {
 
     override fun getAddress(lat: Double, lon: Double): Pair<String?, String?> {
@@ -35,6 +37,10 @@ class PlaceRepositoryImpl(
         })
         return weatherDbSource.getWeatherHolderId(place.lat, place.lon)
             ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
+    }
+
+    override fun getUTCoffset(lat: Double, lon: Double): Int {
+        return timeZoneSource.getTimeZoneOffset(lat, lon)
     }
 
     private fun mapToWeatherHolder(place: PlaceMarker): WeatherHolderFuture {

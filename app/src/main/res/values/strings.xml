@@ -13,6 +13,7 @@
     <string name="place_add_error">Selected place already added</string>
     <string name="place_add_error_google_places">Sorry the service is temporarily unavailable</string>
     <string name="place_common_error_cant_connect">Can not connect to server</string>
+    <string name="place_add_not_found">Name not fixed</string>
 
 
     <!--weatherPresentation-->
