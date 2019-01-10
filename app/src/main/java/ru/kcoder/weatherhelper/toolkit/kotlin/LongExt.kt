@@ -1,32 +1,29 @@
 package ru.kcoder.weatherhelper.toolkit.kotlin
 
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Long?.tryFormatDate(): String {
+fun Long.tryFormatDate(): String {
     return this.getDate("EEE, HH:mm ")
 }
 
-fun Long?.tryFormatTime(): String {
+fun Long.tryFormatTime(): String {
     return this.getDate("hhaa")
 }
 
 
-fun Long?.tryFormatDay(): String {
+fun Long.tryFormatDay(): String {
     return this.getDate("EEEEEEE")
 }
 
-fun Long?.getHour(): Int {
+fun Long.tryFormatHour(): Int {
     return this.getDate("HH").toInt()
 }
 
-fun Long?.getDate(format: String = "dd.MM.yyyy HH:mm"): String {
+fun Long.getDate(format: String = "dd.MM.yyyy HH:mm"): String {
     return try {
-        SimpleDateFormat(format, Locale.getDefault()).format(this!!.addMilliseconds())
+        SimpleDateFormat(format, Locale.getDefault()).format(this.addMilliseconds())
     } catch (e: IllegalArgumentException) {
-        ""
-    } catch (ee: NullPointerException) {
         ""
     }
 }

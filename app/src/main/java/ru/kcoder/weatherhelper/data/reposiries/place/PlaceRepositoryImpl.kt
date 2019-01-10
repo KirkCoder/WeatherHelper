@@ -3,7 +3,7 @@ package ru.kcoder.weatherhelper.data.reposiries.place
 import android.location.Geocoder
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderFuture
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSource
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
@@ -43,11 +43,12 @@ class PlaceRepositoryImpl(
         return timeZoneSource.getTimeZoneOffset(lat, lon)
     }
 
-    private fun mapToWeatherHolder(place: PlaceMarker): WeatherHolderFuture {
-        return WeatherHolderFuture().apply {
+    private fun mapToWeatherHolder(place: PlaceMarker): WeatherHolder {
+        return WeatherHolder().apply {
             lat = place.lat
             lon = place.lon
-            name = place.name ?: ""
+            place.name?.let { name = it }
+            timeUTCoffset = place.timeUTCoffset
         }
     }
 }

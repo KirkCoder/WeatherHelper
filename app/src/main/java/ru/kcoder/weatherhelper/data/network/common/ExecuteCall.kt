@@ -4,9 +4,9 @@ import retrofit2.Call
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
-fun <T : ApiResponseFuture> Call<T>.executeCall(): T {
+fun <T : ApiResponseForecast> Call<T>.executeCall(): T {
     this.execute().body()?.let {
-        if (it.cod != null && it.cod.equals(ApiResponseFuture.OK_RESPONSE)) {
+        if (it.cod != null && it.cod.equals(ApiResponseForecast.OK_RESPONSE)) {
             return it
         }
     }

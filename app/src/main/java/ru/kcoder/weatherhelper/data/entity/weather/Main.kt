@@ -1,18 +1,8 @@
 package ru.kcoder.weatherhelper.data.entity.weather
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(
-    tableName = "main"
-)
 class Main {
-
-    var weatherHolderId: Long = 0L
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
-
     var temp: Double? = null
     @SerializedName("temp_min")
     var tempMin: Double? = null
@@ -26,5 +16,4 @@ class Main {
     var humidity: Double? = null
     @SerializedName("temp_kf")
     var tempKf: Double? = null
-
 }

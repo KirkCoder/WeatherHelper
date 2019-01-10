@@ -1,6 +1,6 @@
 package ru.kcoder.weatherhelper.data.network.common
 
-interface ApiResponseFuture {
+interface ApiResponseForecast {
     var cod: String?
 
     companion object {

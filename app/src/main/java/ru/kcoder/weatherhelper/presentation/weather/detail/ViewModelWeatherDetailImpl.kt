@@ -1,17 +1,16 @@
 package ru.kcoder.weatherhelper.presentation.weather.detail
 
 import androidx.lifecycle.MutableLiveData
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderPresentation
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.weather.detail.WeatherDetailInteractor
-import ru.kcoder.weatherhelper.presentation.common.SingleLiveData
 
 class ViewModelWeatherDetailImpl(
     private val interactor: WeatherDetailInteractor,
     private val id: Long,
-    private val forceUpdate: Boolean
+    forceUpdate: Boolean
 ) : ViewModelWeatherDetail() {
 
-    override val weatherPresentation: MutableLiveData<WeatherHolderPresentation> = MutableLiveData()
+    override val weather: MutableLiveData<WeatherHolder> = MutableLiveData()
     override val status: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
@@ -19,9 +18,8 @@ class ViewModelWeatherDetailImpl(
     }
 
     private fun updateWeather(whId: Long, forceUpdate: Boolean) {
-        status
         interactor.updateWeather(whId, forceUpdate, {
-            weatherPresentation.value = it
+            weather.value = it
         }, {
             if (forceUpdate) status.value = it
         }, this::errorCallback)

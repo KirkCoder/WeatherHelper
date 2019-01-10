@@ -16,10 +16,10 @@
     <string name="place_add_not_found">Name not fixed</string>
 
 
-    <!--weatherPresentation-->
+    <!--weather-->
     <string name="wind">m/s Wind</string>
     <string name="humidity">humidity</string>
-    <!--weatherPresentation description-->
+    <!--weather description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>
     <string name="thunderstorm_with_rain">thunderstorm with rain</string>
     <string name="thunderstorm_with_heavy_rain">thunderstorm with heavy rain</string>

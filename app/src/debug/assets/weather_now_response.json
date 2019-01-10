@@ -3,11 +3,11 @@
   "dt": 1546940792,
   "main": {
     "temp": 285.862,
-    "pressure": 1017.53,
-    "humidity": 100,
     "temp_min": 285.862,
     "temp_max": 285.862,
+    "pressure": 1017.53,
     "sea_level": 1027.18,
+    "humidity": 100,
     "grnd_level": 1017.53
   },
   "weather": [
@@ -25,7 +25,6 @@
     "speed": 11.81,
     "deg": 257.001
   },
-
 
   "coord": {
     "lon": 139,

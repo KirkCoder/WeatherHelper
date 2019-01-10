@@ -1,7 +1,7 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
 import androidx.lifecycle.MutableLiveData
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolderFuture
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherForecast
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 
@@ -10,7 +10,7 @@ class ViewModelWeatherListImpl(
 ) : ViewModelWeatherList() {
 
     override val weatherListLiveData: MutableLiveData<WeatherModel> = MutableLiveData()
-    override val weather: MutableLiveData<WeatherHolderFuture> = MutableLiveData()
+    override val weather: MutableLiveData<WeatherForecast> = MutableLiveData()
 
     init {
         listInteractor.getAllWeather ({

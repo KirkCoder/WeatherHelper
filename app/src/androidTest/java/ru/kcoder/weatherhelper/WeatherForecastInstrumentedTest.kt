@@ -14,11 +14,11 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class WeatherHolderFutureInstrumentedTest {
+class WeatherForecastInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("helper.weatherHolder.kcoder.ru.weatherhelper", appContext.packageName)
+        assertEquals("helper.WeatherHolderDaoO.kcoder.ru.weatherhelper", appContext.packageName)
     }
 }

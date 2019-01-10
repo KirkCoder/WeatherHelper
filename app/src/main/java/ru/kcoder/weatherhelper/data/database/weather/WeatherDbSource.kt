@@ -1,16 +1,17 @@
 package ru.kcoder.weatherhelper.data.database.weather
 
-import ru.kcoder.weatherhelper.data.entity.weather.*
+import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 
 interface WeatherDbSource {
-    fun getWeatherHolders(): List<WeatherHolderFuture>
     fun getWeatherHolderId(lat: Double, lon: Double): Long?
-    fun getWeatherHolderPosition(id: Long): Int
     fun getLastPosition(): Int?
-    fun dropOldWeatherHolderChildren(id: Long)
-    fun updateWeatherHolder(weatherHolder: WeatherHolderFuture)
-    fun insertWeatherHolder(weatherHolder: WeatherHolderFuture)
-    fun insertWeatherHolderChildrens(weatherHolder: WeatherHolderFuture)
-    fun getSingleWeatherHolder(id: Long): WeatherHolderFuture?
-    fun getWeatherHolder(id: Long): WeatherHolderFuture?
+    fun insertWeatherHolder(holder: WeatherHolder)
+    fun getSingleWeatherHolder(id: Long): WeatherHolder?
+    fun dropOldData(id: Long)
+    fun insertWeatherPresentation(item: WeatherPresentation)
+    fun insertWeatherPresentations(items: List<WeatherPresentation>)
+    fun getWeather(id: Long): HolderWithPresentation?
+    fun getAllWeather(): List<HolderWithPresentation>
 }
