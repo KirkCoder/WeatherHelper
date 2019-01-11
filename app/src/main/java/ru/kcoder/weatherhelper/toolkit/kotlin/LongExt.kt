@@ -22,7 +22,7 @@ fun Long.tryFormatHour(): Int {
 
 fun Long.getDate(format: String = "dd.MM.yyyy HH:mm"): String {
     return try {
-        SimpleDateFormat(format, Locale.getDefault()).format(this.addMilliseconds())
+        SimpleDateFormat(format, Locale.getDefault()).format(this)
     } catch (e: IllegalArgumentException) {
         ""
     }
@@ -31,7 +31,7 @@ fun Long.getDate(format: String = "dd.MM.yyyy HH:mm"): String {
 /**
  * add milliseconds to Long date
  */
-private fun Long.addMilliseconds(): Long {
+fun Long.addMilliseconds(): Long {
     return if (this.toString().toCharArray().size < 13) {
         this * 1000
     } else this

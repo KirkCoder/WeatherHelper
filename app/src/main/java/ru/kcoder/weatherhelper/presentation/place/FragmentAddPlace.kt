@@ -46,7 +46,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        subscribeData()
+        subscribeUi()
     }
 
     @SuppressLint("MissingPermission") //"smart cast" not work
@@ -109,6 +109,13 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
     }
 
     private fun initView() {
+        fabSelectPlace.setOnClickListener { _ ->
+            viewModel.savePlace()
+        }
+    }
+
+    private fun subscribeUi() {
+
         viewModel.fabVisibility.observe(this, Observer { loading ->
             loading?.let {
                 if (it) {
@@ -119,20 +126,6 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             }
         })
 
-        fabSelectPlace.setOnClickListener { _ ->
-            viewModel.markerLiveData.observe(this, Observer { place ->
-                place?.let {
-                    if (it.name == null) {
-                        showPlaceDialog()
-                    } else {
-                        selectPlace(it)
-                    }
-                }
-            })
-        }
-    }
-
-    private fun subscribeData() {
         viewModel.errorLiveData.observe(this, androidx.lifecycle.Observer { res ->
             res?.let { super.showError(it) }
         })
@@ -145,10 +138,15 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
                 }
             }
         })
-    }
 
-    private fun selectPlace(place: PlaceMarker) {
-        viewModel.savePlace(place)
+        viewModel.showDialog.observe(this, Observer { bool ->
+            bool?.let { if (it) showPlaceDialog() }
+        })
+
+        viewModel.progressLiveData.observe(this, Observer {
+            if (it) progressBar.show()
+            else progressBar.hide()
+        })
     }
 
     private fun showPlaceDialog() {

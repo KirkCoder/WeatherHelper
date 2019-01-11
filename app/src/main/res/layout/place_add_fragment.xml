@@ -23,6 +23,14 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_horizontal"
+            style="?android:attr/progressBarStyleLarge"
+            android:visibility="invisible"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabSelectPlace"
             android:layout_width="wrap_content"

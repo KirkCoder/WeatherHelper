@@ -11,7 +11,6 @@ class DialogFragmentAddPlace : androidx.fragment.app.DialogFragment() {
 
     private var callback: Callback? = null
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = when {

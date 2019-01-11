@@ -10,10 +10,7 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
-import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatHour
-import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDate
-import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatDay
-import ru.kcoder.weatherhelper.toolkit.kotlin.tryFormatTime
+import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import java.util.*
 
 class WeatherRepositoryImpl(
@@ -42,7 +39,7 @@ class WeatherRepositoryImpl(
 
             if (time != null) {
                 it.main = getWeatherPresentation(
-                    weatherData, time + it.timeUTCoffset,
+                    weatherData, time.addMilliseconds() + it.timeUTCoffset,
                     id, WeatherPresentation.MAIN
                 )
             } else {
@@ -89,7 +86,7 @@ class WeatherRepositoryImpl(
     ) {
         if (!data.isNullOrEmpty()) {
             data[0].dt?.let { long ->
-                val time = timeUTCoffset + long
+                val time = timeUTCoffset + long.addMilliseconds()
                 val startDayHour = time.tryFormatHour()
                 var pos = 0
                 val halfDay = 4
