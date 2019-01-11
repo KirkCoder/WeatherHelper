@@ -22,7 +22,10 @@ class ViewModelWeatherDetailImpl(
             weather.value = it
         }, {
             if (forceUpdate) status.value = it
-        }, this::errorCallback)
+        }, {
+            status.value = false
+            errorCallback(it)
+        })
     }
 
     override fun forceUpdate(){

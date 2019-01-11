@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
+import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.debug.log
 
 abstract class BaseInteractor {
@@ -24,7 +25,11 @@ abstract class BaseInteractor {
                     log(err.message ?: err.toString())
                     err.printStackTrace()
                 }
-                if (err is LocalException) callback(null, err)
+                if (err is LocalException) {
+                    callback(null, err)
+                } else {
+                 callback(null, LocalException(LocalExceptionMsg.CANT_CONNECT))
+                }
             }
         }
     }

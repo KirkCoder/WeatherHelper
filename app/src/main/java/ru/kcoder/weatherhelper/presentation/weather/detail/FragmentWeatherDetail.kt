@@ -34,8 +34,8 @@ class FragmentWeatherDetail : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeUi()
         initViews()
+        subscribeUi()
     }
 
     private fun initViews() {
@@ -57,6 +57,10 @@ class FragmentWeatherDetail : BaseFragment() {
 
         viewModel.status.observe(this, Observer { status ->
             status?.let { swipeLayoutDetail.isRefreshing = it }
+        })
+
+        viewModel.errorLiveData.observe(this, Observer {error ->
+            error?.let { showError(it) }
         })
     }
 

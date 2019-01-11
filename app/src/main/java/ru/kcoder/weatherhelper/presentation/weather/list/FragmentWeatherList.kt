@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.*
+import androidx.lifecycle.LiveData
 import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment

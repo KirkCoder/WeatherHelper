@@ -37,7 +37,6 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.place_add_fragment, container, false)
-
         initMap(view, savedInstanceState)
         initPlace()
         return view
@@ -114,8 +113,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         }
     }
 
-    private fun subscribeUi() {
-
+    protected fun subscribeUi() {
         viewModel.fabVisibility.observe(this, Observer { loading ->
             loading?.let {
                 if (it) {
@@ -124,10 +122,6 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
                     fabSelectPlace.visibility = View.GONE
                 }
             }
-        })
-
-        viewModel.errorLiveData.observe(this, androidx.lifecycle.Observer { res ->
-            res?.let { super.showError(it) }
         })
 
         viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
@@ -146,6 +140,10 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         viewModel.progressLiveData.observe(this, Observer {
             if (it) progressBar.show()
             else progressBar.hide()
+        })
+
+        viewModel.errorLiveData.observe(this, Observer {error ->
+            error?.let { showError(it) }
         })
     }
 
