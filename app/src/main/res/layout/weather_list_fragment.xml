@@ -9,7 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewWeatherList"
             tools:listitem = "@layout/weather_list_adapter_item"
-            android:layout_margin="@dimen/layout_padding"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginEnd="@dimen/layout_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.domain.weather.list
 
+import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
@@ -13,17 +14,17 @@ class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository
     private val updatingList = mutableListOf<WeatherHolder>()
 
     override fun getAllWeather(
-        callback: (WeatherModel) -> Unit,
+        callback: (LiveData<WeatherModel>) -> Unit,
         errorCallback: ((Int) -> Unit)?
     ) {
         loading(weatherRepository, {
             getAllWeather().also {
-                createUpdatingList(it)
+//                createUpdatingList(it)
             }
         }, { data, error ->
             data?.let {
                 callback(it)
-                updateWeatherUnit(callback)
+//                updateWeatherUnit(callback)
             }
             error?.let {
                 errorCallback?.invoke(it.msg.resourceString)
@@ -31,35 +32,35 @@ class WeatherListInteractorImpl(private val weatherRepository: WeatherRepository
         })
     }
 
-    private fun updateWeatherUnit(callback: (WeatherModel) -> Unit) {
-        if (updatingList.isNotEmpty()) {
-            val weatherHolder = updatingList[0]
-            loading(weatherRepository, {
-                getWeatherById(weatherHolder.id)
-            }, { data, error ->
-                data?.let {
-                    getAllWeather({ wm ->
-                        callback(wm.apply { updatedWeatherHolderId = it.id })
-                    })
-                }
-                error?.let {
-                    log(it.message ?: it.toString())
-                    updateWeatherUnit(callback)
-                }
-            })
-        }
-    }
+//    private fun updateWeatherUnit(callback: (WeatherModel) -> Unit) {
+//        if (updatingList.isNotEmpty()) {
+//            val weatherHolder = updatingList[0]
+//            loading(weatherRepository, {
+//                getWeatherById(weatherHolder.id)
+//            }, { data, error ->
+//                data?.let {
+////                    getAllWeather({ wm ->
+////                        callback(wm.apply { updatedWeatherHolderId = it.id })
+////                    })
+//                }
+//                error?.let {
+//                    log(it.message ?: it.toString())
+//                    updateWeatherUnit(callback)
+//                }
+//            })
+//        }
+//    }
 
-    private fun createUpdatingList(model: WeatherModel) {
-        val list = model.list
-        updatingList.clear()
-        for (holder in list) {
-            val data = holder.hours
-            if (!data.isNullOrEmpty()
-                && TimeUtils.isThreeHourDifference(data[0].timeLong)
-            ) {
-                updatingList.add(holder)
-            }
-        }
-    }
+//    private fun createUpdatingList(model: WeatherModel) {
+//        val list = model.list
+//        updatingList.clear()
+//        for (holder in list) {
+//            val data = holder.hours
+//            if (!data.isNullOrEmpty()
+//                && TimeUtils.isThreeHourDifference(data[0].timeLong)
+//            ) {
+//                updatingList.add(holder)
+//            }
+//        }
+//    }
 }

@@ -1,5 +1,8 @@
 package ru.kcoder.weatherhelper.data.reposiries.weather
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.*
@@ -63,10 +66,16 @@ class WeatherRepositoryImpl(
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    override fun getAllWeather(): WeatherModel {
-        val list = database.getAllWeather().map { it.mapToPresentation() }
-        val map = list.asSequence().associateBy({ it.id }, { it.position })
-        return WeatherModel(list, map)
+    override fun getAllWeather(): LiveData<WeatherModel> {
+        val res = MediatorLiveData<WeatherModel>()
+        res.addSource(database.getAllWeather()) { holder ->
+            holder?.let {list ->
+                val mapList = list.map { it.mapToPresentation() }
+                val map = mapList.asSequence().associateBy({ it.id }, { it.position })
+                res.value = WeatherModel(mapList, map)
+            }
+        }
+        return res
     }
 
     override fun getWeather(id: Long, update: Boolean): WeatherHolder {

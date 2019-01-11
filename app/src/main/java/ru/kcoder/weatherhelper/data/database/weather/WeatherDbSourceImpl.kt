@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.data.database.weather
 
+import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.data.database.room.WeatherHelperRoomDb
 import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
@@ -39,7 +40,7 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getWeather(id)
     }
 
-    override fun getAllWeather(): List<HolderWithPresentation> {
+    override fun getAllWeather(): LiveData<List<HolderWithPresentation>> {
         return database.weatherHolder().getAllWeather()
     }
 }

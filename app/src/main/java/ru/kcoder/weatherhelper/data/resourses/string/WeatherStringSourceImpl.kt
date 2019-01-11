@@ -69,10 +69,10 @@ class WeatherStringSourceImpl(
     }
 
     override fun getWindDescription(): String {
-        return context.getString(R.string.wind)
+        return context.getString(R.string.weather_wind)
     }
 
     override fun getHumidityDescription(): String {
-        return context.getString(R.string.humidity)
+        return context.getString(R.string.weather_humidity)
     }
 }

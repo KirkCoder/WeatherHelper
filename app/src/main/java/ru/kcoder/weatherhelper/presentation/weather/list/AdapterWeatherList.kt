@@ -15,17 +15,20 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
     private var positionMap = mutableMapOf<Long, Int>()
 
     fun setData(data: WeatherModel) {
-        if (list.isEmpty()) {
-            list.addAll(data.list)
-            positionMap.putAll(data.map)
-            notifyDataSetChanged()
-        } else {
-            val position = positionMap[data.updatedWeatherHolderId]
-            if (position != null && data.list.isNotEmpty()) {
-                list[position] = data.list[0]
-                notifyItemChanged(position)
-            }
-        }
+        list.clear()
+        list.addAll(data.list)
+        notifyDataSetChanged()
+//        if (list.isEmpty()) {
+//            list.addAll(data.list)
+//            positionMap.putAll(data.map)
+//            notifyDataSetChanged()
+//        } else {
+//            val position = positionMap[data.updatedWeatherHolderId]
+//            if (position != null && data.list.isNotEmpty()) {
+//                list[position] = data.list[0]
+//                notifyItemChanged(position)
+//            }
+//        }
     }
 
     override fun onCreateViewHolder(root: ViewGroup, p1: Int): ViewHolder {

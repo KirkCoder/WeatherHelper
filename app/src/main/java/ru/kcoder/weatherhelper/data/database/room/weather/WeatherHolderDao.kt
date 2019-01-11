@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import ru.kcoder.weatherhelper.data.database.room.BaseDao
@@ -22,5 +23,5 @@ interface WeatherHolderDao : BaseDao<WeatherHolder> {
     fun getWeather(id: Long): HolderWithPresentation?
 
     @Query("SELECT * FROM weather_holder")
-    fun getAllWeather(): List<HolderWithPresentation>
+    fun getAllWeather(): LiveData<List<HolderWithPresentation>>
 }
