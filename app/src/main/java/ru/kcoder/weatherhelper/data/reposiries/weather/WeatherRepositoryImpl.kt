@@ -1,8 +1,5 @@
 package ru.kcoder.weatherhelper.data.reposiries.weather
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.weather.*
@@ -19,9 +16,9 @@ import java.util.*
 class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
     private val database: WeatherDbSource,
-    settingsSource: SettingsSource,
     private val stringSource: WeatherStringSource,
-    private val imageSource: ImageResSource
+    private val imageSource: ImageResSource,
+    settingsSource: SettingsSource
 ) : WeatherRepository {
 
     private val settings = settingsSource.getSettings()
@@ -66,16 +63,16 @@ class WeatherRepositoryImpl(
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    override fun getAllWeather(): LiveData<WeatherModel> {
-        val res = MediatorLiveData<WeatherModel>()
-        res.addSource(database.getAllWeather()) { holder ->
-            holder?.let {list ->
-                val mapList = list.map { it.mapToPresentation() }
-                val map = mapList.asSequence().associateBy({ it.id }, { it.position })
-                res.value = WeatherModel(mapList, map)
-            }
-        }
-        return res
+    override fun getAllWeather(): WeatherModel {
+        val list = database.getAllWeather()
+        val mapList = list.map { it.mapToPresentation() }
+        val map = mapList.asSequence().associateBy({ it.id }, { it.position })
+        return WeatherModel(mapList, map)
+    }
+
+    // todo replace to mocked weatherHolder
+    override fun getMockedWeather(): WeatherHolder {
+        return WeatherHolder()
     }
 
     override fun getWeather(id: Long, update: Boolean): WeatherHolder {

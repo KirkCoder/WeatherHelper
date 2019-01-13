@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-@Entity(tableName = "weather")
+@Entity(tableName = "weatherUpdate")
 data class WeatherPresentation(
     @setparam:StatusRange
     var status: Int

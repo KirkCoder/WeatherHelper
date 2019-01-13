@@ -40,7 +40,7 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getWeather(id)
     }
 
-    override fun getAllWeather(): LiveData<List<HolderWithPresentation>> {
+    override fun getAllWeather(): List<HolderWithPresentation> {
         return database.weatherHolder().getAllWeather()
     }
 }

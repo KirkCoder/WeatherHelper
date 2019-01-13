@@ -15,7 +15,7 @@
     <string name="place_common_error_cant_connect">Can\'t connect to server</string>
     <string name="place_add_not_found">Name not fixed</string>
 
-    <!--weather-->
+    <!--weatherUpdate-->
     <string name="weather_wind">m/s Wind</string>
     <string name="weather_humidity">humidity</string>
     <string name="weather_mock_place_name">Place name</string>
@@ -25,7 +25,7 @@
     <string name="weather_mock_wind">23 km/h Winds</string>
     <string name="weather_mock_humidity">25% Humidity</string>
 
-    <!--weather description-->
+    <!--weatherUpdate description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>
     <string name="thunderstorm_with_rain">thunderstorm with rain</string>
     <string name="thunderstorm_with_heavy_rain">thunderstorm with heavy rain</string>

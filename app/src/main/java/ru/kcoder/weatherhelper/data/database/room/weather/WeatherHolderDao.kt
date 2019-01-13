@@ -23,5 +23,5 @@ interface WeatherHolderDao : BaseDao<WeatherHolder> {
     fun getWeather(id: Long): HolderWithPresentation?
 
     @Query("SELECT * FROM weather_holder")
-    fun getAllWeather(): LiveData<List<HolderWithPresentation>>
+    fun getAllWeather(): List<HolderWithPresentation>
 }

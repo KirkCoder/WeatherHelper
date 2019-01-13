@@ -3,11 +3,9 @@ package ru.kcoder.weatherhelper.presentation.weather.list
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.*
-import androidx.lifecycle.LiveData
 import kotlinx.android.synthetic.main.weather_list_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
@@ -15,7 +13,7 @@ import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 class FragmentWeatherList : BaseFragment() {
 
-    private val listViewModel: ViewModelWeatherList by viewModel()
+    private val viewModel: ViewModelWeatherList by sharedViewModel()
 
     private val adapter = AdapterWeatherList {
         showDetailFragment(it)
@@ -34,6 +32,7 @@ class FragmentWeatherList : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
+        subscribeUi()
     }
 
     private fun initView(view: View) {
@@ -50,8 +49,15 @@ class FragmentWeatherList : BaseFragment() {
     private fun initRecycler(context: Context) {
         recyclerViewWeatherList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerViewWeatherList.adapter = adapter
-        listViewModel.weatherListLiveData.observe(this, Observer { list ->
+    }
+
+    private fun subscribeUi() {
+        viewModel.weatherList.observe(this, Observer { list ->
             list?.let { adapter.setData(it) }
+        })
+
+        viewModel.weatherUpdate.observe(this, Observer {holder ->
+            holder?.let { adapter.updateUnit(it) }
         })
     }
 

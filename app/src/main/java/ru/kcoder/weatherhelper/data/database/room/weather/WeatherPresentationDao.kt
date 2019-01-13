@@ -8,6 +8,6 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 @Dao
 interface WeatherPresentationDao: BaseDao<WeatherPresentation> {
 
-    @Query("DELETE FROM weather WHERE holderId = :id")
+    @Query("DELETE FROM weatherUpdate WHERE holderId = :id")
     fun delete(id: Long)
 }

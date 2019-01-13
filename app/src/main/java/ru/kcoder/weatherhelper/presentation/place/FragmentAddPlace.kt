@@ -19,8 +19,10 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.place_add_fragment.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherList
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 import ru.kcoder.weatherhelper.toolkit.debug.log
@@ -29,6 +31,7 @@ import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
 
     private val viewModel: ViewModelAddPlace by viewModel()
+    private val weatherViewModel: ViewModelWeatherList by sharedViewModel()
     private var map: GoogleMap? = null
     private var mapView: MapView? = null
 
@@ -127,6 +130,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
             activity?.let {
                 if (id != null) {
+                    weatherViewModel.addPlace(id)
                     AppRouter.removeFromBackStack(it, TAG)
                     AppRouter.showWeatherDetailFragment(it, id, true)
                 }

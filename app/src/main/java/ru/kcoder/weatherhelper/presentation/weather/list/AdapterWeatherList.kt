@@ -15,20 +15,35 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
     private var positionMap = mutableMapOf<Long, Int>()
 
     fun setData(data: WeatherModel) {
-        list.clear()
-        list.addAll(data.list)
-        notifyDataSetChanged()
-//        if (list.isEmpty()) {
-//            list.addAll(data.list)
-//            positionMap.putAll(data.map)
-//            notifyDataSetChanged()
-//        } else {
-//            val position = positionMap[data.updatedWeatherHolderId]
-//            if (position != null && data.list.isNotEmpty()) {
-//                list[position] = data.list[0]
-//                notifyItemChanged(position)
-//            }
-//        }
+        if (list.isEmpty()) {
+            list.addAll(data.list)
+            positionMap.putAll(data.map)
+            notifyDataSetChanged()
+        } else {
+            val position = positionMap[data.updatedWeatherHolderId]
+            val itemPos = data.map[data.updatedWeatherHolderId]
+            val item = itemPos?.let { data.list[it] }
+
+            if (data.list.isNotEmpty() && itemPos != null && item != null) {
+                if (position != null) {
+                    changeItem(position, item)
+                } else {
+                    list.add(item)
+                    positionMap[item.id] = list.size - 1
+                    notifyItemChanged(list.size - 1)
+                }
+            }
+        }
+    }
+
+    fun updateUnit(holder: WeatherHolder) {
+        positionMap[holder.id]?.let { changeItem(it, holder) }
+    }
+
+    private fun changeItem(position: Int, item: WeatherHolder) {
+        list.removeAt(position)
+        list.add(position, item)
+        notifyItemChanged(position)
     }
 
     override fun onCreateViewHolder(root: ViewGroup, p1: Int): ViewHolder {
