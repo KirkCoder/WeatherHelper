@@ -23,7 +23,7 @@ class ViewModelWeatherListImpl(
             weatherList.value = it
         }, {
             updateBgStatus.value = it
-        }, this::errorCallback)
+        }, viewModelScope, this::errorCallback)
     }
 
     override fun addPlace(id: Long) {
@@ -54,6 +54,6 @@ class ViewModelWeatherListImpl(
                 getAllWeather()
             }
             status?.let { updateForceStatus.value = Pair(id, it) }
-        }, this::errorCallback)
+        }, viewModelScope, this::errorCallback)
     }
 }

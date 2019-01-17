@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.domain.weather.list
 
+import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
@@ -15,16 +16,17 @@ class WeatherListInteractorImpl(private val repository: WeatherRepository) : Bas
     override fun getAllWeather(
         callback: (WeatherModel) -> Unit,
         bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
+        scope: CoroutineScope,
         errorCallback: ((Int) -> Unit)?
     ) {
-        loading(repository, {
+        loading(repository, scope, {
             getAllWeather().also {
                 createUpdatingList(it)
             }
         }, { data, error ->
             data?.let {
                 callback(it)
-                updateWeatherUnit(callback, bdUpdateStatus)
+                updateWeatherUnit(callback, bdUpdateStatus, scope)
             }
             error?.let {
                 errorCallback?.invoke(it.msg.resourceString)
@@ -39,9 +41,10 @@ class WeatherListInteractorImpl(private val repository: WeatherRepository) : Bas
     override fun forceUpdate(
         id: Long,
         callback: (WeatherHolder?, Boolean?) -> Unit,
+        scope: CoroutineScope,
         errorCallback: ((Int) -> Unit)
     ) {
-        loadingProgress(repository, {
+        loadingProgress(repository, scope, {
             getWeatherById(id)
         }, { data, error, isLoading ->
             data?.let { callback(it, null) }
@@ -52,24 +55,25 @@ class WeatherListInteractorImpl(private val repository: WeatherRepository) : Bas
 
     private fun updateWeatherUnit(
         callback: (WeatherModel) -> Unit,
-        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit
+        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
+        scope: CoroutineScope
     ) {
         val id = updatingId
         if (id != null) {
             bdUpdateStatus(Pair(id, true))
-            loading(repository, {
+            loading(repository, scope, {
                 getWeatherById(id)
             }, { data, error ->
                 data?.let {
                     getAllWeather({ wm ->
                         bdUpdateStatus(Pair(id, false))
                         callback(wm.apply { updatedWeatherHolderId = it.id })
-                    }, bdUpdateStatus)
+                    }, bdUpdateStatus, scope)
                 }
                 error?.let {
                     log(it.message ?: it.toString())
                     bdUpdateStatus(Pair(id, false))
-                    updateWeatherUnit(callback, bdUpdateStatus)
+                    updateWeatherUnit(callback, bdUpdateStatus, scope)
                 }
             })
         }

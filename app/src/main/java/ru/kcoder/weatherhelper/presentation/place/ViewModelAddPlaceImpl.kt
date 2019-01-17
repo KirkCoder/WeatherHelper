@@ -23,7 +23,7 @@ class ViewModelAddPlaceImpl(
         markerLiveData.value = place
         if (place.name == null) {
             progressLiveData.value = true
-            interactor.getAddress(place.lat, place.lon, {
+            interactor.getAddress(place.lat, place.lon, viewModelScope, {
                 if (!isPlaceValid(place)) return@getAddress
                 markerLiveData.value = place.apply {
                     name = it.first
@@ -42,9 +42,9 @@ class ViewModelAddPlaceImpl(
     }
 
     override fun savePlace() {
-        cashPlace?.let {
-            if (it.name != null) {
-                interactor.savePlace(it, {
+        cashPlace?.let {place ->
+            if (place.name != null) {
+                interactor.savePlace(place, viewModelScope, {
                     addedPlaceIdLiveData.value = it
                 }, this::errorCallback)
             } else {
@@ -70,7 +70,7 @@ class ViewModelAddPlaceImpl(
     }
 
     private fun setUTCoffset(place: PlaceMarker) {
-        interactor.getUTCoffset(place.lat, place.lon, {
+        interactor.getUTCoffset(place.lat, place.lon, viewModelScope, {
             if (!isPlaceValid(place)) return@getUTCoffset
             markerLiveData.value = place.apply {
                 timeUTCoffset = it

@@ -25,7 +25,7 @@ class ViewModelWeatherDetailImpl(
         }, {
             status.value = false
             errorCallback(it)
-        })
+        }, viewModelScope)
     }
 
     override fun forceUpdate(){

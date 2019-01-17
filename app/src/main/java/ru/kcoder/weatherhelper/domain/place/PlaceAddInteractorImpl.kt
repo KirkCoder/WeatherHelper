@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.domain.place
 
+import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
@@ -10,10 +11,11 @@ class PlaceAddInteractorImpl(
 
     override fun getAddress(
         lat: Double, lon: Double,
+        scope: CoroutineScope,
         callback: (Pair<String?, String?>) -> Unit,
         errorCallback: (Int) -> Unit
     ) {
-        loading(repository, {
+        loading(repository, scope, {
             getAddress(lat, lon)
         }, { data, error ->
             data?.let { callback(it) }
@@ -23,10 +25,11 @@ class PlaceAddInteractorImpl(
 
     override fun savePlace(
         place: PlaceMarker,
+        scope: CoroutineScope,
         callback: (Long) -> Unit,
         errorCallback: (Int) -> Unit
     ) {
-        loading(repository, {
+        loading(repository, scope, {
             savePlace(place)
         }, { data, error ->
             data?.let { callback(it) }
@@ -36,9 +39,10 @@ class PlaceAddInteractorImpl(
 
     override fun getUTCoffset(
         lat: Double, lon: Double,
+        scope: CoroutineScope,
         callback: (Int) -> Unit,
         errorCallback: (Int) -> Unit) {
-        loading(repository, {
+        loading(repository, scope,{
             getUTCoffset(lat, lon)
         }, {data, error ->
             data?.let { callback(it) }
