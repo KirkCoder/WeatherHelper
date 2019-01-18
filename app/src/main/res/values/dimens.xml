@@ -8,4 +8,5 @@
     <dimen name="temp_text_size">90sp</dimen>
     <dimen name="tmp_text_size_half">45sp</dimen>
     <dimen name="seekbar_thumb_width">25dp</dimen>
+    <dimen name="card_view_radius">8dp</dimen>
 </resources>

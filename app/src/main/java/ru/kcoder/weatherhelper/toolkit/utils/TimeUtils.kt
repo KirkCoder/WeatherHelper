@@ -4,21 +4,15 @@ import java.util.*
 
 object TimeUtils {
 
-    private const val THREE_HOURS_IN_SECONDS = -10800L
-
-    fun getCurrentTime(): Long{
-        return Calendar.getInstance().time.time /1000
-    }
-
-    fun isThreeHourDifference(dt: Long): Boolean {
-        return dt - getCurrentTime() < THREE_HOURS_IN_SECONDS
+    fun isHourDifference(dt: Long, value: Long): Boolean {
+        return dt - getCurrentUtcTime() < value
     }
 
     fun getDefaultUTCOffset(): Int {
         return TimeZone.getDefault().rawOffset
     }
 
-    fun getCurrentUtcTime(): Long{
+    fun getCurrentUtcTime(): Long {
         return Calendar.getInstance().time.time - getDefaultUTCOffset()
     }
 }

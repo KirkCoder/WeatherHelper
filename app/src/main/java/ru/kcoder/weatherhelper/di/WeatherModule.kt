@@ -25,7 +25,7 @@ val weatherModule = module {
 }
 
 val weatherListModule = module {
-    factory<WeatherListInteractor> { WeatherListInteractorImpl(get()) }
+    factory<WeatherListInteractor> { WeatherListInteractorImpl(get(), get()) }
     viewModel<ViewModelWeatherList> { ViewModelWeatherListImpl(get()) }
 }
 

@@ -10,6 +10,8 @@ import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSourceImpl
 import ru.kcoder.weatherhelper.data.network.common.OkHttpBuilder
 import ru.kcoder.weatherhelper.data.network.common.RetrofitBuilder
+import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
+import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepositoryImpl
 import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSource
 import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSourceImpl
 import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
@@ -30,6 +32,7 @@ val databaseModule = module {
 
 val settingsModule = module {
     factory<SettingsSource> { SettingsSourceImpl(get()) }
+    factory <SettingsRepository>{ SettingsRepositoryImpl(get()) }
 }
 
 val resourceModule = module {

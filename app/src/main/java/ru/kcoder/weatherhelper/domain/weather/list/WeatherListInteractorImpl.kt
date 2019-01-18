@@ -1,17 +1,32 @@
 package ru.kcoder.weatherhelper.domain.weather.list
 
+import androidx.annotation.WorkerThread
 import kotlinx.coroutines.CoroutineScope
+import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
-class WeatherListInteractorImpl(private val repository: WeatherRepository) : BaseInteractor(),
-    WeatherListInteractor {
+class WeatherListInteractorImpl(
+    private val repository: WeatherRepository,
+    private val settingsRepository: SettingsRepository
+) : BaseInteractor(), WeatherListInteractor {
 
+    @Volatile
     private var updatingId: Long? = null
+
+    private var settings: Settings? = null
+        @WorkerThread
+        get() {
+            if (field == null) {
+                field = settingsRepository.getSettings()
+            }
+            return field
+        }
 
     override fun getAllWeather(
         callback: (WeatherModel) -> Unit,
@@ -65,6 +80,7 @@ class WeatherListInteractorImpl(private val repository: WeatherRepository) : Bas
                 getWeatherById(id)
             }, { data, error ->
                 data?.let {
+                    updatingId = null
                     getAllWeather({ wm ->
                         bdUpdateStatus(Pair(id, false))
                         callback(wm.apply { updatedWeatherHolderId = it.id })
@@ -79,11 +95,14 @@ class WeatherListInteractorImpl(private val repository: WeatherRepository) : Bas
         }
     }
 
+    @WorkerThread
     private fun createUpdatingList(model: WeatherModel) {
         for (holder in model.list) {
             val data = holder.hours
+            val updateTime = settings?.updateTime
             if (!data.isNullOrEmpty()
-                && TimeUtils.isThreeHourDifference(data[0].timeLong)
+                && updateTime != null
+                && TimeUtils.isHourDifference(data[0].timeLong - holder.timeUTCoffset, updateTime)
             ) {
                 updatingId = data[0].holderId
             }
