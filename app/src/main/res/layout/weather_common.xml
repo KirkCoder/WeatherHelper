@@ -93,16 +93,17 @@
             android:layout_height="wrap_content"/>
 
 
-    <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekBar"
+    <ru.kcoder.weatherhelper.custom.SeekBarWithNames
+            android:id="@+id/seekBarWeather"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="@dimen/layout_padding"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:max="5"
-            android:progress="2"
+            app:tickMarkOne="@drawable/separator"
+            app:tickMarkSecond="@drawable/separator_half"
+            android:paddingTop="@dimen/layout_padding"
+            android:paddingBottom="@dimen/layout_padding"
             app:layout_constraintTop_toBottomOf="@+id/textViewWindDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

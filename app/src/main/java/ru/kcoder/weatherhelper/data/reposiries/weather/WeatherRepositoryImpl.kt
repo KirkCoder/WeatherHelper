@@ -56,8 +56,7 @@ class WeatherRepositoryImpl(
             insertion.addAll(it.days)
             insertion.addAll(it.nights)
 
-            database.dropOldData(id)
-            database.insertWeatherPresentations(insertion)
+            database.updateWeatherPresentations(id, insertion)
 
             return it
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
@@ -102,44 +101,59 @@ class WeatherRepositoryImpl(
                 val iterator = data.listIterator()
                 while (iterator.hasNext()) {
                     val next = iterator.next()
-                    if (pos < 5) next.let {
-                        hours.add(
+                    next.dt?.let { tmpLong ->
+                        val tmpTime = timeUTCoffset + tmpLong.addMilliseconds()
+                        if (pos < 5) {
+                            hours.add(
+                                getWeatherPresentation(
+                                    next,
+                                    tmpTime,
+                                    holderID,
+                                    WeatherPresentation.HOURS
+                                )
+                            )
+                        }
+                        if (pos == 0) days.add(
                             getWeatherPresentation(
-                                it,
-                                time,
+                                next,
+                                tmpTime,
                                 holderID,
-                                WeatherPresentation.HOURS
+                                WeatherPresentation.DAYS
                             )
                         )
+                        if (pos == 4) nights.add(
+                            getWeatherPresentation(next, tmpTime, holderID, WeatherPresentation.NIGHTS)
+                        )
+                        if (pos == startNextDayPos) days.add(
+                            getWeatherPresentation(
+                                next,
+                                tmpTime,
+                                holderID,
+                                WeatherPresentation.DAYS
+                            )
+                        )
+                            .also { startNextDayPos = startNextNightPos + halfDay }
+                        if (pos == startNextNightPos) {
+                            nights.add(
+                                getWeatherPresentation(
+                                    next,
+                                    tmpTime,
+                                    holderID,
+                                    WeatherPresentation.NIGHTS
+                                )
+                            ).also { startNextNightPos = startNextDayPos + halfDay }
+                        } else if (!iterator.hasNext()) {
+                            nights.add(
+                                getWeatherPresentation(
+                                    next,
+                                    tmpTime,
+                                    holderID,
+                                    WeatherPresentation.NIGHTS
+                                )
+                            )
+                        }
+                        Unit
                     }
-                    if (pos == 0) days.add(getWeatherPresentation(next, time, holderID, WeatherPresentation.DAYS))
-                    if (pos == 4) nights.add(getWeatherPresentation(next, time, holderID, WeatherPresentation.NIGHTS))
-                    if (pos == startNextDayPos) days.add(
-                        getWeatherPresentation(
-                            next,
-                            time,
-                            holderID,
-                            WeatherPresentation.DAYS
-                        )
-                    )
-                        .also { startNextDayPos = startNextNightPos + halfDay }
-                    if (pos == startNextNightPos) nights.add(
-                        getWeatherPresentation(
-                            next,
-                            time,
-                            holderID,
-                            WeatherPresentation.NIGHTS
-                        )
-                    )
-                        .also { startNextNightPos = startNextDayPos + halfDay }
-                    else if (!iterator.hasNext()) nights.add(
-                        getWeatherPresentation(
-                            next,
-                            time,
-                            holderID,
-                            WeatherPresentation.NIGHTS
-                        )
-                    )
                     pos++
                 }
             }

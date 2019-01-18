@@ -24,12 +24,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getSingleWeatherHolder(id)
     }
 
-    override fun dropOldData(id: Long) {
-        database.weatherPresentation().delete(id)
-    }
-
-    override fun insertWeatherPresentation(item: WeatherPresentation) {
-        database.weatherPresentation().insertOrReplace(item)
+    override fun updateWeatherPresentations(id: Long, insertion: List<WeatherPresentation>) {
+        database.weatherPresentation().updateWeatherPresentations(id, insertion)
     }
 
     override fun insertWeatherPresentations(items: List<WeatherPresentation>) {

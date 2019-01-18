@@ -9,9 +9,8 @@ interface WeatherDbSource {
     fun getLastPosition(): Int?
     fun insertWeatherHolder(holder: WeatherHolder)
     fun getSingleWeatherHolder(id: Long): WeatherHolder?
-    fun dropOldData(id: Long)
-    fun insertWeatherPresentation(item: WeatherPresentation)
     fun insertWeatherPresentations(items: List<WeatherPresentation>)
     fun getWeather(id: Long): HolderWithPresentation?
     fun getAllWeather(): List<HolderWithPresentation>
+    fun updateWeatherPresentations(id: Long, insertion: List<WeatherPresentation>)
 }

@@ -8,6 +8,8 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
+
+
 class AdapterWeatherList(private val callback: (Long) -> Unit) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
@@ -70,7 +72,11 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
                 textViewHumidityDescription.text = it.main.humidity
                 textViewWindDescription.text = it.main.wind
             }
+
+            seekBarWeather.setNames(list[position].hours.map { it.time })
+
             Unit
+
         }
     }
 
