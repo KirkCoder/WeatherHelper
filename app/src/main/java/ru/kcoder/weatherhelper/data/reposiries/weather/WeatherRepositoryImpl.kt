@@ -11,6 +11,7 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
+import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 import java.util.*
 
 class WeatherRepositoryImpl(
@@ -35,23 +36,9 @@ class WeatherRepositoryImpl(
                 .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
 
-            val time = weatherData.dt
-
-            if (time != null) {
-                it.main = getWeatherPresentation(
-                    weatherData, time.addMilliseconds() + it.timeUTCoffset,
-                    id, WeatherPresentation.MAIN
-                )
-            } else {
-                it.main = getWeatherPresentation(
-                    weatherData, Calendar.getInstance().time.time + it.timeUTCoffset,
-                    id, WeatherPresentation.MAIN
-                )
-            }
-            it.bindDaysAndHours(weatherForecast.data, it.timeUTCoffset, id)
+            it.bindDaysAndHours(weatherData, weatherForecast.data, it.timeUTCoffset, id)
 
             val insertion = mutableListOf<WeatherPresentation>()
-            insertion.add(it.main)
             insertion.addAll(it.hours)
             insertion.addAll(it.days)
             insertion.addAll(it.nights)
@@ -85,10 +72,34 @@ class WeatherRepositoryImpl(
     }
 
     private fun WeatherHolder.bindDaysAndHours(
+        main: Data,
         data: List<Data>?,
         timeUTCoffset: Int,
         holderID: Long
     ) {
+
+        val tmpMainTime = main.dt
+
+        if (tmpMainTime != null) {
+            hours.add(
+                getWeatherPresentation(
+                    main,
+                    tmpMainTime.addMilliseconds() + timeUTCoffset,
+                    holderID,
+                    WeatherPresentation.HOURS
+                )
+            )
+        } else {
+            hours.add(
+                getWeatherPresentation(
+                    main,
+                    TimeUtils.getCurrentUtcTime() + timeUTCoffset,
+                    holderID,
+                    WeatherPresentation.HOURS
+                )
+            )
+        }
+
         if (!data.isNullOrEmpty()) {
             data[0].dt?.let { long ->
                 val time = timeUTCoffset + long.addMilliseconds()

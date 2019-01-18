@@ -26,11 +26,10 @@ data class WeatherPresentation(
     var timeLong = 0L
 
     companion object {
-        const val MAIN = 1
-        const val HOURS = 2
-        const val DAYS = 3
-        const val NIGHTS = 4
+        const val HOURS = 1
+        const val DAYS = 2
+        const val NIGHTS = 3
     }
-    @IntDef(MAIN, HOURS, DAYS, NIGHTS)
+    @IntDef(HOURS, DAYS, NIGHTS)
     annotation class StatusRange
 }

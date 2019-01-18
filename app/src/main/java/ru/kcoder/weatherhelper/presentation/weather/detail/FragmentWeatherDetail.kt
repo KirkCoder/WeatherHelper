@@ -46,12 +46,14 @@ class FragmentWeatherDetail : BaseFragment() {
         viewModel.weather.observe(this, Observer { holder ->
             holder?.let {
                 textViewTitle.text = it.name
-                textViewTimeDescription.text = it.main.dateAndDescription
-                textViewTemp.text = it.main.tempNow
-                textViewCalvin.text = it.main.degreeThumbnail
-                imageViewIco.setImageResource(it.main.icoRes)
-                textViewHumidityDescription.text = it.main.humidity
-                textViewWindDescription.text = it.main.wind
+                if (it.hours.isNotEmpty()){
+                    textViewTimeDescription.text = it.hours[0].dateAndDescription
+                    textViewTemp.text = it.hours[0].tempNow
+                    textViewCalvin.text = it.hours[0].degreeThumbnail
+                    imageViewIco.setImageResource(it.hours[0].icoRes)
+                    textViewHumidityDescription.text = it.hours[0].humidity
+                    textViewWindDescription.text = it.hours[0].wind
+                }
             }
         })
 

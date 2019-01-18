@@ -17,9 +17,6 @@ class WeatherHolder {
     var timeUTCoffset: Int = 0
 
     @Ignore
-    var main = WeatherPresentation(WeatherPresentation.MAIN)
-
-    @Ignore
     var hours = mutableListOf<WeatherPresentation>()
 
     @Ignore

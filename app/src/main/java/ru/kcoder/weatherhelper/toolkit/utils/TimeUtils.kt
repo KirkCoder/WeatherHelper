@@ -14,4 +14,11 @@ object TimeUtils {
         return dt - getCurrentTime() < THREE_HOURS_IN_SECONDS
     }
 
+    fun getDefaultUTCOffset(): Int {
+        return TimeZone.getDefault().rawOffset
+    }
+
+    fun getCurrentUtcTime(): Long{
+        return Calendar.getInstance().time.time - getDefaultUTCOffset()
+    }
 }

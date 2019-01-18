@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.weather_common.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
-
 
 
 class AdapterWeatherList(private val callback: (Long) -> Unit) :
@@ -63,21 +63,31 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
             setOnClickListener {
                 callback(list[position].id)
             }
-            list[position].also {
-                textViewTitle.text = it.name
-                textViewTimeDescription.text = it.main.dateAndDescription
-                textViewTemp.text = it.main.tempNow
-                textViewCalvin.text = it.main.degreeThumbnail
-                imageViewIco.setImageResource(it.main.icoRes)
-                textViewHumidityDescription.text = it.main.humidity
-                textViewWindDescription.text = it.main.wind
+
+            val hours = list[position].hours
+
+            if (hours.isNotEmpty()) {
+                textViewTitle.text = list[position].name
+                bind(position, hours)
+                seekBarWeather.setNames(list[position].hours.map { it.time })
+                seekBarWeather.setListener {
+                    bind(it, hours)
+                }
             }
-
-            seekBarWeather.setNames(list[position].hours.map { it.time })
-
             Unit
-
         }
+    }
+
+    private fun View.bind(
+        hourPosition: Int,
+        hours: MutableList<WeatherPresentation>
+    ) {
+        textViewTimeDescription.text = hours[hourPosition].dateAndDescription
+        textViewTemp.text = hours[hourPosition].tempNow
+        textViewCalvin.text = hours[hourPosition].degreeThumbnail
+        imageViewIco.setImageResource(hours[hourPosition].icoRes)
+        textViewHumidityDescription.text = hours[hourPosition].humidity
+        textViewWindDescription.text = hours[hourPosition].wind
     }
 
     class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)

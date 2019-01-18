@@ -31,9 +31,11 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         }
     }
 
-    fun setNames(intervals: List<String>) {
-        displayNames(intervals)
-        seekBarWithTickMarks.max = intervals.size + intervals.size
+    fun setNames(list: List<String>) {
+        visibility = if (list.size < 2) View.GONE
+        else View.VISIBLE
+        displayNames(list)
+        seekBarWithTickMarks.setMarksCount(list.size)
     }
 
     override fun onFinishInflate() {
@@ -42,7 +44,6 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         LayoutInflater.from(context)
             .inflate(R.layout.seekbar_with_names, this)
 
-        seekBarWithTickMarks.max = 1
         seekBarWithTickMarks.setTickMarks(tickMarkOne, tickMarkSecond)
     }
 
@@ -97,5 +98,9 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
             id = View.generateViewId()
             text = interval
         }
+    }
+
+    fun setListener(callback: (position: Int) -> Unit){
+        seekBarWithTickMarks.setListener (callback)
     }
 }

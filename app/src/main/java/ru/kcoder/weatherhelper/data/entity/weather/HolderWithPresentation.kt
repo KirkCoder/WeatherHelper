@@ -12,8 +12,6 @@ data class HolderWithPresentation(
 )
 
 fun HolderWithPresentation.mapToPresentation(): WeatherHolder {
-    weatherHolder.main = list
-        .find { it.status == WeatherPresentation.MAIN } ?: WeatherPresentation(WeatherPresentation.MAIN)
 
     weatherHolder.hours.addAll(list.filter { it.status == WeatherPresentation.HOURS })
     weatherHolder.days.addAll(list.filter { it.status == WeatherPresentation.DAYS })
