@@ -27,6 +27,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+    <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonUpdate"
+            android:layout_marginStart="@dimen/layout_margin_half"
+            android:background="@null"
+            app:srcCompat="@drawable/animvectordrawable"
+            app:layout_constraintStart_toEndOf="@+id/textViewTimeDescription"
+            app:layout_constraintTop_toTopOf="@+id/textViewTimeDescription"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTimeDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTemp"
             android:text="@string/weather_mock_tmp"

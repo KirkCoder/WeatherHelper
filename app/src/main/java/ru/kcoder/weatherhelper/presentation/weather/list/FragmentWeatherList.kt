@@ -15,9 +15,12 @@ class FragmentWeatherList : BaseFragment() {
 
     private val viewModel: ViewModelWeatherList by sharedViewModel()
 
-    private val adapter = AdapterWeatherList {
+    private val adapter = AdapterWeatherList({
         showDetailFragment(it)
+    }, {
+        viewModel.forceUpdate(it)
     }
+    )
 
     private fun showDetailFragment(id: Long) {
         activity?.let {
@@ -56,8 +59,12 @@ class FragmentWeatherList : BaseFragment() {
             list?.let { adapter.setData(it) }
         })
 
-        viewModel.weatherUpdate.observe(this, Observer {holder ->
+        viewModel.weatherUpdate.observe(this, Observer { holder ->
             holder?.let { adapter.updateUnit(it) }
+        })
+
+        viewModel.updateForceStatus.observe(this, Observer { item ->
+            item?.let { adapter.forceUpdateStatus(it) }
         })
     }
 

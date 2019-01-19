@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
+import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 
-class AdapterWeatherList(private val callback: (Long) -> Unit) :
+class AdapterWeatherList(
+    private val callbackDetail: (Long) -> Unit,
+    private val callbackUpdate: (Long) -> Unit) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private val list = mutableListOf<WeatherHolder>()
@@ -42,6 +45,10 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
         positionMap[holder.id]?.let { changeItem(it, holder) }
     }
 
+    fun forceUpdateStatus(item: Pair<Long, Boolean>) {
+        positionMap[item.first]?.let { changeItem(it, list[it].apply {  }) }
+    }
+
     private fun changeItem(position: Int, item: WeatherHolder) {
         list.removeAt(position)
         list.add(position, item)
@@ -61,7 +68,7 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             setOnClickListener {
-                callback(list[position].id)
+                callbackDetail(list[position].id)
             }
 
             val hours = list[position].hours
@@ -72,6 +79,10 @@ class AdapterWeatherList(private val callback: (Long) -> Unit) :
                 seekBarWeather.setNames(list[position].hours.map { it.time })
                 seekBarWeather.setListener {
                     bind(it, hours)
+                }
+                imageButtonUpdate.setOnClickListener {
+                    callbackUpdate(list[position].id)
+                    (imageButtonUpdate.drawable as Animatable).start()
                 }
             }
             Unit
