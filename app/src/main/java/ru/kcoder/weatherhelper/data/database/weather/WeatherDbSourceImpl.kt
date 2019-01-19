@@ -1,6 +1,5 @@
 package ru.kcoder.weatherhelper.data.database.weather
 
-import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.data.database.room.WeatherHelperRoomDb
 import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder

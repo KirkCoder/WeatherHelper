@@ -1,14 +1,11 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Query
-import ru.kcoder.weatherhelper.data.database.room.BaseDao
+import androidx.room.*
 import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 @Dao
-interface WeatherHolderDao : BaseDao<WeatherHolder> {
+interface WeatherHolderDao {
 
     @Query("SELECT id FROM weather_holder WHERE lat = :lat AND lon = :lon")
     fun getWeatherHolderId(lat: Double, lon: Double): Long?
@@ -19,9 +16,12 @@ interface WeatherHolderDao : BaseDao<WeatherHolder> {
     @Query("SELECT * FROM weather_holder WHERE id = :id")
     fun getSingleWeatherHolder(id: Long): WeatherHolder?
 
-    @Query("SELECT * FROM weather_holder WHERE id = :id LIMIT 1")
+    @Transaction @Query("SELECT * FROM weather_holder WHERE id = :id LIMIT 1")
     fun getWeather(id: Long): HolderWithPresentation?
 
-    @Query("SELECT * FROM weather_holder")
+    @Transaction @Query("SELECT * FROM weather_holder")
     fun getAllWeather(): List<HolderWithPresentation>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrReplace(holder: WeatherHolder)
 }

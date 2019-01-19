@@ -7,7 +7,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.*
 
 @Database(
     version = 1,
-    exportSchema = true,
+    exportSchema = false,
     entities = [
         WeatherHolder::class,
         WeatherPresentation::class]

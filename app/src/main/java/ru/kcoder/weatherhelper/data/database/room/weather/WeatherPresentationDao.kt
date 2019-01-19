@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
 import androidx.room.*
-import ru.kcoder.weatherhelper.data.database.room.BaseDao
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 
 @Dao
