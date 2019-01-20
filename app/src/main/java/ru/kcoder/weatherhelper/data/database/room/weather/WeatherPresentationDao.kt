@@ -6,7 +6,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 @Dao
 abstract class WeatherPresentationDao {
 
-    @Query("DELETE FROM weatherUpdate WHERE holderId = :id")
+    @Query("DELETE FROM weather_presentation WHERE holderId = :id")
     abstract fun delete(id: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -12,16 +12,20 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 
 class AdapterWeatherList(
-    private val callbackDetail: (Long) -> Unit,
-    private val callbackUpdate: (Long) -> Unit
+    private val showDetail: (Long) -> Unit,
+    private val update: (Long) -> Unit,
+    private val delete: (Long, String) -> Unit
 ) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private val list = mutableListOf<WeatherHolder>()
     private var positionMap = mutableMapOf<Long, Int>()
+    private var isEditStatus = false
 
     fun setData(data: WeatherModel) {
-        if (list.isEmpty()) {
+        if (list.isEmpty() || data.updatedWeatherHolderId == 0L) {
+            list.clear()
+            positionMap.clear()
             list.addAll(data.list)
             positionMap.putAll(data.map)
             notifyDataSetChanged()
@@ -50,6 +54,11 @@ class AdapterWeatherList(
         positionMap[item.first]?.let { changeItem(it, list[it].apply { isUpdating = item.second }) }
     }
 
+    fun setEditStatus(isEdit: Boolean) {
+        isEditStatus = isEdit
+        notifyDataSetChanged()
+    }
+
     private fun changeItem(position: Int, item: WeatherHolder) {
         list.removeAt(position)
         list.add(position, item)
@@ -71,7 +80,7 @@ class AdapterWeatherList(
             val item = list[position]
 
             setOnClickListener {
-                callbackDetail(item.id)
+                showDetail(item.id)
             }
 
             val hours = item.hours
@@ -86,9 +95,21 @@ class AdapterWeatherList(
             imageButtonUpdate.setOnClickListener {
                 if (item.isUpdating)return@setOnClickListener
 
-                callbackUpdate(item.id)
+                update(item.id)
                 (imageButtonUpdate.drawable as Animatable).start()
                 item.isUpdating = true
+            }
+
+            if (isEditStatus){
+                viewDelimiter.visibility = View.VISIBLE
+                buttonDelete.visibility = View.VISIBLE
+            } else {
+                viewDelimiter.visibility = View.GONE
+                buttonDelete.visibility = View.GONE
+            }
+
+            buttonDelete.setOnClickListener {
+                delete(item.id, item.name)
             }
 
             if (hours.isNotEmpty()) {

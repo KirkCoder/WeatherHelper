@@ -65,7 +65,7 @@ object AppRouter {
         transaction.commit()
     }
 
-    fun removeFromBackStack(activity: androidx.fragment.app.FragmentActivity, tag: String) {
+    fun popBackStack(activity: androidx.fragment.app.FragmentActivity) {
         getFragmentManager(activity).popBackStack()
     }
 }

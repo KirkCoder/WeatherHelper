@@ -5,23 +5,35 @@ import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 @Dao
-interface WeatherHolderDao {
+abstract class WeatherHolderDao {
 
     @Query("SELECT id FROM weather_holder WHERE lat = :lat AND lon = :lon")
-    fun getWeatherHolderId(lat: Double, lon: Double): Long?
+    abstract fun getWeatherHolderId(lat: Double, lon: Double): Long?
 
     @Query("SELECT position FROM weather_holder ORDER BY position DESC LIMIT 1")
-    fun getLastPosition(): Int?
+    abstract fun getLastPosition(): Int?
 
     @Query("SELECT * FROM weather_holder WHERE id = :id")
-    fun getSingleWeatherHolder(id: Long): WeatherHolder?
+    abstract fun getSingleWeatherHolder(id: Long): WeatherHolder?
 
     @Transaction @Query("SELECT * FROM weather_holder WHERE id = :id LIMIT 1")
-    fun getWeather(id: Long): HolderWithPresentation?
+    abstract fun getWeather(id: Long): HolderWithPresentation?
 
     @Transaction @Query("SELECT * FROM weather_holder")
-    fun getAllWeather(): List<HolderWithPresentation>
+    abstract fun getAllWeather(): List<HolderWithPresentation>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrReplace(holder: WeatherHolder)
+    abstract fun insertOrReplace(holder: WeatherHolder)
+
+    @Query("DELETE FROM weather_holder WHERE id =:id")
+    abstract fun deleteWeatherHolder(id: Long)
+
+    @Query("DELETE FROM weather_presentation WHERE holderId = :id")
+    abstract fun deleteWeatherPresentations(id: Long)
+
+    @Transaction
+    open fun delete(id: Long){
+        deleteWeatherHolder(id)
+        deleteWeatherPresentations(id)
+    }
 }

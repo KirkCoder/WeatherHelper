@@ -38,4 +38,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
     override fun getAllWeather(): List<HolderWithPresentation> {
         return database.weatherHolder().getAllWeather()
     }
+
+    override fun deleteWeatherHolder(id: Long) {
+        database.weatherHolder().delete(id)
+    }
 }

@@ -1,7 +1,6 @@
 <resources>
     <!-- common -->
     <string name="app_name">Weather Helper</string>
-    <string name="action_settings">Settings</string>
     <string name="common_ok">OK</string>
     <string name="common_cancel">Cancel</string>
     <string name="error_unexpected">Unexpected error. please reboot application</string>
@@ -15,15 +14,21 @@
     <string name="place_common_error_cant_connect">Can\'t connect to server</string>
     <string name="place_add_not_found">Name not fixed</string>
 
-    <!--weatherUpdate-->
+    <!--weather -->
+    <string name="weather_action_settings">Settings</string>
+    <string name="weather_change">Change</string>
+
+    <!--weather common-->
     <string name="weather_wind">m/s Wind</string>
     <string name="weather_humidity">humidity</string>
+    <string name="weather_delete">DELETE</string>
     <string name="weather_mock_place_name">Place name</string>
     <string name="weather_mock_description">Mon, 11:00 AM, Mostly Sunny</string>
     <string name="weather_mock_tmp">25</string>
     <string name="weather_mock_degree">℃</string>
     <string name="weather_mock_wind">23 km/h Winds</string>
     <string name="weather_mock_humidity">25% Humidity</string>
+    <string name="weather_ask_delete">Are you sure want delete %s?</string>
 
     <!--weatherUpdate description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>

@@ -131,7 +131,7 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             activity?.let {
                 if (id != null) {
                     weatherViewModel.addPlace(id)
-                    AppRouter.removeFromBackStack(it, TAG)
+                    AppRouter.popBackStack(it)
                     AppRouter.showWeatherDetailFragment(it, id, true)
                 }
             }

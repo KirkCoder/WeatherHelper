@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorTextCommon</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -16,9 +17,18 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-    <style name="TextStylePrimary" parent="@style/TextAppearance.AppCompat.Body1"/>
-    <style name="TextStyleCaption" parent="@style/TextAppearance.AppCompat.Caption"/>
+    <style name="DeleteBtn">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="TempTextStyle">
+        <item name="android:textSize">@dimen/temp_text_size</item>
+    </style>
+    <style name="TempIcoStyle">
+        <item name="android:textSize">@dimen/temp_text_size_half</item>
+    </style>
     <style name="TextStyleTitle">
-        <item name="android:textSize">48sp</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
     </style>
 </resources>

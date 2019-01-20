@@ -71,6 +71,11 @@ class WeatherRepositoryImpl(
         }
     }
 
+    override fun delete(id: Long): Boolean {
+        database.deleteWeatherHolder(id)
+        return true
+    }
+
     private fun WeatherHolder.bindDaysAndHours(
         main: Data,
         data: List<Data>?,

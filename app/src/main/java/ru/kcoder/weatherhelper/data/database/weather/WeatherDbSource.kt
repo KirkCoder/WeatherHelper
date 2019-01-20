@@ -13,4 +13,5 @@ interface WeatherDbSource {
     fun getWeather(id: Long): HolderWithPresentation?
     fun getAllWeather(): List<HolderWithPresentation>
     fun updateWeatherPresentations(id: Long, insertion: List<WeatherPresentation>)
+    fun deleteWeatherHolder(id: Long)
 }

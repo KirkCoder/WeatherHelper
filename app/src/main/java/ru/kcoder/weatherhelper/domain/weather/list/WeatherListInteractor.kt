@@ -21,4 +21,11 @@ interface WeatherListInteractor {
         callback: (WeatherHolder) -> Unit,
         errorCallback: ((Int) -> Unit)
     )
+
+    fun delete(
+        id: Long,
+        scope: CoroutineScope,
+        callback: () -> Unit,
+        errorCallback: ((Int) -> Unit)
+    )
 }

@@ -3,17 +3,18 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:padding="@dimen/layout_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTitle"
             tools:text="New York"
             android:text="@string/weather_mock_place_name"
+            android:paddingTop="@dimen/layout_padding"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="@dimen/layout_padding"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="28sp"
+            style="@style/TextStyleTitle"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -23,6 +24,8 @@
             android:text="@string/weather_mock_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="0dp"
             android:layout_marginTop="@dimen/layout_margin_half"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -31,7 +34,7 @@
             android:id="@+id/imageButtonUpdate"
             android:layout_marginStart="@dimen/layout_margin_half"
             android:background="@null"
-            app:srcCompat="@drawable/animvectordrawable"
+            app:srcCompat="@drawable/anim_loading_drawable"
             app:layout_constraintStart_toEndOf="@+id/textViewTimeDescription"
             app:layout_constraintTop_toTopOf="@+id/textViewTimeDescription"
             app:layout_constraintBottom_toBottomOf="@+id/textViewTimeDescription"
@@ -41,8 +44,10 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTemp"
             android:text="@string/weather_mock_tmp"
-            android:textSize="@dimen/temp_text_size"
+            style="@style/TempTextStyle"
             android:layout_marginTop="@dimen/layout_margin"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="0dp"
             android:includeFontPadding="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
@@ -53,8 +58,9 @@
             android:id="@+id/textViewCalvin"
             app:layout_constraintTop_toTopOf="@+id/textViewTemp"
             app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+            style="@style/TempIcoStyle"
             android:text="@string/weather_mock_degree"
-            android:textSize="@dimen/tmp_text_size_half"
+            android:textSize="@dimen/temp_text_size_half"
             android:layout_marginStart="@dimen/layout_margin_half"
             android:includeFontPadding="false"
             android:layout_width="wrap_content"
@@ -65,6 +71,8 @@
             app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
             android:layout_marginTop="@dimen/layout_margin_big"
             app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/layout_padding"
             app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
             app:srcCompat="@drawable/ic_sun"
             android:layout_width="@dimen/temp_text_size"
@@ -75,6 +83,8 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:drawableStart="@drawable/ic_drop"
             android:text="@string/weather_mock_humidity"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="0dp"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/layout_padding"
             app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
@@ -96,6 +106,8 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:drawableStart="@drawable/mist2"
             android:text="@string/weather_mock_wind"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/layout_padding"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/layout_padding"
             app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
@@ -110,10 +122,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:tickMarkOne="@drawable/separator"
             app:tickMarkSecond="@drawable/separator_half"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="@dimen/layout_padding"
             android:paddingTop="@dimen/layout_padding"
             android:paddingBottom="@dimen/layout_padding"
             app:layout_constraintTop_toBottomOf="@+id/textViewWindDescription"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/viewDelimiter"
+            app:layout_constraintTop_toBottomOf="@+id/seekBarWeather"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="@color/colorGray"
+            android:layout_height="@dimen/delimiter_height"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonDelete"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/DeleteBtn"
+            android:text="@string/weather_delete"
+            app:layout_constraintTop_toBottomOf="@+id/viewDelimiter"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 

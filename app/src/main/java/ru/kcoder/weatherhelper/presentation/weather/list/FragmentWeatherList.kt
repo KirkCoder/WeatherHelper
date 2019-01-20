@@ -10,8 +10,7 @@ import ru.kcoder.weatherhelper.presentation.common.BaseFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
-
-class FragmentWeatherList : BaseFragment() {
+class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
 
     private val viewModel: ViewModelWeatherList by sharedViewModel()
 
@@ -19,13 +18,12 @@ class FragmentWeatherList : BaseFragment() {
         showDetailFragment(it)
     }, {
         viewModel.forceUpdate(it)
-    }
-    )
+    }, { id, name ->
+        askDelete(id, name)
+    })
 
     private fun showDetailFragment(id: Long) {
-        activity?.let {
-            AppRouter.showWeatherDetailFragment(it, id)
-        }
+        activity?.let { AppRouter.showWeatherDetailFragment(it, id) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,10 +40,11 @@ class FragmentWeatherList : BaseFragment() {
         setHasOptionsMenu(true)
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
-        fab.setOnClickListener { _ ->
-            activity?.let {
-                AppRouter.showAddWeatherFragment(it)
-            }
+        fabAdd.setOnClickListener { _ ->
+            activity?.let { AppRouter.showAddWeatherFragment(it) }
+        }
+        fabOk.setOnClickListener {
+            viewModel.setEditStatus(false)
         }
     }
 
@@ -66,6 +65,19 @@ class FragmentWeatherList : BaseFragment() {
         viewModel.updateStatus.observe(this, Observer { item ->
             item?.let { adapter.updateStatus(it) }
         })
+
+        viewModel.editStatus.observe(this, Observer { status ->
+            status?.let {
+                adapter.setEditStatus(it)
+                if (it) {
+                    fabAdd.visibility = View.GONE
+                    fabOk.visibility = View.VISIBLE
+                } else {
+                    fabAdd.visibility = View.VISIBLE
+                    fabOk.visibility = View.GONE
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,12 +85,24 @@ class FragmentWeatherList : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
+            R.id.action_change -> {
+                viewModel.setEditStatus(true)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun askDelete(id: Long, name: String) {
+        DialogFragmentDelete.newInstance(id, name)
+            .show(childFragmentManager, DialogFragmentDelete.TAG)
+    }
+
+    override fun needDelete(id: Long?) {
+        id?.let { viewModel.delete(it) }
     }
 
     companion object {

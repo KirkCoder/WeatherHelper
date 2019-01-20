@@ -12,15 +12,16 @@ class ViewModelWeatherListImpl(
     override val weatherList = MutableLiveData<WeatherModel>()
     override val weatherUpdate = MutableLiveData<WeatherHolder>()
     override val updateStatus = MutableLiveData<Pair<Long, Boolean>>()
+    override val editStatus = MutableLiveData<Boolean>()
+    override val delete = MutableLiveData<Long>()
 
     init {
+        editStatus.value = false
         getAllWeather()
     }
 
-    private fun getAllWeather() {
-        interactor.getAllWeather(viewModelScope, {
-            weatherList.value = it
-        }, {
+    private fun getAllWeather(responseHandle: (WeatherModel) -> Unit = { weatherList.value = it }) {
+        interactor.getAllWeather(viewModelScope, { responseHandle(it) }, {
             updateStatus.value = it
         }, this::errorCallback)
     }
@@ -54,5 +55,19 @@ class ViewModelWeatherListImpl(
             updateStatus.value = Pair(id, false)
             errorCallback(it)
         })
+    }
+
+    override fun setEditStatus(isEditStatus: Boolean) {
+        editStatus.value = isEditStatus
+    }
+
+    override fun delete(id: Long) {
+        interactor.delete(id, viewModelScope, {
+            getAllWeather {
+                it.updatedWeatherHolderId = 0
+                weatherList.value = it
+            }
+            delete.value = id
+        }, this::errorCallback)
     }
 }

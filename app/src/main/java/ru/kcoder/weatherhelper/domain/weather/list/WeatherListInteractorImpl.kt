@@ -94,6 +94,18 @@ class WeatherListInteractorImpl(
         }
     }
 
+    override fun delete(
+        id: Long, scope: CoroutineScope,
+        callback: () -> Unit,
+        errorCallback: (Int) -> Unit) {
+        loading(repository, scope, {
+            delete(id)
+        }, {data, error ->
+            data?.let { if (it) callback.invoke() }
+            error?.let { errorCallback(it.msg.resourceString) }
+        })
+    }
+
     @WorkerThread
     private fun findNotUpdatedItem(model: WeatherModel) {
         for (holder in model.list) {
