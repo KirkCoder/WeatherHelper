@@ -8,8 +8,7 @@ import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 abstract class ViewModelWeatherList: BaseViewModel() {
     abstract val weatherList: LiveData<WeatherModel>
     abstract val weatherUpdate: LiveData<WeatherHolder>
-    abstract val updateForceStatus: LiveData<Pair<Long, Boolean>>
-    abstract val updateBgStatus: LiveData<Pair<Long, Boolean>>
+    abstract val updateStatus: LiveData<Pair<Long, Boolean>>
 
     abstract fun addPlace(id: Long)
     abstract fun forceUpdate(id: Long)

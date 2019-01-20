@@ -63,8 +63,8 @@ class FragmentWeatherList : BaseFragment() {
             holder?.let { adapter.updateUnit(it) }
         })
 
-        viewModel.updateForceStatus.observe(this, Observer { item ->
-            item?.let { adapter.forceUpdateStatus(it) }
+        viewModel.updateStatus.observe(this, Observer { item ->
+            item?.let { adapter.updateStatus(it) }
         })
     }
 

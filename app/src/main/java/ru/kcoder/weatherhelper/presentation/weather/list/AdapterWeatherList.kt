@@ -13,7 +13,8 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 class AdapterWeatherList(
     private val callbackDetail: (Long) -> Unit,
-    private val callbackUpdate: (Long) -> Unit) :
+    private val callbackUpdate: (Long) -> Unit
+) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private val list = mutableListOf<WeatherHolder>()
@@ -45,8 +46,8 @@ class AdapterWeatherList(
         positionMap[holder.id]?.let { changeItem(it, holder) }
     }
 
-    fun forceUpdateStatus(item: Pair<Long, Boolean>) {
-        positionMap[item.first]?.let { changeItem(it, list[it].apply {  }) }
+    fun updateStatus(item: Pair<Long, Boolean>) {
+        positionMap[item.first]?.let { changeItem(it, list[it].apply { isUpdating = item.second }) }
     }
 
     private fun changeItem(position: Int, item: WeatherHolder) {
@@ -67,22 +68,34 @@ class AdapterWeatherList(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
+            val item = list[position]
+
             setOnClickListener {
-                callbackDetail(list[position].id)
+                callbackDetail(item.id)
             }
 
-            val hours = list[position].hours
+            val hours = item.hours
+            textViewTitle.text = item.name
+
+            if (item.isUpdating){
+                (imageButtonUpdate.drawable as Animatable).start()
+            } else {
+                (imageButtonUpdate.drawable as Animatable).stop()
+            }
+
+            imageButtonUpdate.setOnClickListener {
+                if (item.isUpdating)return@setOnClickListener
+
+                callbackUpdate(item.id)
+                (imageButtonUpdate.drawable as Animatable).start()
+                item.isUpdating = true
+            }
 
             if (hours.isNotEmpty()) {
-                textViewTitle.text = list[position].name
                 bind(position, hours)
-                seekBarWeather.setNames(list[position].hours.map { it.time })
+                seekBarWeather.setNames(hours.map { it.time })
                 seekBarWeather.setListener {
                     bind(it, hours)
-                }
-                imageButtonUpdate.setOnClickListener {
-                    callbackUpdate(list[position].id)
-                    (imageButtonUpdate.drawable as Animatable).start()
                 }
             }
             Unit

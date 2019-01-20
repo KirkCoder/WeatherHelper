@@ -29,19 +29,19 @@ class WeatherListInteractorImpl(
         }
 
     override fun getAllWeather(
+        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
         bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        scope: CoroutineScope,
         errorCallback: ((Int) -> Unit)?
     ) {
         loading(repository, scope, {
             getAllWeather().also {
-                createUpdatingList(it)
+                findNotUpdatedItem(it)
             }
         }, { data, error ->
             data?.let {
                 callback(it)
-                updateWeatherUnit(callback, bdUpdateStatus, scope)
+                updateWeatherUnit(scope, callback, bdUpdateStatus)
             }
             error?.let {
                 errorCallback?.invoke(it.msg.resourceString)
@@ -55,23 +55,22 @@ class WeatherListInteractorImpl(
 
     override fun forceUpdate(
         id: Long,
-        callback: (WeatherHolder?, Boolean?) -> Unit,
         scope: CoroutineScope,
+        callback: (WeatherHolder) -> Unit,
         errorCallback: ((Int) -> Unit)
     ) {
-        loadingProgress(repository, scope, {
+        loading(repository, scope, {
             getWeatherById(id)
-        }, { data, error, isLoading ->
-            data?.let { callback(it, null) }
-            callback(null, isLoading)
+        }, { data, error ->
+            data?.let { callback(it) }
             error?.let { errorCallback(it.msg.resourceString) }
         })
     }
 
     private fun updateWeatherUnit(
+        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        scope: CoroutineScope
+        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit
     ) {
         val id = updatingId
         if (id != null) {
@@ -81,22 +80,22 @@ class WeatherListInteractorImpl(
             }, { data, error ->
                 data?.let {
                     updatingId = null
-                    getAllWeather({ wm ->
+                    getAllWeather(scope, { wm ->
                         bdUpdateStatus(Pair(id, false))
                         callback(wm.apply { updatedWeatherHolderId = it.id })
-                    }, bdUpdateStatus, scope)
+                    }, bdUpdateStatus)
                 }
                 error?.let {
                     log(it.message ?: it.toString())
                     bdUpdateStatus(Pair(id, false))
-                    updateWeatherUnit(callback, bdUpdateStatus, scope)
+                    updateWeatherUnit(scope, callback, bdUpdateStatus)
                 }
             })
         }
     }
 
     @WorkerThread
-    private fun createUpdatingList(model: WeatherModel) {
+    private fun findNotUpdatedItem(model: WeatherModel) {
         for (holder in model.list) {
             val data = holder.hours
             val updateTime = settings?.updateTime

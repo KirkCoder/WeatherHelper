@@ -7,9 +7,9 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 interface WeatherListInteractor {
 
     fun getAllWeather(
+        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
         bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        scope: CoroutineScope,
         errorCallback: ((Int) -> Unit)? = null
     )
 
@@ -17,8 +17,8 @@ interface WeatherListInteractor {
 
     fun forceUpdate(
         id: Long,
-        callback: (WeatherHolder?, Boolean?) -> Unit,
         scope: CoroutineScope,
+        callback: (WeatherHolder) -> Unit,
         errorCallback: ((Int) -> Unit)
     )
 }

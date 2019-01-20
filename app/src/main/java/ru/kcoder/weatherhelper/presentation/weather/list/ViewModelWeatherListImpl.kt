@@ -11,19 +11,18 @@ class ViewModelWeatherListImpl(
 
     override val weatherList = MutableLiveData<WeatherModel>()
     override val weatherUpdate = MutableLiveData<WeatherHolder>()
-    override val updateForceStatus = MutableLiveData<Pair<Long, Boolean>>()
-    override val updateBgStatus = MutableLiveData<Pair<Long, Boolean>>()
+    override val updateStatus = MutableLiveData<Pair<Long, Boolean>>()
 
     init {
         getAllWeather()
     }
 
     private fun getAllWeather() {
-        interactor.getAllWeather({
+        interactor.getAllWeather(viewModelScope, {
             weatherList.value = it
         }, {
-            updateBgStatus.value = it
-        }, viewModelScope, this::errorCallback)
+            updateStatus.value = it
+        }, this::errorCallback)
     }
 
     override fun addPlace(id: Long) {
@@ -48,12 +47,12 @@ class ViewModelWeatherListImpl(
     }
 
     override fun forceUpdate(id: Long) {
-        interactor.forceUpdate(id, { data, status ->
-            data?.let {
-                weatherUpdate.value = it
-                getAllWeather()
-            }
-            status?.let { updateForceStatus.value = Pair(id, it) }
-        }, viewModelScope, this::errorCallback)
+        interactor.forceUpdate(id, viewModelScope, {
+            getAllWeather()
+            weatherUpdate.value = it
+        }, {
+            updateStatus.value = Pair(id, false)
+            errorCallback(it)
+        })
     }
 }

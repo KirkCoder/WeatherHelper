@@ -5,6 +5,7 @@
             android:propertyName="rotation"
             android:valueFrom="0"
             android:repeatCount="infinite"
+            android:interpolator="@android:interpolator/decelerate_quint"
             android:repeatMode="restart"
             android:valueTo="360" />
 </set>
