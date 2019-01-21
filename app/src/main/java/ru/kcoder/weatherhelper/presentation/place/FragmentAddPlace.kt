@@ -127,12 +127,12 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
             }
         })
 
-        viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
+        viewModel.addedPlaceIdLiveData.observe(this, Observer { holder ->
             activity?.let {
-                if (id != null) {
-                    weatherViewModel.addPlace(id)
+                if (holder != null) {
+                    weatherViewModel.addPlace(holder)
                     AppRouter.popBackStack(it)
-                    AppRouter.showWeatherDetailFragment(it, id, true)
+                    AppRouter.showWeatherDetailFragment(it, holder.id, true)
                 }
             }
         })

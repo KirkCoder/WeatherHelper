@@ -58,10 +58,6 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
             list?.let { adapter.setData(it) }
         })
 
-        viewModel.weatherUpdate.observe(this, Observer { holder ->
-            holder?.let { adapter.updateUnit(it) }
-        })
-
         viewModel.updateStatus.observe(this, Observer { item ->
             item?.let { adapter.updateStatus(it) }
         })

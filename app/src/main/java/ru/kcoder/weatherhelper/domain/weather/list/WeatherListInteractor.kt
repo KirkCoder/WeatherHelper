@@ -13,19 +13,17 @@ interface WeatherListInteractor {
         errorCallback: ((Int) -> Unit)? = null
     )
 
-    fun getMockedWeather(): WeatherHolder
-
     fun forceUpdate(
         id: Long,
         scope: CoroutineScope,
-        callback: (WeatherHolder) -> Unit,
+        callback: (WeatherModel) -> Unit,
         errorCallback: ((Int) -> Unit)
     )
 
     fun delete(
         id: Long,
         scope: CoroutineScope,
-        callback: () -> Unit,
+        callback: (WeatherModel) -> Unit,
         errorCallback: ((Int) -> Unit)
     )
 }

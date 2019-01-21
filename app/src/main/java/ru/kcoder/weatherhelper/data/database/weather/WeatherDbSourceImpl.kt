@@ -15,8 +15,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getLastPosition()
     }
 
-    override fun insertWeatherHolder(holder: WeatherHolder) {
-        database.weatherHolder().insertOrReplace(holder)
+    override fun insertWeatherHolder(holder: WeatherHolder): WeatherHolder {
+        return database.weatherHolder().insertWeatherHolder(holder)
     }
 
     override fun getSingleWeatherHolder(id: Long): WeatherHolder? {

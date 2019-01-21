@@ -4,7 +4,6 @@ import androidx.annotation.WorkerThread
 import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
@@ -49,14 +48,10 @@ class WeatherListInteractorImpl(
         })
     }
 
-    override fun getMockedWeather(): WeatherHolder {
-        return repository.getMockedWeather()
-    }
-
     override fun forceUpdate(
         id: Long,
         scope: CoroutineScope,
-        callback: (WeatherHolder) -> Unit,
+        callback: (WeatherModel) -> Unit,
         errorCallback: ((Int) -> Unit)
     ) {
         loading(repository, scope, {
@@ -80,10 +75,7 @@ class WeatherListInteractorImpl(
             }, { data, error ->
                 data?.let {
                     updatingId = null
-                    getAllWeather(scope, { wm ->
-                        bdUpdateStatus(Pair(id, false))
-                        callback(wm.apply { updatedWeatherHolderId = it.id })
-                    }, bdUpdateStatus)
+                    callback(it)
                 }
                 error?.let {
                     log(it.message ?: it.toString())
@@ -96,12 +88,13 @@ class WeatherListInteractorImpl(
 
     override fun delete(
         id: Long, scope: CoroutineScope,
-        callback: () -> Unit,
-        errorCallback: (Int) -> Unit) {
+        callback: (WeatherModel) -> Unit,
+        errorCallback: (Int) -> Unit
+    ) {
         loading(repository, scope, {
             delete(id)
-        }, {data, error ->
-            data?.let { if (it) callback.invoke() }
+        }, { data, error ->
+            data?.let { callback(it) }
             error?.let { errorCallback(it.msg.resourceString) }
         })
     }

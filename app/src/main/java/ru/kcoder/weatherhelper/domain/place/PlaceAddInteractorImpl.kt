@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.domain.place
 
 import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 
@@ -26,7 +27,7 @@ class PlaceAddInteractorImpl(
     override fun savePlace(
         place: PlaceMarker,
         scope: CoroutineScope,
-        callback: (Long) -> Unit,
+        callback: (WeatherHolder) -> Unit,
         errorCallback: (Int) -> Unit
     ) {
         loading(repository, scope, {

@@ -12,7 +12,6 @@ import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
-import java.util.*
 
 class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
@@ -24,7 +23,7 @@ class WeatherRepositoryImpl(
 
     private val settings = settingsSource.getSettings()
 
-    override fun getWeatherById(id: Long): WeatherHolder {
+    override fun getWeatherById(id: Long): WeatherModel {
 
         database.getSingleWeatherHolder(id)?.let {
 
@@ -45,35 +44,32 @@ class WeatherRepositoryImpl(
 
             database.updateWeatherPresentations(id, insertion)
 
-            return it
+            return getAllWeather(it.id)
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    override fun getAllWeather(): WeatherModel {
+    override fun getAllWeather(updatedId: Long): WeatherModel {
         val list = database.getAllWeather()
-        val mapList = list.map { it.mapToPresentation() }
-        val map = mapList.asSequence().associateBy({ it.id }, { it.position })
-        return WeatherModel(mapList, map)
+        val holders = list.map { it.mapToPresentation() }
+        val listMap = holders.map { it.id to holders.indexOf(it) }.toMap()
+        val positionMap = holders.asSequence().associateBy({ it.id }, { it.position })
+        return WeatherModel(holders, listMap, positionMap, updatedId)
     }
 
-    // todo replace to mocked weatherHolder
-    override fun getMockedWeather(): WeatherHolder {
-        return WeatherHolder()
-    }
-
+    // todo replace when create view pager and common view model
     override fun getWeather(id: Long, update: Boolean): WeatherHolder {
         return if (update) {
-            getWeatherById(id)
+            getWeatherById(id).list.filter { it.id == id }[0]
         } else {
             database.getWeather(id)?.let {
                 return@let it.mapToPresentation()
-            } ?: getWeatherById(id)
+            } ?: getWeatherById(id).list.filter { it.id == id }[0]
         }
     }
 
-    override fun delete(id: Long): Boolean {
+    override fun delete(id: Long): WeatherModel {
         database.deleteWeatherHolder(id)
-        return true
+        return getAllWeather(WeatherModel.FORCE)
     }
 
     private fun WeatherHolder.bindDaysAndHours(
@@ -207,7 +203,8 @@ class WeatherRepositoryImpl(
             this.time = time.tryFormatTime()
             timeLong = time
             day = time.tryFormatDay()
-            val isDay = time.tryFormatHour() > settings.startNight || time.tryFormatHour() < settings.endNight
+            val tmpTime = time.tryFormatHour()
+            val isDay = tmpTime > settings.startNight || tmpTime < settings.endNight
             icoRes = data.weather?.let {
                 if (it.isNotEmpty()) {
                     imageSource.getImageIdByCod(it[0].id, isDay)

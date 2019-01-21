@@ -10,47 +10,48 @@ class ViewModelWeatherListImpl(
 ) : ViewModelWeatherList() {
 
     override val weatherList = MutableLiveData<WeatherModel>()
-    override val weatherUpdate = MutableLiveData<WeatherHolder>()
     override val updateStatus = MutableLiveData<Pair<Long, Boolean>>()
     override val editStatus = MutableLiveData<Boolean>()
-    override val delete = MutableLiveData<Long>()
 
     init {
         editStatus.value = false
         getAllWeather()
     }
 
-    private fun getAllWeather(responseHandle: (WeatherModel) -> Unit = { weatherList.value = it }) {
-        interactor.getAllWeather(viewModelScope, { responseHandle(it) }, {
+    private fun getAllWeather() {
+        interactor.getAllWeather(viewModelScope, {
+            weatherList.value = it
+        }, {
             updateStatus.value = it
         }, this::errorCallback)
     }
 
-    override fun addPlace(id: Long) {
-        val weatherHolder = interactor.getMockedWeather()
-        weatherHolder.id = id
+    override fun addPlace(holder: WeatherHolder) {
         val model = weatherList.value
         if (model != null) {
             val tmpList = mutableListOf<WeatherHolder>()
-            val tmpMap = model.map as MutableMap
+            val tmpPositionMap = mutableMapOf<Long, Int>()
+            val tmpListMap = mutableMapOf<Long, Int>()
             tmpList.addAll(model.list)
-            tmpList.add(weatherHolder)
-            tmpMap[id] = tmpList.size - 1
+            tmpList.add(holder)
+            tmpListMap.putAll(model.listMap)
+            tmpListMap[holder.id] = tmpList.size - 1
+            tmpPositionMap.putAll(model.positionMap)
+            tmpPositionMap[holder.id] = holder.position
             weatherList.value = WeatherModel(
-                tmpList, tmpMap, id
+                tmpList, tmpListMap, tmpPositionMap, holder.id
             )
         } else {
             weatherList.value = WeatherModel(
-                listOf(weatherHolder), mapOf(id to 0), id
+                listOf(holder), mapOf(holder.id to 0), mapOf(holder.id to holder.position), holder.id
             )
         }
-        forceUpdate(id)
+        forceUpdate(holder.id)
     }
 
     override fun forceUpdate(id: Long) {
         interactor.forceUpdate(id, viewModelScope, {
-            getAllWeather()
-            weatherUpdate.value = it
+            weatherList.value = it
         }, {
             updateStatus.value = Pair(id, false)
             errorCallback(it)
@@ -63,11 +64,7 @@ class ViewModelWeatherListImpl(
 
     override fun delete(id: Long) {
         interactor.delete(id, viewModelScope, {
-            getAllWeather {
-                it.updatedWeatherHolderId = 0
-                weatherList.value = it
-            }
-            delete.value = id
+            weatherList.value = it
         }, this::errorCallback)
     }
 }

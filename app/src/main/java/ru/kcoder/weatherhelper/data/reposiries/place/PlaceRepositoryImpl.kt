@@ -27,16 +27,12 @@ class PlaceRepositoryImpl(
         throw LocalException(LocalExceptionMsg.CANT_LOAD_ADDRESS)
     }
 
-    override fun savePlace(place: PlaceMarker): Long {
+    override fun savePlace(place: PlaceMarker): WeatherHolder {
         val weatherHolder = mapToWeatherHolder(place)
         if (weatherDbSource.getWeatherHolderId(place.lat, place.lon) != null) {
             throw LocalException(LocalExceptionMsg.PLACE_EXIST)
         }
-        weatherDbSource.insertWeatherHolder(weatherHolder.apply {
-            position = weatherDbSource.getLastPosition()?.let { it + 1 } ?: 0
-        })
-        return weatherDbSource.getWeatherHolderId(place.lat, place.lon)
-            ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
+        return weatherDbSource.insertWeatherHolder(weatherHolder)
     }
 
     override fun getUTCoffset(lat: Double, lon: Double): Int {

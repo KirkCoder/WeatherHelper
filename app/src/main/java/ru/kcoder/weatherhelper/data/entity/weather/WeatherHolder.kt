@@ -20,6 +20,9 @@ class WeatherHolder {
     var hours = mutableListOf<WeatherPresentation>()
 
     @Ignore
+    var timeNames = listOf<String>()
+
+    @Ignore
     var days = mutableListOf<WeatherPresentation>()
 
     @Ignore

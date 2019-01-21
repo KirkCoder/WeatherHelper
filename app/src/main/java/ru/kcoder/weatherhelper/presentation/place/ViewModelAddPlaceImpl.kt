@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.presentation.place
 
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
 import ru.kcoder.weatherhelper.presentation.common.SingleLiveData
 
@@ -12,7 +13,7 @@ class ViewModelAddPlaceImpl(
     private var cashPlace: PlaceMarker? = null
 
     override val markerLiveData = MutableLiveData<PlaceMarker>()
-    override val addedPlaceIdLiveData = MutableLiveData<Long>()
+    override val addedPlaceIdLiveData = MutableLiveData<WeatherHolder>()
     override val fabVisibility = MutableLiveData<Boolean>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val showDialog = SingleLiveData<Boolean>()

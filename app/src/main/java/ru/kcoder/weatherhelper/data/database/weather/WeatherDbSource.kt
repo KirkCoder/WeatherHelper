@@ -7,7 +7,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 interface WeatherDbSource {
     fun getWeatherHolderId(lat: Double, lon: Double): Long?
     fun getLastPosition(): Int?
-    fun insertWeatherHolder(holder: WeatherHolder)
+    fun insertWeatherHolder(holder: WeatherHolder): WeatherHolder
     fun getSingleWeatherHolder(id: Long): WeatherHolder?
     fun insertWeatherPresentations(items: List<WeatherPresentation>)
     fun getWeather(id: Long): HolderWithPresentation?

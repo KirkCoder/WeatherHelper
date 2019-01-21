@@ -13,7 +13,10 @@ data class HolderWithPresentation(
 
 fun HolderWithPresentation.mapToPresentation(): WeatherHolder {
 
-    weatherHolder.hours.addAll(list.filter { it.status == WeatherPresentation.HOURS })
+    val tmpHours = list.filter { it.status == WeatherPresentation.HOURS }
+
+    weatherHolder.hours.addAll(tmpHours)
+    weatherHolder.timeNames = tmpHours.map { it.time }
     weatherHolder.days.addAll(list.filter { it.status == WeatherPresentation.DAYS })
     weatherHolder.nights.addAll(list.filter { it.status == WeatherPresentation.NIGHTS })
 

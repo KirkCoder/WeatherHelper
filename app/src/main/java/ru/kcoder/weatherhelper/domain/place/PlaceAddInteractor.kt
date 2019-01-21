@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.domain.place
 
 import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 interface PlaceAddInteractor {
     fun getAddress(
@@ -14,7 +15,7 @@ interface PlaceAddInteractor {
     fun savePlace(
         place: PlaceMarker,
         scope: CoroutineScope,
-        callback: (Long) -> Unit,
+        callback: (WeatherHolder) -> Unit,
         errorCallback: (Int) -> Unit
     )
 

@@ -3,12 +3,13 @@ package ru.kcoder.weatherhelper.presentation.place
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
 abstract class ViewModelAddPlace: BaseViewModel() {
 
     abstract val markerLiveData: LiveData<PlaceMarker>
-    abstract val addedPlaceIdLiveData: LiveData<Long>
+    abstract val addedPlaceIdLiveData: LiveData<WeatherHolder>
     abstract val fabVisibility: LiveData<Boolean>
     abstract val showDialog: LiveData<Boolean>
     abstract val progressLiveData: LiveData<Boolean>

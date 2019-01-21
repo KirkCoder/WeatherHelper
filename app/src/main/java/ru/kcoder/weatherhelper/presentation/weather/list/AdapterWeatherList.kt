@@ -18,20 +18,23 @@ class AdapterWeatherList(
 ) :
     androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
-    private val list = mutableListOf<WeatherHolder>()
+    private var list = mutableListOf<WeatherHolder>()
+    private var listMap = mutableMapOf<Long, Int>()
     private var positionMap = mutableMapOf<Long, Int>()
     private var isEditStatus = false
 
     fun setData(data: WeatherModel) {
-        if (list.isEmpty() || data.updatedWeatherHolderId == 0L) {
+        if (list.isEmpty() || data.updatedWeatherHolderId == WeatherModel.FORCE) {
             list.clear()
-            positionMap.clear()
             list.addAll(data.list)
-            positionMap.putAll(data.map)
+            positionMap.clear()
+            positionMap.putAll(data.positionMap)
+            listMap.clear()
+            listMap.putAll(data.listMap)
             notifyDataSetChanged()
         } else {
-            val position = positionMap[data.updatedWeatherHolderId]
-            val itemPos = data.map[data.updatedWeatherHolderId]
+            val position = listMap[data.updatedWeatherHolderId]
+            val itemPos = data.listMap[data.updatedWeatherHolderId]
             val item = itemPos?.let { data.list[it] }
 
             if (data.list.isNotEmpty() && itemPos != null && item != null) {
@@ -40,18 +43,21 @@ class AdapterWeatherList(
                 } else {
                     list.add(item)
                     positionMap[item.id] = list.size - 1
+                    listMap[item.id] = list.size - 1
                     notifyItemChanged(list.size - 1)
                 }
             }
         }
     }
 
-    fun updateUnit(holder: WeatherHolder) {
-        positionMap[holder.id]?.let { changeItem(it, holder) }
+    fun updateStatus(item: Pair<Long, Boolean>) {
+        listMap[item.first]?.let { changeItem(it, list[it].apply { isUpdating = item.second }) }
     }
 
-    fun updateStatus(item: Pair<Long, Boolean>) {
-        positionMap[item.first]?.let { changeItem(it, list[it].apply { isUpdating = item.second }) }
+    private fun changeItem(position: Int, holder: WeatherHolder) {
+        list.removeAt(position)
+        list.add(position, holder)
+        notifyItemChanged(position)
     }
 
     fun setEditStatus(isEdit: Boolean) {
@@ -59,11 +65,7 @@ class AdapterWeatherList(
         notifyDataSetChanged()
     }
 
-    private fun changeItem(position: Int, item: WeatherHolder) {
-        list.removeAt(position)
-        list.add(position, item)
-        notifyItemChanged(position)
-    }
+
 
     override fun onCreateViewHolder(root: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(
@@ -114,7 +116,7 @@ class AdapterWeatherList(
 
             if (hours.isNotEmpty()) {
                 bind(position, hours)
-                seekBarWeather.setNames(hours.map { it.time })
+                seekBarWeather.setNames(item.timeNames)
                 seekBarWeather.setListener {
                     bind(it, hours)
                 }
