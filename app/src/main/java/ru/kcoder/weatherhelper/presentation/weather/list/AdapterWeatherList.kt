@@ -9,6 +9,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+import ru.kcoder.weatherhelper.toolkit.debug.log
 
 
 class AdapterWeatherList(
@@ -81,10 +82,6 @@ class AdapterWeatherList(
         with(holder.itemView) {
             val item = list[position]
 
-            setOnClickListener {
-                showDetail(item.id)
-            }
-
             val hours = item.hours
             textViewTitle.text = item.name
 
@@ -105,9 +102,14 @@ class AdapterWeatherList(
             if (isEditStatus){
                 viewDelimiter.visibility = View.VISIBLE
                 buttonDelete.visibility = View.VISIBLE
+                imageViewMotion.visibility = View.VISIBLE
             } else {
+                setOnClickListener {
+                    showDetail(item.id)
+                }
                 viewDelimiter.visibility = View.GONE
                 buttonDelete.visibility = View.GONE
+                imageViewMotion.visibility = View.INVISIBLE
             }
 
             buttonDelete.setOnClickListener {

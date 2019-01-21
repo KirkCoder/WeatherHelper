@@ -10,12 +10,31 @@
             android:id="@+id/textViewTitle"
             tools:text="New York"
             android:text="@string/weather_mock_place_name"
+            style="@style/TextStyleTitle"
             android:paddingTop="@dimen/layout_padding"
             android:paddingStart="@dimen/layout_padding"
             android:paddingEnd="@dimen/layout_padding"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/TextStyleTitle"
+            app:layout_constraintEnd_toStartOf="@id/imageViewMotion"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewMotion"
+            android:text="@string/weather_mock_place_name"
+            style="@style/TextStyleTitle"
+            android:paddingTop="@dimen/layout_padding"
+            android:paddingStart="@dimen/layout_padding"
+            android:paddingEnd="@dimen/layout_padding"
+            app:layout_constraintTop_toTopOf="@+id/textViewTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:srcCompat="@drawable/ic_swap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -48,8 +67,10 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:paddingStart="@dimen/layout_padding"
             android:paddingEnd="0dp"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:includeFontPadding="false"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewIco"
             app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -69,11 +90,12 @@
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewIco"
             app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
-            android:layout_marginTop="@dimen/layout_margin_big"
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingStart="0dp"
             android:paddingEnd="@dimen/layout_padding"
-            app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
+            app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+            app:layout_constraintTop_toTopOf="@id/textViewTemp"
+            app:layout_constraintBottom_toBottomOf="@id/textViewTemp"
             app:srcCompat="@drawable/ic_sun"
             android:layout_width="@dimen/temp_text_size"
             android:layout_height="@dimen/temp_text_size"/>
