@@ -115,7 +115,7 @@ class AdapterWeatherList(
             }
 
             if (hours.isNotEmpty()) {
-                bind(position, hours)
+                bind(0, hours)
                 seekBarWeather.setNames(item.timeNames)
                 seekBarWeather.setListener {
                     bind(it, hours)
