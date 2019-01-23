@@ -2,6 +2,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="ru.kcoder.weatherhelper.ru.weatherhelper.ru.kcoder.weatherhelper.MainActivity">
+    <item android:id="@+id/action_ok"
+          android:title="@string/common_ok"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
     <item android:id="@+id/action_change"
           android:title="@string/weather_change"
           android:orderInCategory="100"

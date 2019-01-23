@@ -32,6 +32,8 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
 
     private val touchHelper = ItemTouchHelper(callback)
 
+    private var isEdit = false
+
     private fun showDetailFragment(id: Long) {
         activity?.let { AppRouter.showWeatherDetailFragment(it, id) }
     }
@@ -53,10 +55,10 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
         fabAdd.setOnClickListener { _ ->
             activity?.let { AppRouter.showAddWeatherFragment(it) }
         }
-        fabOk.setOnClickListener {
-            viewModel.setEditStatus(false)
-        }
+        fabOk.setOnClickListener { finishEdit() }
     }
+
+    private fun finishEdit() = viewModel.setEditStatus(false)
 
     private fun initRecycler(context: Context) {
         recyclerViewWeatherList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
@@ -75,6 +77,8 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
 
         viewModel.editStatus.observe(this, Observer { status ->
             status?.let {
+                isEdit = it
+                activity?.invalidateOptionsMenu()
                 adapter.setEditStatus(it)
                 if (it) {
                     fabAdd.visibility = View.GONE
@@ -87,6 +91,15 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
         })
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (isEdit) {
+            menu.findItem(R.id.action_change).isVisible = false
+        } else {
+            menu.findItem(R.id.action_ok).isVisible = false
+        }
+        super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -97,6 +110,10 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
             R.id.action_settings -> true
             R.id.action_change -> {
                 viewModel.setEditStatus(true)
+                true
+            }
+            R.id.action_ok -> {
+                finishEdit()
                 true
             }
             else -> super.onOptionsItemSelected(item)
