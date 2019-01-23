@@ -10,7 +10,7 @@ interface WeatherListInteractor {
         scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
         bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        errorCallback: ((Int) -> Unit)? = null
+        errorCallback: ((Int) -> Unit)
     )
 
     fun forceUpdate(

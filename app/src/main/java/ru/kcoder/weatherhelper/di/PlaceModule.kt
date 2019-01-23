@@ -16,7 +16,7 @@ import java.util.*
 
 val placeModule = module {
     factory<PlaceRepository> { PlaceRepositoryImpl(get(), get(), get()) }
-    factory<PlaceAddInteractor> { PlaceAddInteractorImpl(get()) }
+    factory<PlaceAddInteractor> { PlaceAddInteractorImpl(get(), get()) }
     factory { Geocoder(get(), Locale.getDefault()) }
     factory<TimeZoneSource> { TimeZoneSourceImpl() }
     viewModel<ViewModelAddPlace> { ViewModelAddPlaceImpl(get()) }

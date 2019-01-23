@@ -4,11 +4,13 @@ import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
+import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.domain.common.BaseInteractor
 
 class PlaceAddInteractorImpl(
-    private val repository: PlaceRepository
-) : BaseInteractor(), PlaceAddInteractor {
+    private val repository: PlaceRepository,
+    settingsRepository: SettingsRepository
+) : BaseInteractor(settingsRepository), PlaceAddInteractor {
 
     override fun getAddress(
         lat: Double, lon: Double,

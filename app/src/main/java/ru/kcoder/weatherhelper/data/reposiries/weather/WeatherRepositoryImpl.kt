@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.data.reposiries.weather
 
 import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
+import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.*
 import ru.kcoder.weatherhelper.data.network.common.executeCall
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
@@ -17,13 +18,10 @@ class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
     private val database: WeatherDbSource,
     private val stringSource: WeatherStringSource,
-    private val imageSource: ImageResSource,
-    settingsSource: SettingsSource
+    private val imageSource: ImageResSource
 ) : WeatherRepository {
 
-    private val settings = settingsSource.getSettings()
-
-    override fun getWeatherById(id: Long): WeatherModel {
+    override fun getWeatherById(settings: Settings, id: Long): WeatherModel {
 
         database.getSingleWeatherHolder(id)?.let {
 
@@ -35,7 +33,7 @@ class WeatherRepositoryImpl(
                 .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
 
-            it.bindDaysAndHours(weatherData, weatherForecast.data, it.timeUTCoffset, id)
+            it.bindDaysAndHours(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
 
             val insertion = mutableListOf<WeatherPresentation>()
             insertion.addAll(it.hours)
@@ -44,11 +42,11 @@ class WeatherRepositoryImpl(
 
             database.updateWeatherPresentations(id, insertion)
 
-            return getAllWeather(it.id)
+            return getAllWeather(settings, it.id)
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    override fun getAllWeather(updatedId: Long): WeatherModel {
+    override fun getAllWeather(settings: Settings, updatedId: Long): WeatherModel {
         val list = database.getAllWeather()
         val holders = list.map { it.mapToPresentation() }.sortedBy { it.position }
         val listMap = holders.map { it.id to holders.indexOf(it) }.toMap()
@@ -56,13 +54,13 @@ class WeatherRepositoryImpl(
     }
 
     // todo replace when create view pager and common view model
-    override fun getWeather(id: Long, update: Boolean): WeatherHolder {
+    override fun getWeather(settings: Settings, id: Long, update: Boolean): WeatherHolder {
         return if (update) {
-            getWeatherById(id).list.filter { it.id == id }[0]
+            getWeatherById(settings, id).list.filter { it.id == id }[0]
         } else {
             database.getWeather(id)?.let {
                 return@let it.mapToPresentation()
-            } ?: getWeatherById(id).list.filter { it.id == id }[0]
+            } ?: getWeatherById(settings, id).list.filter { it.id == id }[0]
         }
     }
 
@@ -75,6 +73,7 @@ class WeatherRepositoryImpl(
     }
 
     private fun WeatherHolder.bindDaysAndHours(
+        settings: Settings,
         main: Data,
         data: List<Data>?,
         timeUTCoffset: Int,
@@ -86,6 +85,7 @@ class WeatherRepositoryImpl(
         if (tmpMainTime != null) {
             hours.add(
                 getWeatherPresentation(
+                    settings,
                     main,
                     tmpMainTime.addMilliseconds() + timeUTCoffset,
                     holderID,
@@ -95,6 +95,7 @@ class WeatherRepositoryImpl(
         } else {
             hours.add(
                 getWeatherPresentation(
+                    settings,
                     main,
                     TimeUtils.getCurrentUtcTime() + timeUTCoffset,
                     holderID,
@@ -120,6 +121,7 @@ class WeatherRepositoryImpl(
                         if (pos < 5) {
                             hours.add(
                                 getWeatherPresentation(
+                                    settings,
                                     next,
                                     tmpTime,
                                     holderID,
@@ -129,6 +131,7 @@ class WeatherRepositoryImpl(
                         }
                         if (pos == 0) days.add(
                             getWeatherPresentation(
+                                settings,
                                 next,
                                 tmpTime,
                                 holderID,
@@ -136,10 +139,11 @@ class WeatherRepositoryImpl(
                             )
                         )
                         if (pos == 4) nights.add(
-                            getWeatherPresentation(next, tmpTime, holderID, WeatherPresentation.NIGHTS)
+                            getWeatherPresentation(settings, next, tmpTime, holderID, WeatherPresentation.NIGHTS)
                         )
                         if (pos == startNextDayPos) days.add(
                             getWeatherPresentation(
+                                settings,
                                 next,
                                 tmpTime,
                                 holderID,
@@ -150,6 +154,7 @@ class WeatherRepositoryImpl(
                         if (pos == startNextNightPos) {
                             nights.add(
                                 getWeatherPresentation(
+                                    settings,
                                     next,
                                     tmpTime,
                                     holderID,
@@ -159,6 +164,7 @@ class WeatherRepositoryImpl(
                         } else if (!iterator.hasNext()) {
                             nights.add(
                                 getWeatherPresentation(
+                                    settings,
                                     next,
                                     tmpTime,
                                     holderID,
@@ -175,6 +181,7 @@ class WeatherRepositoryImpl(
     }
 
     private fun getWeatherPresentation(
+        settings: Settings,
         data: Data,
         time: Long,
         holderID: Long,

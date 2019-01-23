@@ -1,13 +1,15 @@
 package ru.kcoder.weatherhelper.domain.common
 
 import kotlinx.coroutines.*
+import ru.kcoder.weatherhelper.data.entity.settings.Settings
+import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import java.io.IOException
 
-abstract class BaseInteractor {
+abstract class BaseInteractor(private val settingsRepository: SettingsRepository) {
 
     fun <R, B> loading(
         repository: R,
@@ -67,5 +69,18 @@ abstract class BaseInteractor {
                 }
             }
         }
+    }
+
+    protected fun runWithSettings(
+        scope: CoroutineScope,
+        errorCallback: ((Int) -> Unit),
+        run: (Settings) -> Unit
+    ) {
+        loading(settingsRepository, scope, {
+            getSettings()
+        }, { data, error ->
+            data?.let { run(it) }
+            error?.let { errorCallback.invoke(LocalException(LocalExceptionMsg.UNEXPECTED_ERROR).msg.resourceString) }
+        })
     }
 }
