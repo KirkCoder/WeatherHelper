@@ -50,10 +50,9 @@ class WeatherRepositoryImpl(
 
     override fun getAllWeather(updatedId: Long): WeatherModel {
         val list = database.getAllWeather()
-        val holders = list.map { it.mapToPresentation() }
+        val holders = list.map { it.mapToPresentation() }.sortedBy { it.position }
         val listMap = holders.map { it.id to holders.indexOf(it) }.toMap()
-        val positionMap = holders.asSequence().associateBy({ it.id }, { it.position })
-        return WeatherModel(holders, listMap, positionMap, updatedId)
+        return WeatherModel(holders, listMap, updatedId)
     }
 
     // todo replace when create view pager and common view model
@@ -67,9 +66,12 @@ class WeatherRepositoryImpl(
         }
     }
 
-    override fun delete(id: Long): WeatherModel {
+    override fun delete(id: Long) {
         database.deleteWeatherHolder(id)
-        return getAllWeather(WeatherModel.FORCE)
+    }
+
+    override fun changedData(list: List<WeatherHolder>) {
+        database.changePositions(list)
     }
 
     private fun WeatherHolder.bindDaysAndHours(

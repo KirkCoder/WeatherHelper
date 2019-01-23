@@ -41,6 +41,9 @@ abstract class WeatherHolderDao {
     @Query("DELETE FROM weather_presentation WHERE holderId = :id")
     abstract fun deleteWeatherPresentations(id: Long)
 
+    @Query("UPDATE weather_holder SET position = :position WHERE id = :id ")
+    abstract fun changePosition(id: Long, position: Int)
+
     @Transaction
     open fun insertWeatherHolder(holder: WeatherHolder): WeatherHolder {
         holder.position = getLastPosition()?.let { it + 1 } ?: 0
@@ -54,5 +57,12 @@ abstract class WeatherHolderDao {
     open fun delete(id: Long) {
         deleteWeatherHolder(id)
         deleteWeatherPresentations(id)
+    }
+
+    @Transaction
+    open fun changePositions(list: List<WeatherHolder>) {
+        for ((i, holder) in list.withIndex()) {
+            changePosition(holder.id, i)
+        }
     }
 }

@@ -76,7 +76,7 @@ class SeekBarWithTickMarks(context: Context, attrs: AttributeSet) : AppCompatSee
         }
     }
 
-    fun setListener(callback: (position: Int) -> Unit){
+    fun setListener(callback: ((position: Int) -> Unit)?){
         initListener(callback)
     }
 

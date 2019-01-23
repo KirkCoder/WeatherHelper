@@ -13,5 +13,7 @@ abstract class ViewModelWeatherList: BaseViewModel() {
     abstract fun addPlace(holder: WeatherHolder)
     abstract fun forceUpdate(id: Long)
     abstract fun setEditStatus(isEditStatus: Boolean)
-    abstract fun delete(id: Long)
+    abstract fun delete(id: Long, list: List<WeatherHolder>)
+    abstract fun changedData(list: List<WeatherHolder>)
+    abstract fun notifyChange(model: WeatherModel)
 }

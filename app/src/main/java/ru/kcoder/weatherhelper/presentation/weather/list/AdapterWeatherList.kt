@@ -2,34 +2,35 @@ package ru.kcoder.weatherhelper.presentation.weather.list
 
 import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_common.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
-import ru.kcoder.weatherhelper.toolkit.debug.log
-
+import java.util.*
 
 class AdapterWeatherList(
     private val showDetail: (Long) -> Unit,
     private val update: (Long) -> Unit,
-    private val delete: (Long, String) -> Unit
-) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
+    private val delete: (Long, String) -> Unit,
+    private val change: (List<WeatherHolder>) -> Unit,
+    private val notifyChange: (WeatherModel) -> Unit,
+    private val motion: (RecyclerView.ViewHolder) -> Unit
+) : RecyclerView.Adapter<AdapterWeatherList.ViewHolder>() {
 
     private var list = mutableListOf<WeatherHolder>()
     private var listMap = mutableMapOf<Long, Int>()
-    private var positionMap = mutableMapOf<Long, Int>()
     private var isEditStatus = false
+    private var isMoved = false
 
     fun setData(data: WeatherModel) {
         if (list.isEmpty() || data.updatedWeatherHolderId == WeatherModel.FORCE) {
             list.clear()
             list.addAll(data.list)
-            positionMap.clear()
-            positionMap.putAll(data.positionMap)
             listMap.clear()
             listMap.putAll(data.listMap)
             notifyDataSetChanged()
@@ -43,7 +44,6 @@ class AdapterWeatherList(
                     changeItem(position, item)
                 } else {
                     list.add(item)
-                    positionMap[item.id] = list.size - 1
                     listMap[item.id] = list.size - 1
                     notifyItemChanged(list.size - 1)
                 }
@@ -64,8 +64,9 @@ class AdapterWeatherList(
     fun setEditStatus(isEdit: Boolean) {
         isEditStatus = isEdit
         notifyDataSetChanged()
+        if (!isEdit && isMoved) change(list)
+        isMoved = false
     }
-
 
 
     override fun onCreateViewHolder(root: ViewGroup, p1: Int): ViewHolder {
@@ -80,40 +81,46 @@ class AdapterWeatherList(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
+            buttonDelete.setOnClickListener(null)
+            setOnClickListener(null)
+            imageViewMotion.setOnTouchListener(null)
+            seekBarWeather.setListener(null)
+
             val item = list[position]
 
             val hours = item.hours
             textViewTitle.text = item.name
 
-            if (item.isUpdating){
+            if (item.isUpdating) {
                 (imageButtonUpdate.drawable as Animatable).start()
             } else {
                 (imageButtonUpdate.drawable as Animatable).stop()
             }
 
             imageButtonUpdate.setOnClickListener {
-                if (item.isUpdating)return@setOnClickListener
+                if (item.isUpdating) return@setOnClickListener
 
                 update(item.id)
                 (imageButtonUpdate.drawable as Animatable).start()
                 item.isUpdating = true
             }
 
-            if (isEditStatus){
+            if (isEditStatus) {
                 viewDelimiter.visibility = View.VISIBLE
                 buttonDelete.visibility = View.VISIBLE
                 imageViewMotion.visibility = View.VISIBLE
-            } else {
-                setOnClickListener {
-                    showDetail(item.id)
+                buttonDelete.setOnClickListener { delete(item.id, item.name) }
+                imageViewMotion.setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_UP) {
+                        motion(holder)
+                    }
+                    return@setOnTouchListener false
                 }
+            } else {
+                setOnClickListener { showDetail(item.id) }
                 viewDelimiter.visibility = View.GONE
                 buttonDelete.visibility = View.GONE
                 imageViewMotion.visibility = View.INVISIBLE
-            }
-
-            buttonDelete.setOnClickListener {
-                delete(item.id, item.name)
             }
 
             if (hours.isNotEmpty()) {
@@ -140,4 +147,36 @@ class AdapterWeatherList(
     }
 
     class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
+
+    fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(list, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(list, i, i - 1)
+            }
+        }
+        val from = list[fromPosition]
+        val to = list[toPosition]
+
+        listMap[from.id] = fromPosition
+        listMap[to.id] = toPosition
+        isMoved = true
+        notifyChange(WeatherModel(list, listMap))
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    fun deleteItem(id: Long): List<WeatherHolder>? {
+        val position = listMap[id]
+        if (position != null) {
+            list.removeAt(position)
+            listMap.clear()
+            listMap.putAll(list.map { it.id to list.indexOf(it) }.toMap())
+            notifyItemRemoved(position)
+            return list
+        }
+        return null
+    }
 }

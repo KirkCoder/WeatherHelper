@@ -4,6 +4,8 @@ import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.kcoder.weatherhelper.presentation.common.BaseFragment
@@ -20,7 +22,15 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
         viewModel.forceUpdate(it)
     }, { id, name ->
         askDelete(id, name)
-    })
+    }, {
+        viewModel.changedData(it)
+    }, {
+        viewModel.notifyChange(it)
+    }, this::startMotion)
+
+    private val callback = TouchCallback(adapter::onItemMove)
+
+    private val touchHelper = ItemTouchHelper(callback)
 
     private fun showDetailFragment(id: Long) {
         activity?.let { AppRouter.showWeatherDetailFragment(it, id) }
@@ -51,6 +61,7 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
     private fun initRecycler(context: Context) {
         recyclerViewWeatherList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recyclerViewWeatherList.adapter = adapter
+        touchHelper.attachToRecyclerView(recyclerViewWeatherList)
     }
 
     private fun subscribeUi() {
@@ -98,7 +109,13 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
     }
 
     override fun needDelete(id: Long?) {
-        id?.let { viewModel.delete(it) }
+        id?.let {
+            adapter.deleteItem(id)?.let { list ->  viewModel.delete(it, list)}
+        }
+    }
+
+    private fun startMotion(holder: RecyclerView.ViewHolder) {
+        touchHelper.startDrag(holder)
     }
 
     companion object {

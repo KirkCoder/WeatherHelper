@@ -3,6 +3,7 @@ package ru.kcoder.weatherhelper.domain.weather.list
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
+import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
@@ -87,16 +88,20 @@ class WeatherListInteractorImpl(
     }
 
     override fun delete(
-        id: Long, scope: CoroutineScope,
-        callback: (WeatherModel) -> Unit,
-        errorCallback: (Int) -> Unit
+        id: Long, scope: CoroutineScope
     ) {
-        loading(repository, scope, {
+        uploading(repository, scope) {
             delete(id)
-        }, { data, error ->
-            data?.let { callback(it) }
-            error?.let { errorCallback(it.msg.resourceString) }
-        })
+        }
+    }
+
+    override fun changedData(
+        list: List<WeatherHolder>,
+        scope: CoroutineScope
+    ) {
+        uploading(repository, scope) {
+            changedData(list)
+        }
     }
 
     @WorkerThread

@@ -22,8 +22,11 @@ interface WeatherListInteractor {
 
     fun delete(
         id: Long,
-        scope: CoroutineScope,
-        callback: (WeatherModel) -> Unit,
-        errorCallback: ((Int) -> Unit)
+        scope: CoroutineScope
+    )
+
+    fun changedData(
+        list: List<WeatherHolder>,
+        scope: CoroutineScope
     )
 }

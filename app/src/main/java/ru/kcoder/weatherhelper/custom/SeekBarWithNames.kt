@@ -100,7 +100,7 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         }
     }
 
-    fun setListener(callback: (position: Int) -> Unit){
+    fun setListener(callback: ((position: Int) -> Unit)?){
         seekBarWithTickMarks.setListener (callback)
     }
 }

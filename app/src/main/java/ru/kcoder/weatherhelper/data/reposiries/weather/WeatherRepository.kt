@@ -7,5 +7,6 @@ interface WeatherRepository {
     fun getWeatherById(id: Long): WeatherModel
     fun getAllWeather(updatedId: Long = WeatherModel.BROADCAST): WeatherModel
     fun getWeather(id: Long, update: Boolean = false): WeatherHolder
-    fun delete(id: Long): WeatherModel
+    fun delete(id: Long)
+    fun changedData(list: List<WeatherHolder>)
 }

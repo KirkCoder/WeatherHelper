@@ -1,6 +1,7 @@
 package ru.kcoder.weatherhelper.presentation.weather.list
 
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.GlobalScope
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.weather.list.WeatherListInteractor
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
@@ -30,20 +31,17 @@ class ViewModelWeatherListImpl(
         val model = weatherList.value
         if (model != null) {
             val tmpList = mutableListOf<WeatherHolder>()
-            val tmpPositionMap = mutableMapOf<Long, Int>()
             val tmpListMap = mutableMapOf<Long, Int>()
             tmpList.addAll(model.list)
             tmpList.add(holder)
             tmpListMap.putAll(model.listMap)
             tmpListMap[holder.id] = tmpList.size - 1
-            tmpPositionMap.putAll(model.positionMap)
-            tmpPositionMap[holder.id] = holder.position
             weatherList.value = WeatherModel(
-                tmpList, tmpListMap, tmpPositionMap, holder.id
+                tmpList, tmpListMap, holder.id
             )
         } else {
             weatherList.value = WeatherModel(
-                listOf(holder), mapOf(holder.id to 0), mapOf(holder.id to holder.position), holder.id
+                listOf(holder), mapOf(holder.id to 0), holder.id
             )
         }
         forceUpdate(holder.id)
@@ -62,9 +60,26 @@ class ViewModelWeatherListImpl(
         editStatus.value = isEditStatus
     }
 
-    override fun delete(id: Long) {
-        interactor.delete(id, viewModelScope, {
-            weatherList.value = it
-        }, this::errorCallback)
+    override fun delete(id: Long, list: List<WeatherHolder>) {
+        updateWeatherList(list)
+        interactor.delete(id, GlobalScope)
+    }
+
+    override fun changedData(list: List<WeatherHolder>) {
+        updateWeatherList(list)
+        interactor.changedData(list, GlobalScope)
+    }
+
+    override fun notifyChange(model: WeatherModel) {
+        weatherList.value = model
+    }
+
+    private fun updateWeatherList(list: List<WeatherHolder>){
+        weatherList.value?.let { model ->
+            model.list = list
+            model.listMap = list.map { it.id to list.indexOf(it) }.toMap()
+            model.updatedWeatherHolderId = WeatherModel.BROADCAST
+            weatherList.value = model
+        }
     }
 }

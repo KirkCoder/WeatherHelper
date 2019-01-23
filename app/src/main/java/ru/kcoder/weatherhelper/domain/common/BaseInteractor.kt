@@ -15,10 +15,10 @@ abstract class BaseInteractor {
         load: R.() -> B,
         callback: (data: B?, error: LocalException?) -> Unit
     ) {
-        scope.launch(Dispatchers.Main) {
+        scope.launch {
             try {
                 callback(
-                    withContext(Dispatchers.IO){
+                    withContext(Dispatchers.IO) {
                         load(repository)
                     }, null
                 )
@@ -49,6 +49,23 @@ abstract class BaseInteractor {
         loading(repository, scope, load) { data, error ->
             data?.let { callback(it, null, false) }
             error?.let { callback(null, it, false) }
+        }
+    }
+
+    fun <R, B> uploading(
+        repository: R,
+        scope: CoroutineScope,
+        upload: R.() -> B
+    ) {
+        scope.launch {
+            try {
+                withContext(Dispatchers.IO) { upload(repository) }
+            } catch (err: Throwable) {
+                if (BuildConfig.DEBUG) {
+                    log(err.message ?: err.toString())
+                    err.printStackTrace()
+                }
+            }
         }
     }
 }
