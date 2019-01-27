@@ -8,7 +8,7 @@ class ViewModelWeatherDetailImpl(
     private val interactor: WeatherDetailInteractor,
     private val id: Long,
     forceUpdate: Boolean
-) : ViewModelWeatherDetail() {
+) : ViewModelWeatherDetail(interactor) {
 
     override val weather: MutableLiveData<WeatherHolder> = MutableLiveData()
     override val status: MutableLiveData<Boolean> = MutableLiveData()
@@ -22,13 +22,10 @@ class ViewModelWeatherDetailImpl(
             weather.value = it
         }, {
             if (forceUpdate) status.value = it
-        }, {
-            status.value = false
-            errorCallback(it)
-        }, viewModelScope)
+        })
     }
 
-    override fun forceUpdate(){
+    override fun forceUpdate() {
         updateWeather(id, true)
     }
 }

@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.presentation.common.BaseInteractor
 import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
-abstract class ViewModelAddPlace: BaseViewModel() {
+abstract class ViewModelAddPlace(
+    baseInteractor: BaseInteractor
+) : BaseViewModel(baseInteractor) {
 
     abstract val markerLiveData: LiveData<PlaceMarker>
     abstract val addedPlaceIdLiveData: LiveData<WeatherHolder>

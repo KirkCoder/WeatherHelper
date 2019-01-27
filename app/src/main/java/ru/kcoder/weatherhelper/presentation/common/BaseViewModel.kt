@@ -4,16 +4,24 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
+import ru.kcoder.weatherhelper.toolkit.android.LocalException
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel(
+    abstractInteractor: BaseInteractor
+) : ViewModel() {
 
     private val viewModelJob = SupervisorJob()
-    protected open val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    init {
+        abstractInteractor.initScope(viewModelScope)
+        abstractInteractor.initErrorHandler(this::errorCallback)
+    }
 
     open val errorLiveData: MutableLiveData<Int> = SingleLiveData()
 
-    open fun errorCallback(resErr: Int){
-        errorLiveData.value = resErr
+    open fun errorCallback(err: LocalException) {
+        errorLiveData.value = err.msg.resourceString
     }
 
     @CallSuper

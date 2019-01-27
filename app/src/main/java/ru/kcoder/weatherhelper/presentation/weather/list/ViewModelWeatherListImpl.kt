@@ -8,7 +8,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 
 class ViewModelWeatherListImpl(
     private val interactor: WeatherListInteractor
-) : ViewModelWeatherList() {
+) : ViewModelWeatherList(interactor) {
 
     override val weatherList = MutableLiveData<WeatherModel>()
     override val updateStatus = MutableLiveData<Pair<Long, Boolean>>()
@@ -20,11 +20,11 @@ class ViewModelWeatherListImpl(
     }
 
     private fun getAllWeather() {
-        interactor.getAllWeather(viewModelScope, {
+        interactor.getAllWeather({
             weatherList.value = it
         }, {
             updateStatus.value = it
-        }, this::errorCallback)
+        })
     }
 
     override fun addPlace(holder: WeatherHolder) {
@@ -48,11 +48,10 @@ class ViewModelWeatherListImpl(
     }
 
     override fun forceUpdate(id: Long) {
-        interactor.forceUpdate(id, viewModelScope, {
+        interactor.forceUpdate(id, {
             weatherList.value = it
         }, {
             updateStatus.value = Pair(id, false)
-            errorCallback(it)
         })
     }
 
@@ -74,7 +73,7 @@ class ViewModelWeatherListImpl(
         weatherList.value = model
     }
 
-    private fun updateWeatherList(list: List<WeatherHolder>){
+    private fun updateWeatherList(list: List<WeatherHolder>) {
         weatherList.value?.let { model ->
             model.list = list
             model.listMap = list.map { it.id to list.indexOf(it) }.toMap()

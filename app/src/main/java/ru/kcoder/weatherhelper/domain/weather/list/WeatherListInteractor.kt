@@ -3,21 +3,18 @@ package ru.kcoder.weatherhelper.domain.weather.list
 import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
+import ru.kcoder.weatherhelper.presentation.common.BaseInteractor
 
-interface WeatherListInteractor {
+interface WeatherListInteractor: BaseInteractor {
 
     fun getAllWeather(
-        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        errorCallback: ((Int) -> Unit)
-    )
+        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit)
 
     fun forceUpdate(
         id: Long,
-        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        errorCallback: ((Int) -> Unit)
+        onFail: () -> Unit
     )
 
     fun delete(

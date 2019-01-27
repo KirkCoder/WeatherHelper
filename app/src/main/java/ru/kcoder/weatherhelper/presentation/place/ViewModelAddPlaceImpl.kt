@@ -5,10 +5,11 @@ import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
 import ru.kcoder.weatherhelper.presentation.common.SingleLiveData
+import ru.kcoder.weatherhelper.toolkit.android.LocalException
 
 class ViewModelAddPlaceImpl(
     private val interactor: PlaceAddInteractor
-) : ViewModelAddPlace() {
+) : ViewModelAddPlace(interactor) {
 
     private var cashPlace: PlaceMarker? = null
 
@@ -23,31 +24,27 @@ class ViewModelAddPlaceImpl(
         fabVisibility.value = false
         markerLiveData.value = place
         if (place.name == null) {
-            progressLiveData.value = true
-            interactor.getAddress(place.lat, place.lon, viewModelScope, {
+            interactor.getAddress(place.lat, place.lon, {
                 if (!isPlaceValid(place)) return@getAddress
                 markerLiveData.value = place.apply {
                     name = it.first
                     address = it.second
                 }
                 setUTCoffset(place)
-                progressLiveData.value = false
             }, {
-                setUTCoffset(place)
-                errorCallback(it)
-                progressLiveData.value = false
-            })
+                progressLiveData.value = it
+            }, { setUTCoffset(place) })
         } else {
             setUTCoffset(place)
         }
     }
 
     override fun savePlace() {
-        cashPlace?.let {place ->
+        cashPlace?.let { place ->
             if (place.name != null) {
-                interactor.savePlace(place, viewModelScope, {
+                interactor.savePlace(place) {
                     addedPlaceIdLiveData.value = it
-                }, this::errorCallback)
+                }
             } else {
                 showDialog.value = true
             }
@@ -71,12 +68,12 @@ class ViewModelAddPlaceImpl(
     }
 
     private fun setUTCoffset(place: PlaceMarker) {
-        interactor.getUTCoffset(place.lat, place.lon, viewModelScope, {
+        interactor.getUTCoffset(place.lat, place.lon) {
             if (!isPlaceValid(place)) return@getUTCoffset
             markerLiveData.value = place.apply {
                 timeUTCoffset = it
             }
             fabVisibility.value = true
-        }, this::errorCallback)
+        }
     }
 }

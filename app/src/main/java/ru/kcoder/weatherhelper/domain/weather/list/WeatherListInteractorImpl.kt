@@ -7,101 +7,77 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
-import ru.kcoder.weatherhelper.domain.common.BaseInteractor
-import ru.kcoder.weatherhelper.toolkit.android.LocalException
-import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
-import ru.kcoder.weatherhelper.toolkit.debug.log
+import ru.kcoder.weatherhelper.domain.common.AbstractInteractor
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
 class WeatherListInteractorImpl(
     private val repository: WeatherRepository,
     settingsRepository: SettingsRepository
-) : BaseInteractor(settingsRepository), WeatherListInteractor {
+) : AbstractInteractor(settingsRepository), WeatherListInteractor {
 
     @Volatile
     private var updatingId: Long? = null
 
     override fun getAllWeather(
-        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit,
-        errorCallback: ((Int) -> Unit)
+        bdUpdateStatus: (Pair<Long, Boolean>) -> Unit
     ) {
-        runWithSettings(scope, errorCallback) { settings ->
-            loading(repository, scope, {
-                getAllWeather(settings).also {
-                    findNotUpdatedItem(settings, it)
-                }
-            }, { data, error ->
-                data?.let {
-                    callback(it)
-                    updateWeatherUnit(scope, callback, errorCallback, bdUpdateStatus)
-                }
-                error?.let {
-                    errorCallback.invoke(it.msg.resourceString)
-                }
+        runWithSettings({ settings ->
+            loading({
+                repository.getAllWeather(settings).also { findNotUpdatedItem(settings, it) }
+            }, callback, {
+                updateWeatherUnit(callback, bdUpdateStatus)
             })
-        }
+        })
     }
 
     override fun forceUpdate(
         id: Long,
-        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        errorCallback: ((Int) -> Unit)
+        onFail: () -> Unit
     ) {
-        runWithSettings(scope, errorCallback) { settings ->
-            loading(repository, scope, {
-                getWeatherById(settings, id)
-            }, { data, error ->
-                data?.let { callback(it) }
-                error?.let { errorCallback(it.msg.resourceString) }
+        runWithSettings({ settings ->
+            loading({
+                repository.getWeatherById(settings, id)
+            }, callback, {
+                onError(it)
+                onFail.invoke()
             })
-        }
+        })
     }
 
     private fun updateWeatherUnit(
-        scope: CoroutineScope,
         callback: (WeatherModel) -> Unit,
-        errorCallback: ((Int) -> Unit),
         bdUpdateStatus: (Pair<Long, Boolean>) -> Unit
     ) {
-        runWithSettings(scope, errorCallback) { settings ->
+        runWithSettings({ settings ->
             val id = updatingId
             if (id != null) {
                 bdUpdateStatus(Pair(id, true))
-                loading(repository, scope, {
-                    getWeatherById(settings, id)
-                }, { data, error ->
-                    data?.let {
-                        updatingId = null
-                        callback(it)
-                    }
-                    error?.let {
-                        log(it.message ?: it.toString())
-                        bdUpdateStatus(Pair(id, false))
-                        updateWeatherUnit(scope, callback, errorCallback, bdUpdateStatus)
-                    }
+                loading({
+                    repository.getWeatherById(settings, id)
+                }, {
+                    updatingId = null
+                    callback(it)
+                }, {
+                    updatingId = null
+                    bdUpdateStatus(Pair(id, false))
                 })
             }
-        }
+        })
     }
 
     override fun delete(
         id: Long, scope: CoroutineScope
     ) {
-        uploading(repository, scope) {
-            delete(id)
-        }
+        uploading({ repository.delete(id) }, scope)
     }
 
     override fun changedData(
         list: List<WeatherHolder>,
         scope: CoroutineScope
     ) {
-        uploading(repository, scope) {
-            changedData(list)
-        }
+        uploading({ repository.changedData(list) }, scope)
     }
 
     @WorkerThread

@@ -3,9 +3,12 @@ package ru.kcoder.weatherhelper.presentation.weather.list
 import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
+import ru.kcoder.weatherhelper.presentation.common.BaseInteractor
 import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 
-abstract class ViewModelWeatherList: BaseViewModel() {
+abstract class ViewModelWeatherList(
+    baseInteractor: BaseInteractor
+) : BaseViewModel(baseInteractor) {
     abstract val weatherList: LiveData<WeatherModel>
     abstract val updateStatus: LiveData<Pair<Long, Boolean>>
     abstract val editStatus: LiveData<Boolean>

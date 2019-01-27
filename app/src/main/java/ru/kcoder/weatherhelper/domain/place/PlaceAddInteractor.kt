@@ -1,27 +1,23 @@
 package ru.kcoder.weatherhelper.domain.place
 
-import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.presentation.common.BaseInteractor
 
-interface PlaceAddInteractor {
+interface PlaceAddInteractor: BaseInteractor {
     fun getAddress(
         lat: Double, lon: Double,
-        scope: CoroutineScope,
         callback: (Pair<String?, String?>) -> Unit,
-        errorCallback: (Int) -> Unit
+        loadingStatus: (Boolean) -> Unit,
+        onFail: () -> Unit
     )
 
     fun savePlace(
         place: PlaceMarker,
-        scope: CoroutineScope,
-        callback: (WeatherHolder) -> Unit,
-        errorCallback: (Int) -> Unit
+        callback: (WeatherHolder) -> Unit
     )
 
     fun getUTCoffset(
         lat: Double, lon: Double,
-        scope: CoroutineScope,
-        callback: (Int) -> Unit,
-        errorCallback: (Int) -> Unit)
+        callback: (Int) -> Unit)
 }
