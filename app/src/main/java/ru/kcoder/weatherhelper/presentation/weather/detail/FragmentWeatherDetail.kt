@@ -45,7 +45,6 @@ class FragmentWeatherDetail : BaseFragment() {
     private fun subscribeUi() {
         viewModel.weather.observe(this, Observer { holder ->
             holder?.let {
-                textViewTitle.text = it.name
                 if (it.hours.isNotEmpty()){
                     textViewTimeDescription.text = it.hours[0].dateAndDescription
                     textViewTemp.text = it.hours[0].tempNow

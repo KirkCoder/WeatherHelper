@@ -6,7 +6,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.weather_common.view.*
+import kotlinx.android.synthetic.main.weather_list_adapter_item.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation

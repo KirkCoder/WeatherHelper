@@ -2,61 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTitle"
-            tools:text="New York"
-            android:text="@string/weather_mock_place_name"
-            style="@style/TextStyleTitle"
-            android:paddingTop="@dimen/layout_padding"
-            android:paddingStart="@dimen/layout_padding"
-            android:paddingEnd="@dimen/layout_padding"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/imageViewMotion"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewMotion"
-            android:text="@string/weather_mock_place_name"
-            style="@style/TextStyleTitle"
-            android:paddingTop="@dimen/layout_padding"
-            android:paddingStart="@dimen/layout_padding"
-            android:paddingEnd="@dimen/layout_padding"
-            app:layout_constraintTop_toTopOf="@+id/textViewTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            app:srcCompat="@drawable/ic_swap"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTimeDescription"
             android:text="@string/weather_mock_description"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-            android:paddingStart="@dimen/layout_padding"
-            android:paddingEnd="0dp"
-            android:layout_marginTop="@dimen/layout_margin_half"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/imageButtonUpdate"
-            android:layout_marginStart="@dimen/layout_margin_half"
-            android:background="@null"
-            app:srcCompat="@drawable/anim_loading_drawable"
-            app:layout_constraintStart_toEndOf="@+id/textViewTimeDescription"
-            app:layout_constraintTop_toTopOf="@+id/textViewTimeDescription"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTimeDescription"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginTop="@dimen/layout_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -70,7 +25,6 @@
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:includeFontPadding="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewIco"
             app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -93,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingStart="0dp"
             android:paddingEnd="@dimen/layout_padding"
-            app:layout_constraintStart_toEndOf="@+id/textViewTemp"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@id/textViewTemp"
             app:layout_constraintBottom_toBottomOf="@id/textViewTemp"
             app:srcCompat="@drawable/ic_sun"
@@ -136,39 +90,5 @@
             app:layout_constraintStart_toEndOf="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-
-    <ru.kcoder.weatherhelper.custom.SeekBarWithNames
-            android:id="@+id/seekBarWeather"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tickMarkOne="@drawable/separator"
-            app:tickMarkSecond="@drawable/separator_half"
-            android:paddingStart="@dimen/layout_padding"
-            android:paddingEnd="@dimen/layout_padding"
-            android:paddingTop="@dimen/layout_padding"
-            android:paddingBottom="@dimen/layout_padding"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWindDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <View
-            android:id="@+id/viewDelimiter"
-            app:layout_constraintTop_toBottomOf="@+id/seekBarWeather"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:background="@color/colorGray"
-            android:layout_height="@dimen/delimiter_height"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonDelete"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/DeleteBtn"
-            android:text="@string/weather_delete"
-            app:layout_constraintTop_toBottomOf="@+id/viewDelimiter"
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
