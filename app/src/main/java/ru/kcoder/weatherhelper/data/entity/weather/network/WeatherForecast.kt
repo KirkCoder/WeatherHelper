@@ -1,6 +1,8 @@
-package ru.kcoder.weatherhelper.data.entity.weather
+package ru.kcoder.weatherhelper.data.entity.weather.network
 
 import com.google.gson.annotations.SerializedName
+import ru.kcoder.weatherhelper.data.entity.weather.network.City
+import ru.kcoder.weatherhelper.data.entity.weather.network.Data
 import ru.kcoder.weatherhelper.data.network.common.ApiResponseForecast
 
 class WeatherForecast: ApiResponseForecast {

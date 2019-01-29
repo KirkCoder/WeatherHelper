@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
+import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
 import kotlinx.android.synthetic.main.weather_common.view.*
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
+import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class CommonDelegate()
-    : AbsListItemAdapterDelegate<WeatherPresentation, Any, CommonDelegate.CommonViewHolder>() {
+class CommonDelegate(private val adapter: AdapterWeatherDetail)
+    : AdapterDelegate<List<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): CommonViewHolder {
         return CommonViewHolder(
@@ -19,18 +19,24 @@ class CommonDelegate()
         )
     }
 
-    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean {
-        return item is WeatherPresentation
+    override fun isForViewType(items: List<Any>, position: Int): Boolean {
+        val item = items[position]
+        return item is SlimHour && item.isChecked
     }
 
-    override fun onBindViewHolder(item: WeatherPresentation, holder: CommonViewHolder, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder, list: MutableList<Any>) {
+        val item = items[position] as SlimHour
         with(holder.itemView){
-            textViewTimeDescription.text = item.dateAndDescription
-            textViewTemp.text = item.tempNow
-            textViewCalvin.text = item.degreeThumbnail
-            imageViewIco.setImageResource(item.icoRes)
-            textViewHumidityDescription.text = item.humidity
-            textViewWindDescription.text = item.wind
+            setOnClickListener {
+                item.isChecked = false
+                adapter.notifyItemChanged(position)
+            }
+            textViewTimeDescription.text = item.hour.dateAndDescription
+            textViewTemp.text = item.hour.tempNow
+            textViewCalvin.text = item.hour.degreeThumbnail
+            imageViewIco.setImageResource(item.hour.icoRes)
+            textViewHumidityDescription.text = item.hour.humidity
+            textViewWindDescription.text = item.hour.wind
         }
     }
 

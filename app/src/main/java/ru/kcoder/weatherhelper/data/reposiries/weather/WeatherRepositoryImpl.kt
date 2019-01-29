@@ -1,9 +1,9 @@
 package ru.kcoder.weatherhelper.data.reposiries.weather
 
-import ru.kcoder.weatherhelper.data.database.settings.SettingsSource
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.*
+import ru.kcoder.weatherhelper.data.entity.weather.network.Data
 import ru.kcoder.weatherhelper.data.network.common.executeCall
 import ru.kcoder.weatherhelper.data.network.weather.WeatherNetworkSource
 import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSource
@@ -21,7 +21,7 @@ class WeatherRepositoryImpl(
     private val imageSource: ImageResSource
 ) : WeatherRepository {
 
-    override fun getWeatherById(settings: Settings, id: Long): WeatherModel {
+    override fun updateWeatherById(settings: Settings, id: Long): WeatherModel {
 
         database.getSingleWeatherHolder(id)?.let {
 
@@ -56,11 +56,11 @@ class WeatherRepositoryImpl(
     // todo replace when create view pager and common view model
     override fun getWeather(settings: Settings, id: Long, update: Boolean): WeatherHolder {
         return if (update) {
-            getWeatherById(settings, id).list.filter { it.id == id }[0]
+            updateWeatherById(settings, id).list.filter { it.id == id }[0]
         } else {
             database.getWeather(id)?.let {
                 return@let it.mapToPresentation()
-            } ?: getWeatherById(settings, id).list.filter { it.id == id }[0]
+            } ?: updateWeatherById(settings, id).list.filter { it.id == id }[0]
         }
     }
 

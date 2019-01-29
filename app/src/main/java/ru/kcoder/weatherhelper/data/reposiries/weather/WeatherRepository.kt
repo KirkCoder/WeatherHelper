@@ -5,7 +5,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 interface WeatherRepository {
-    fun getWeatherById(settings: Settings, id: Long): WeatherModel
+    fun updateWeatherById(settings: Settings, id: Long): WeatherModel
     fun getAllWeather(settings: Settings, updatedId: Long = WeatherModel.BROADCAST): WeatherModel
     fun getWeather(settings: Settings, id: Long, update: Boolean = false): WeatherHolder
     fun delete(id: Long)

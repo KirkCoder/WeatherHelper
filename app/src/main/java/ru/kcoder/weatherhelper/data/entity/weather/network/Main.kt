@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.data.entity.weather
+package ru.kcoder.weatherhelper.data.entity.weather.network
 
 import com.google.gson.annotations.SerializedName
 

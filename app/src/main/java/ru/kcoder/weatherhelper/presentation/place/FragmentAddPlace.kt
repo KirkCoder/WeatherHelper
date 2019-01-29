@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,15 +23,17 @@ import kotlinx.android.synthetic.main.place_add_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
+import ru.kcoder.weatherhelper.presentation.common.AbstractFragment
 import ru.kcoder.weatherhelper.presentation.weather.list.ViewModelWeatherList
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 
-class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
+class FragmentAddPlace : AbstractFragment(), DialogFragmentAddPlace.Callback {
 
     private val viewModel: ViewModelAddPlace by viewModel()
+    override lateinit var errorLiveData: LiveData<Int>
     private val weatherViewModel: ViewModelWeatherList by sharedViewModel()
     private var map: GoogleMap? = null
     private var mapView: MapView? = null
@@ -46,9 +49,8 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView()
-        subscribeUi()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     @SuppressLint("MissingPermission") //"smart cast" not work
@@ -116,7 +118,8 @@ class FragmentAddPlace : BaseFragment(), DialogFragmentAddPlace.Callback {
         }
     }
 
-    protected fun subscribeUi() {
+    override fun subscribeUi() {
+        super.subscribeUi()
         viewModel.fabVisibility.observe(this, Observer { loading ->
             loading?.let {
                 if (it) {

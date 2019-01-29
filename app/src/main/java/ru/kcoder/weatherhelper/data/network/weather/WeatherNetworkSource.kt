@@ -3,8 +3,8 @@ package ru.kcoder.weatherhelper.data.network.weather
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.kcoder.weatherhelper.data.entity.weather.Data
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherForecast
+import ru.kcoder.weatherhelper.data.entity.weather.network.Data
+import ru.kcoder.weatherhelper.data.entity.weather.network.WeatherForecast
 
 interface WeatherNetworkSource {
 

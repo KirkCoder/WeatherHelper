@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.data.entity.weather
+package ru.kcoder.weatherhelper.data.entity.weather.network
 
 class Coord {
     var lat: Double? = null

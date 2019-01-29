@@ -8,10 +8,6 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <include layout="@layout/weather_common"/>
+            android:layout_height="wrap_content"/>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -4,18 +4,20 @@ import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import ru.kcoder.weatherhelper.presentation.common.BaseFragment
+import ru.kcoder.weatherhelper.presentation.common.AbstractFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
-class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
+class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
     private val viewModel: ViewModelWeatherList by sharedViewModel()
-
+    override lateinit var errorLiveData: LiveData<Int>
     private val adapter = AdapterWeatherList({
         showDetailFragment(it)
     }, {
@@ -43,12 +45,12 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initView(view)
-        subscribeUi()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initView(view: View) {
+        errorLiveData = viewModel.errorLiveData
         setHasOptionsMenu(true)
         addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
@@ -61,12 +63,15 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
     private fun finishEdit() = viewModel.setEditStatus(false)
 
     private fun initRecycler(context: Context) {
-        recyclerViewWeatherList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        recyclerViewWeatherList.adapter = adapter
-        touchHelper.attachToRecyclerView(recyclerViewWeatherList)
+        with(recyclerViewWeatherList) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@FragmentWeatherList.adapter
+            touchHelper.attachToRecyclerView(this)
+        }
     }
 
-    private fun subscribeUi() {
+    override fun subscribeUi() {
+        super.subscribeUi()
         viewModel.weatherList.observe(this, Observer { list ->
             list?.let { adapter.setData(it) }
         })
@@ -127,7 +132,7 @@ class FragmentWeatherList : BaseFragment(), DialogFragmentDelete.Callback {
 
     override fun needDelete(id: Long?) {
         id?.let {
-            adapter.deleteItem(id)?.let { list ->  viewModel.delete(it, list)}
+            adapter.deleteItem(id)?.let { list -> viewModel.delete(it, list) }
         }
     }
 

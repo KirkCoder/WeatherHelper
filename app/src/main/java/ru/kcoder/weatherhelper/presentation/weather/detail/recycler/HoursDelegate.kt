@@ -4,29 +4,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
+import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
 import kotlinx.android.synthetic.main.weather_detail_adapter_item.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class HoursDelegate:
-    AbsListItemAdapterDelegate<SlimHour, Any, HoursDelegate.HourViewHolder>() {
+class HoursDelegate(private val adapter: AdapterWeatherDetail)
+    : AdapterDelegate<List<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): HourViewHolder {
         return HourViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.weather_detail_adapter_item, parent)
+                .inflate(R.layout.weather_detail_adapter_item, parent,false)
         )
     }
 
-    override fun isForViewType(item: Any, items: MutableList<Any>, position: Int): Boolean {
-        return item is SlimHour
+    override fun isForViewType(items: List<Any>, position: Int): Boolean {
+        val item = items[position]
+        return item is SlimHour && !item.isChecked
     }
 
-    override fun onBindViewHolder(item: SlimHour, holder: HourViewHolder, p2: MutableList<Any>) {
+    override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder, list: MutableList<Any>) {
+        val item = items[position] as SlimHour
         with(holder.itemView){
+            setOnClickListener {
+                item.isChecked = true
+                adapter.notifyItemChanged(position)
+            }
             textViewName.text = item.hour.time
-            imageViewIco.setImageResource(item.hour.icoRes)
+            imageViewIcoDetail.setImageResource(item.hour.icoRes)
             textViewTmp.text = item.hour.tempNow
         }
     }

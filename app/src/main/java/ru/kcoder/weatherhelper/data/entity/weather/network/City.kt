@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.data.entity.weather
+package ru.kcoder.weatherhelper.data.entity.weather.network
 
 class City {
     var name: String? = null

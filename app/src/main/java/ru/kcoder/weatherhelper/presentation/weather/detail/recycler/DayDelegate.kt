@@ -27,7 +27,7 @@ class DayDelegate
     override fun onBindViewHolder(item: SlimDay, holder: ViewHolder, p2: MutableList<Any>) {
         with(holder.itemView){
             textViewName.text = item.day.time
-            imageViewIco.setImageResource(item.day.icoRes)
+            imageViewIcoDetail.setImageResource(item.day.icoRes)
             textViewTmp.text = item.day.tempNow
         }
     }

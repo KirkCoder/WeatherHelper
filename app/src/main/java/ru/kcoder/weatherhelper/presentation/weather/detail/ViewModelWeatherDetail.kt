@@ -8,7 +8,7 @@ import ru.kcoder.weatherhelper.presentation.common.BaseViewModel
 abstract class ViewModelWeatherDetail(
     baseInteractor: BaseInteractor
 ) : BaseViewModel(baseInteractor) {
-    abstract val weather: MutableLiveData<WeatherHolder>
+    abstract val weather: MutableLiveData<List<Any>>
     abstract val status: MutableLiveData<Boolean>
     abstract fun forceUpdate()
 }

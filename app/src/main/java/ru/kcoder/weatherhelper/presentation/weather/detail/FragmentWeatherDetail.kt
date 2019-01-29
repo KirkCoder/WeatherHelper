@@ -6,16 +6,21 @@ import androidx.appcompat.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.weather_common.*
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.weather_detail_fragment.*
 import org.koin.android.ext.android.setProperty
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import ru.kcoder.weatherhelper.presentation.common.BaseFragment
+import ru.kcoder.weatherhelper.presentation.common.AbstractFragment
+import ru.kcoder.weatherhelper.presentation.weather.detail.recycler.AdapterWeatherDetail
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class FragmentWeatherDetail : BaseFragment() {
+class FragmentWeatherDetail : AbstractFragment() {
+
+    override lateinit var errorLiveData: LiveData<Int>
 
     private lateinit var viewModel: ViewModelWeatherDetail
+    private val adapter = AdapterWeatherDetail()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,34 +38,30 @@ class FragmentWeatherDetail : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initViews()
-        subscribeUi()
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initViews() {
+        errorLiveData = viewModel.errorLiveData
         swipeLayoutDetail.setOnRefreshListener { viewModel.forceUpdate() }
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@FragmentWeatherDetail.adapter
+        }
     }
 
-    private fun subscribeUi() {
-        viewModel.weather.observe(this, Observer { holder ->
-            holder?.let {
-                if (it.hours.isNotEmpty()){
-                    textViewTimeDescription.text = it.hours[0].dateAndDescription
-                    textViewTemp.text = it.hours[0].tempNow
-                    textViewCalvin.text = it.hours[0].degreeThumbnail
-                    imageViewIco.setImageResource(it.hours[0].icoRes)
-                    textViewHumidityDescription.text = it.hours[0].humidity
-                    textViewWindDescription.text = it.hours[0].wind
-                }
-            }
+    override fun subscribeUi() {
+        super.subscribeUi()
+        viewModel.weather.observe(this, Observer { list ->
+            if (!list.isNullOrEmpty()) adapter.setData(list)
         })
 
         viewModel.status.observe(this, Observer { status ->
             status?.let { swipeLayoutDetail.isRefreshing = it }
         })
 
-        viewModel.errorLiveData.observe(this, Observer {error ->
+        viewModel.errorLiveData.observe(this, Observer { error ->
             error?.let { showError(it) }
         })
     }

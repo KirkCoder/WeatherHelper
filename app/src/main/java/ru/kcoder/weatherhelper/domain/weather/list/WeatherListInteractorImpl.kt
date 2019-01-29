@@ -38,7 +38,7 @@ class WeatherListInteractorImpl(
     ) {
         runWithSettings({ settings ->
             loading({
-                repository.getWeatherById(settings, id)
+                repository.updateWeatherById(settings, id)
             }, callback, {
                 onError(it)
                 onFail.invoke()
@@ -55,7 +55,7 @@ class WeatherListInteractorImpl(
             if (id != null) {
                 bdUpdateStatus(Pair(id, true))
                 loading({
-                    repository.getWeatherById(settings, id)
+                    repository.updateWeatherById(settings, id)
                 }, {
                     updatingId = null
                     callback(it)
