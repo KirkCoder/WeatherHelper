@@ -18,7 +18,6 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.R
 class FragmentWeatherDetail : AbstractFragment() {
 
     override lateinit var errorLiveData: LiveData<Int>
-
     private lateinit var viewModel: ViewModelWeatherDetail
     private val adapter = AdapterWeatherDetail()
 
@@ -61,8 +60,8 @@ class FragmentWeatherDetail : AbstractFragment() {
             status?.let { swipeLayoutDetail.isRefreshing = it }
         })
 
-        viewModel.errorLiveData.observe(this, Observer { error ->
-            error?.let { showError(it) }
+        viewModel.checked.observe(this, Observer { data ->
+            data?.let { adapter.setChecked(it) }
         })
     }
 

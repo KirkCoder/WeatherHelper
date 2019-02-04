@@ -64,6 +64,10 @@ class WeatherRepositoryImpl(
         }
     }
 
+    override fun getDayTitle(): String {
+        return stringSource.getDayTitle()
+    }
+
     override fun delete(id: Long) {
         database.deleteWeatherHolder(id)
     }
@@ -202,6 +206,7 @@ class WeatherRepositoryImpl(
                         settings.degreeDifference
             }?.toInt()?.toString() ?: "XX"
             degreeThumbnail = settings.degreeThumbnail
+            tempNowWithThumbnail = "$tempNow$degreeThumbnail"
             wind = data.wind?.speed?.toInt()?.toString() ?: ""
             wind = if (data.wind?.speed != null) {
                 "${data.wind?.speed?.toInt()?.toString()} ${stringSource.getWindDescription()}"

@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:orientation="vertical"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewIcoDetail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_sun"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_width="@dimen/weather_detail_adapter_ico_size"
+            android:layout_height="@dimen/weather_detail_adapter_ico_size"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewName"
-            android:layout_marginTop="@dimen/layout_margin_half"
-            android:layout_marginStart="@dimen/layout_margin_half"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginStart="@dimen/layout_margin"
+            app:layout_constraintStart_toEndOf="@id/imageViewIcoDetail"
             app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextStyleMiddle"
             android:layout_width="wrap_content"
             tools:text="11:00"
             android:layout_height="wrap_content"/>
 
-    <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewIcoDetail"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            tools:src="@drawable/ic_sun"
-            android:layout_marginTop="@dimen/layout_margin_half"
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewDescription"
+            android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginStart="@dimen/layout_margin"
+            app:layout_constraintStart_toEndOf="@id/imageViewIcoDetail"
+            app:layout_constraintTop_toBottomOf="@id/textViewName"
             android:layout_width="wrap_content"
+            tools:text="11:00"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -38,9 +43,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="25/12"
-            android:layout_marginTop="@dimen/layout_margin_half"
-            android:layout_marginEnd="@dimen/layout_margin_half"
+            style="@style/TextStyleMiddle"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginEnd="@dimen/layout_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/viewDelimiter"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+            app:layout_constraintStart_toEndOf="@id/imageViewIcoDetail"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:background="@color/colorWhite"
+            android:layout_width="wrap_content"
+            tools:background="@color/colorBlack"
+            android:layout_height="@dimen/delimiter_height"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

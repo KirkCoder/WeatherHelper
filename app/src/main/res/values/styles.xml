@@ -31,4 +31,10 @@
     <style name="TextStyleTitle">
         <item name="android:textSize">@dimen/title_text_size</item>
     </style>
+    <style name="TextStyleSubTitle">
+        <item name="android:textSize">@dimen/sub_title_size</item>
+    </style>
+    <style name="TextStyleMiddle">
+        <item name="android:textSize">@dimen/middle_text_size</item>
+    </style>
 </resources>

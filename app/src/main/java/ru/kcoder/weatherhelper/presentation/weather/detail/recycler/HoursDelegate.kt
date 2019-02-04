@@ -9,13 +9,12 @@ import kotlinx.android.synthetic.main.weather_detail_adapter_item.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class HoursDelegate(private val adapter: AdapterWeatherDetail)
-    : AdapterDelegate<List<Any>>() {
+class HoursDelegate(private val adapter: AdapterWeatherDetail) : AdapterDelegate<List<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): HourViewHolder {
         return HourViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.weather_detail_adapter_item, parent,false)
+                .inflate(R.layout.weather_detail_adapter_item, parent, false)
         )
     }
 
@@ -24,18 +23,24 @@ class HoursDelegate(private val adapter: AdapterWeatherDetail)
         return item is SlimHour && !item.isChecked
     }
 
-    override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder, list: MutableList<Any>) {
+    override fun onBindViewHolder(
+        items: List<Any>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        list: MutableList<Any>
+    ) {
         val item = items[position] as SlimHour
-        with(holder.itemView){
+        with(holder.itemView) {
             setOnClickListener {
                 item.isChecked = true
                 adapter.notifyItemChanged(position)
             }
             textViewName.text = item.hour.time
             imageViewIcoDetail.setImageResource(item.hour.icoRes)
-            textViewTmp.text = item.hour.tempNow
+            textViewTmp.text = item.hour.tempNowWithThumbnail
+            textViewDescription.text = item.hour.dateAndDescription
         }
     }
 
-    inner class HourViewHolder(view: View): RecyclerView.ViewHolder(view)
+    inner class HourViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

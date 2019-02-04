@@ -8,12 +8,12 @@ fun Long.tryFormatDate(): String {
 }
 
 fun Long.tryFormatTime(): String {
-    return this.getDate("hhaa")
+    return this.getDate("HH:mm")
 }
 
 
 fun Long.tryFormatDay(): String {
-    return this.getDate("EEEEEEE")
+    return this.getDate("EEEE")
 }
 
 fun Long.tryFormatHour(): Int {

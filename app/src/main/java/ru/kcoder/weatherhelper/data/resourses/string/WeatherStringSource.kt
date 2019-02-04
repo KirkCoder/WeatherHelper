@@ -4,4 +4,5 @@ interface WeatherStringSource {
     fun getDescriptionByCod(cod: Int): String
     fun getWindDescription(): String
     fun getHumidityDescription(): String
+    fun getDayTitle(): String
 }

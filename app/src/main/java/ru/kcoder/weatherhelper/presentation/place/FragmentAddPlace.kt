@@ -113,6 +113,7 @@ class FragmentAddPlace : AbstractFragment(), DialogFragmentAddPlace.Callback {
     }
 
     private fun initView() {
+        errorLiveData = viewModel.errorLiveData
         fabSelectPlace.setOnClickListener { _ ->
             viewModel.savePlace()
         }

@@ -10,4 +10,5 @@ interface WeatherRepository {
     fun getWeather(settings: Settings, id: Long, update: Boolean = false): WeatherHolder
     fun delete(id: Long)
     fun changedData(list: List<WeatherHolder>)
+    fun getDayTitle(): String
 }

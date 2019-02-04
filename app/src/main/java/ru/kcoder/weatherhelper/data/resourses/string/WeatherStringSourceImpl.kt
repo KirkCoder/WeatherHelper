@@ -75,4 +75,8 @@ class WeatherStringSourceImpl(
     override fun getHumidityDescription(): String {
         return context.getString(R.string.weather_humidity)
     }
+
+    override fun getDayTitle(): String {
+        return context.getString(R.string.weather_detail_daily_title)
+    }
 }

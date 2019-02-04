@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutConstrain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourName1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textViewHourName2"
+            android:text="08:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewHour1"
+            app:layout_constraintTop_toBottomOf="@id/textViewHourName1"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName1"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName1"
+            android:layout_marginTop="@dimen/layout_margin"
+            tools:src="@drawable/ic_sun"
+            app:srcCompat="@drawable/ic_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourTmp1"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewHour1"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName1"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName1"
+            android:layout_marginTop="@dimen/layout_margin"
+            tools:text="+28"
+            android:text="+28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourName2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewHourName3"
+            app:layout_constraintStart_toEndOf="@+id/textViewHourName1"
+            tools:text="12:00"
+            android:text="12:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewHour2"
+            app:layout_constraintTop_toBottomOf="@id/textViewHourName2"
+            android:layout_marginTop="@dimen/layout_margin"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName2"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName2"
+            tools:src="@drawable/ic_sun"
+            app:srcCompat="@drawable/ic_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourTmp2"
+            app:layout_constraintTop_toBottomOf="@id/imageViewHour2"
+            tools:text="-8"
+            android:text="-8"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName2"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName2"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourName3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewHourName4"
+            app:layout_constraintStart_toEndOf="@+id/textViewHourName2"
+            tools:text="15:00"
+            android:text="15:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewHour3"
+            app:layout_constraintTop_toBottomOf="@id/textViewHourName3"
+            android:layout_marginTop="@dimen/layout_margin"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName3"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName3"
+            tools:src="@drawable/ic_sun"
+            app:srcCompat="@drawable/ic_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourTmp3"
+            app:layout_constraintTop_toBottomOf="@id/imageViewHour3"
+            tools:text="-28"
+            android:text="-28"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName3"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName3"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourName4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewHourTmp5"
+            app:layout_constraintStart_toEndOf="@+id/textViewHourName3"
+            tools:text="18:00"
+            android:text="18:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewHour4"
+            app:layout_constraintTop_toBottomOf="@id/textViewHourName4"
+            android:layout_marginTop="@dimen/layout_margin"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName4"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName4"
+            tools:src="@drawable/ic_sun"
+            app:srcCompat="@drawable/ic_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourTmp4"
+            app:layout_constraintTop_toBottomOf="@id/imageViewHour4"
+            tools:text="8"
+            android:text="8"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName4"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName4"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourName5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewHourName4"
+            tools:text="21:00"
+            android:text="21:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewHour5"
+            app:layout_constraintTop_toBottomOf="@id/textViewHourName5"
+            android:layout_marginTop="@dimen/layout_margin"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName5"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName5"
+            tools:src="@drawable/ic_sun"
+            app:srcCompat="@drawable/ic_sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewHourTmp5"
+            app:layout_constraintTop_toBottomOf="@id/imageViewHour5"
+            tools:text="8"
+            android:text="8"
+            app:layout_constraintStart_toStartOf="@+id/textViewHourName5"
+            app:layout_constraintEnd_toEndOf="@+id/textViewHourName5"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
