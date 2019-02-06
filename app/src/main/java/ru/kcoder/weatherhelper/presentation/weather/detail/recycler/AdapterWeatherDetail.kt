@@ -2,16 +2,19 @@ package ru.kcoder.weatherhelper.presentation.weather.detail.recycler
 
 import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
 
-class AdapterWeatherDetail : ListDelegationAdapter<List<Any>>() {
+class AdapterWeatherDetail(
+    private val clickInform: (Int?) -> Unit
+) : ListDelegationAdapter<List<Any>>() {
 
     private var clicked: Int? = null
 
     init {
-        delegatesManager.addDelegate(CommonDelegate(this))
-            .addDelegate(DayDelegate())
+        delegatesManager.addDelegate(HourDetailDelegate(this::unClicked))
+            .addDelegate(DayDelegate(this::onDetailClick))
+            .addDelegate(DayDetailDelegate(this::unClicked))
             .addDelegate(TitleDelegate())
             .addDelegate(MainTitleDelegate())
-            .addDelegate(HoursDelegate(this))
+            .addDelegate(HoursDelegate(this::onDetailClick))
     }
 
     fun setData(list: List<Any>) {
@@ -19,7 +22,7 @@ class AdapterWeatherDetail : ListDelegationAdapter<List<Any>>() {
         notifyDataSetChanged()
     }
 
-    private fun onDetailClick(position: Int){
+    private fun onDetailClick(position: Int) {
         clicked?.let {
             (items[it] as? ClickedItem)?.removeClick()
             notifyItemChanged(it)
@@ -27,8 +30,15 @@ class AdapterWeatherDetail : ListDelegationAdapter<List<Any>>() {
         setClicked(position)
     }
 
+    private fun unClicked(position: Int) {
+        clicked = null
+        clickInform(null)
+        notifyItemChanged(position)
+    }
+
     private fun setClicked(position: Int) {
         clicked = position
+        clickInform(position)
         notifyItemChanged(position)
     }
 

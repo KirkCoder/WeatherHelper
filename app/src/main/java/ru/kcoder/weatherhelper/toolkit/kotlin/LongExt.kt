@@ -22,7 +22,9 @@ fun Long.tryFormatHour(): Int {
 
 fun Long.getDate(format: String = "dd.MM.yyyy HH:mm"): String {
     return try {
-        SimpleDateFormat(format, Locale.getDefault()).format(this)
+        val sdf = SimpleDateFormat(format, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        sdf.format(this)
     } catch (e: IllegalArgumentException) {
         ""
     }

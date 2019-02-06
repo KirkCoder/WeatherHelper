@@ -35,6 +35,10 @@ class ViewModelWeatherDetailImpl(
         return null
     }
 
+    override fun clickInform(position: Int?) {
+        checked.value = position
+    }
+
     override fun forceUpdate() {
         updateWeather(id, true)
     }

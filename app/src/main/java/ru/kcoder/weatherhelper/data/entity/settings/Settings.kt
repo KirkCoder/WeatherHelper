@@ -5,6 +5,7 @@ class Settings {
     var degreeThumbnail:String = "\u2103"
     var maxHourPoints = 5
     var startNight = 19
+    var serverTimeJump = 3
     var endNight = 6
     var updateTime = THREE_HOURS_IN_SECONDS
 

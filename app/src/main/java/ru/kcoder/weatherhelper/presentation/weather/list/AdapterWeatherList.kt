@@ -87,6 +87,7 @@ class AdapterWeatherList(
             seekBarWeather.setListener(null)
 
             val item = list[position]
+            if(!item.isUpdating) (imageButtonUpdate.drawable as Animatable).stop()
 
             val hours = item.hours
             textViewTitle.text = item.name

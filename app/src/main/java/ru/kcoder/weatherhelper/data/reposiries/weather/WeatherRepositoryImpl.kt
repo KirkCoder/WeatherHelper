@@ -114,7 +114,8 @@ class WeatherRepositoryImpl(
                 val startDayHour = time.tryFormatHour()
                 var pos = 0
                 val halfDay = 4
-                var startNextDayPos = (24 - startDayHour) / 3
+                val difference = (startDayHour - 12) / settings.serverTimeJump
+                var startNextDayPos = (24 / settings.serverTimeJump) - difference
                 var startNextNightPos = startNextDayPos + halfDay
 
                 val iterator = data.listIterator()
@@ -122,7 +123,7 @@ class WeatherRepositoryImpl(
                     val next = iterator.next()
                     next.dt?.let { tmpLong ->
                         val tmpTime = timeUTCoffset + tmpLong.addMilliseconds()
-                        if (pos < 5) {
+                        if (pos < settings.maxHourPoints) {
                             hours.add(
                                 getWeatherPresentation(
                                     settings,

@@ -9,8 +9,9 @@ import kotlinx.android.synthetic.main.weather_common.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class CommonDelegate(private val adapter: AdapterWeatherDetail)
-    : AdapterDelegate<List<Any>>() {
+class HourDetailDelegate(
+    private val unClick: (Int) -> Unit
+) : AdapterDelegate<List<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): CommonViewHolder {
         return CommonViewHolder(
@@ -24,12 +25,17 @@ class CommonDelegate(private val adapter: AdapterWeatherDetail)
         return item is SlimHour && item.isChecked
     }
 
-    override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder, list: MutableList<Any>) {
+    override fun onBindViewHolder(
+        items: List<Any>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        list: MutableList<Any>
+    ) {
         val item = items[position] as SlimHour
-        with(holder.itemView){
+        with(holder.itemView) {
             setOnClickListener {
                 item.isChecked = false
-                adapter.notifyItemChanged(position)
+                unClick(position)
             }
             textViewTimeDescription.text = item.hour.dateAndDescription
             textViewTemp.text = item.hour.tempNow
@@ -40,5 +46,5 @@ class CommonDelegate(private val adapter: AdapterWeatherDetail)
         }
     }
 
-    inner class CommonViewHolder(view: View): RecyclerView.ViewHolder(view)
+    inner class CommonViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

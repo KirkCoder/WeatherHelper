@@ -9,7 +9,9 @@ import kotlinx.android.synthetic.main.weather_detail_adapter_item.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class HoursDelegate(private val adapter: AdapterWeatherDetail) : AdapterDelegate<List<Any>>() {
+class HoursDelegate(
+    private val click: (Int) -> Unit
+) : AdapterDelegate<List<Any>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): HourViewHolder {
         return HourViewHolder(
@@ -33,7 +35,7 @@ class HoursDelegate(private val adapter: AdapterWeatherDetail) : AdapterDelegate
         with(holder.itemView) {
             setOnClickListener {
                 item.isChecked = true
-                adapter.notifyItemChanged(position)
+                click(position)
             }
             textViewName.text = item.hour.time
             imageViewIcoDetail.setImageResource(item.hour.icoRes)

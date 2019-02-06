@@ -25,7 +25,10 @@ class WeatherListInteractorImpl(
         runWithSettings({ settings ->
             loading({
                 repository.getAllWeather(settings).also { findNotUpdatedItem(settings, it) }
-            }, callback, {
+            }, {
+                callback(it)
+                updateWeatherUnit(callback, bdUpdateStatus)
+            }, {
                 updateWeatherUnit(callback, bdUpdateStatus)
             })
         })
@@ -38,7 +41,9 @@ class WeatherListInteractorImpl(
     ) {
         runWithSettings({ settings ->
             loading({
-                repository.updateWeatherById(settings, id)
+                repository.updateWeatherById(settings, id).also {
+                    val i = 0
+                }
             }, callback, {
                 onError(it)
                 onFail.invoke()
@@ -55,7 +60,7 @@ class WeatherListInteractorImpl(
             if (id != null) {
                 bdUpdateStatus(Pair(id, true))
                 loading({
-                    repository.updateWeatherById(settings, id)
+                    repository.updateWeatherById(settings, id).also { findNotUpdatedItem(settings, it) }
                 }, {
                     updatingId = null
                     callback(it)

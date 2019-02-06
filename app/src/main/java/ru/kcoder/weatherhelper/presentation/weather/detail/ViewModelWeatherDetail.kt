@@ -11,4 +11,5 @@ abstract class ViewModelWeatherDetail(
     abstract val status: LiveData<Boolean>
     abstract val checked: LiveData<Int>
     abstract fun forceUpdate()
+    abstract fun clickInform(position: Int?)
 }

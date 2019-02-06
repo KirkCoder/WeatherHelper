@@ -19,7 +19,7 @@ class FragmentWeatherDetail : AbstractFragment() {
 
     override lateinit var errorLiveData: LiveData<Int>
     private lateinit var viewModel: ViewModelWeatherDetail
-    private val adapter = AdapterWeatherDetail()
+    private val adapter = AdapterWeatherDetail{ viewModel.clickInform(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
