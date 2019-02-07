@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.kcoder.weatherhelper.presentation.common.AbstractFragment
+import ru.kcoder.weatherhelper.presentation.weather.list.adapter.AdapterWeatherList
+import ru.kcoder.weatherhelper.presentation.weather.list.adapter.TouchCallback
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
+import ru.kcoder.weatherhelper.toolkit.debug.log
+import ru.kcoder.weatherhelper.toolkit.utils.LayoutUtils
 
 class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
@@ -63,6 +67,12 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     private fun finishEdit() = viewModel.setEditStatus(false)
 
     private fun initRecycler(context: Context) {
+        val width = resources.configuration.screenWidthDp
+        adapter.maxSeekBarPoints = when {
+            width < SCREEN_SMALL -> MIN_SEEK_POINTS
+            width > SCREEN_BIG -> MAX_SEEK_POINTS
+            else -> NORMAL_SEEK_POINTS
+        }
         with(recyclerViewWeatherList) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@FragmentWeatherList.adapter
@@ -142,6 +152,11 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
     companion object {
         const val TAG = "WEATHER_FRAGMENT_LIST_TAG"
+        const val SCREEN_SMALL = 360
+        const val SCREEN_BIG = 640
+        const val MAX_SEEK_POINTS = 7
+        const val NORMAL_SEEK_POINTS = 6
+        const val MIN_SEEK_POINTS = 4
         @JvmStatic
         fun newInstance() = FragmentWeatherList()
     }

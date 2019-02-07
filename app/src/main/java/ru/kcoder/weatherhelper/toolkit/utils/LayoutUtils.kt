@@ -8,12 +8,6 @@ import android.content.Context
  */
 object LayoutUtils {
 
-    fun calculateNoOfColumns(context: Context, width: Int = 180): Int {
-        val displayMetrics = context.resources.displayMetrics
-        val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-        return (dpWidth / width).toInt()
-    }
-
     fun getDpFromPx(context: Context, px: Int): Float {
         return px / context.resources.displayMetrics.density
     }

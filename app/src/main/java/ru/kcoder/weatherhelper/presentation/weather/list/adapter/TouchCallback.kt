@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.presentation.weather.list
+package ru.kcoder.weatherhelper.presentation.weather.list.adapter
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG

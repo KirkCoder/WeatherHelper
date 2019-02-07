@@ -8,6 +8,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
 import ru.kcoder.weatherhelper.domain.common.AbstractInteractor
+import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
 class WeatherListInteractorImpl(
@@ -41,9 +42,7 @@ class WeatherListInteractorImpl(
     ) {
         runWithSettings({ settings ->
             loading({
-                repository.updateWeatherById(settings, id).also {
-                    val i = 0
-                }
+                repository.updateWeatherById(settings, id)
             }, callback, {
                 onError(it)
                 onFail.invoke()
@@ -60,10 +59,12 @@ class WeatherListInteractorImpl(
             if (id != null) {
                 bdUpdateStatus(Pair(id, true))
                 loading({
-                    repository.updateWeatherById(settings, id).also { findNotUpdatedItem(settings, it) }
+                    repository.updateWeatherById(settings, id)
+                        .also { findNotUpdatedItem(settings, it) }
                 }, {
                     updatingId = null
                     callback(it)
+                    updateWeatherUnit(callback, bdUpdateStatus)
                 }, {
                     updatingId = null
                     bdUpdateStatus(Pair(id, false))

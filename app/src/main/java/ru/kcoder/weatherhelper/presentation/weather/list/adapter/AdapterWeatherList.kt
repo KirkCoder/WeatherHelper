@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.presentation.weather.list
+package ru.kcoder.weatherhelper.presentation.weather.list.adapter
 
 import android.graphics.drawable.Animatable
 import android.view.LayoutInflater
@@ -26,6 +26,8 @@ class AdapterWeatherList(
     private var listMap = mutableMapOf<Long, Int>()
     private var isEditStatus = false
     private var isMoved = false
+    var maxSeekBarPoints: Int? = null
+
 
     fun setData(data: WeatherModel) {
         if (list.isEmpty() || data.updatedWeatherHolderId == WeatherModel.FORCE) {
@@ -87,7 +89,7 @@ class AdapterWeatherList(
             seekBarWeather.setListener(null)
 
             val item = list[position]
-            if(!item.isUpdating) (imageButtonUpdate.drawable as Animatable).stop()
+            if (!item.isUpdating) (imageButtonUpdate.drawable as Animatable).stop()
 
             val hours = item.hours
             textViewTitle.text = item.name
@@ -125,8 +127,13 @@ class AdapterWeatherList(
             }
 
             if (hours.isNotEmpty()) {
+                val tmpHoursNames = maxSeekBarPoints?.let {
+                    return@let if (item.timeNames.size > it) {
+                        item.timeNames.subList(0, it)
+                    } else item.timeNames
+                } ?: item.timeNames
                 bind(0, hours)
-                seekBarWeather.setNames(item.timeNames)
+                seekBarWeather.setNames(tmpHoursNames)
                 seekBarWeather.setListener {
                     bind(it, hours)
                 }
