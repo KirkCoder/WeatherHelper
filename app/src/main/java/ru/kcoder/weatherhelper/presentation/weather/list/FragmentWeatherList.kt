@@ -15,8 +15,6 @@ import ru.kcoder.weatherhelper.presentation.weather.list.adapter.AdapterWeatherL
 import ru.kcoder.weatherhelper.presentation.weather.list.adapter.TouchCallback
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
-import ru.kcoder.weatherhelper.toolkit.debug.log
-import ru.kcoder.weatherhelper.toolkit.utils.LayoutUtils
 
 class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
@@ -122,7 +120,10 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                activity?.let { AppRouter.showSettingsFragment(it) }
+                true
+            }
             R.id.action_change -> {
                 viewModel.setEditStatus(true)
                 true

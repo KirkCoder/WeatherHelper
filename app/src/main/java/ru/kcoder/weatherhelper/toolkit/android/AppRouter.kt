@@ -6,24 +6,25 @@ import androidx.fragment.app.FragmentManager
 import ru.kcoder.weatherhelper.presentation.main.MainActivity
 import ru.kcoder.weatherhelper.presentation.main.MainFragment
 import ru.kcoder.weatherhelper.presentation.place.FragmentAddPlace
+import ru.kcoder.weatherhelper.presentation.settings.FragmentSettings
 import ru.kcoder.weatherhelper.presentation.weather.detail.FragmentWeatherDetail
 import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
 
 object AppRouter {
-    fun showMainFragment(activity: androidx.fragment.app.FragmentActivity) {
+    fun showMainFragment(activity: FragmentActivity) {
         activity.supportFragmentManager.beginTransaction()
             .replace(MainActivity.FRAGMENT_CONTAINER, MainFragment.newInstance(), MainFragment.TAG)
             .commit()
     }
 
-    fun showWeatherListFragment(fragmentManager: androidx.fragment.app.FragmentManager) {
+    fun showWeatherListFragment(fragmentManager: FragmentManager) {
         showNewFragment(
             fragmentManager, MainFragment.FRAGMENT_CONTAINER,
             FragmentWeatherList.newInstance(), FragmentWeatherList.TAG, true
         )
     }
 
-    fun showAddWeatherFragment(activity: androidx.fragment.app.FragmentActivity) {
+    fun showAddWeatherFragment(activity: FragmentActivity) {
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
             FragmentAddPlace.newInstance(),
@@ -31,7 +32,7 @@ object AppRouter {
         )
     }
 
-    fun showWeatherDetailFragment(activity: androidx.fragment.app.FragmentActivity, id: Long, needUpdate: Boolean = false) {
+    fun showWeatherDetailFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
             FragmentWeatherDetail.newInstance(id, needUpdate),
@@ -39,8 +40,16 @@ object AppRouter {
         )
     }
 
-    private fun getFragmentManager(activity: androidx.fragment.app.FragmentActivity): androidx.fragment.app.FragmentManager {
-        var hostFragment: androidx.fragment.app.Fragment? = null
+    fun showSettingsFragment(activity: FragmentActivity){
+        showNewFragment(
+            getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
+            FragmentSettings.newInstance(),
+            FragmentSettings.TAG, true
+        )
+    }
+
+    private fun getFragmentManager(activity: FragmentActivity): androidx.fragment.app.FragmentManager {
+        var hostFragment: Fragment? = null
         val fragments = activity.supportFragmentManager.fragments
         if (fragments.isNotEmpty()) {
             hostFragment = fragments[0]
@@ -50,9 +59,9 @@ object AppRouter {
     }
 
     private fun showNewFragment(
-        fragmentManager: androidx.fragment.app.FragmentManager,
+        fragmentManager: FragmentManager,
         frameLayoutId: Int,
-        fragment: androidx.fragment.app.Fragment,
+        fragment: Fragment,
         tag: String,
         addToBackStack: Boolean = false
     ) {
@@ -65,7 +74,7 @@ object AppRouter {
         transaction.commit()
     }
 
-    fun popBackStack(activity: androidx.fragment.app.FragmentActivity) {
+    fun popBackStack(activity: FragmentActivity) {
         getFragmentManager(activity).popBackStack()
     }
 }
