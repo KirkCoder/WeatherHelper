@@ -7,17 +7,35 @@ import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepositoryImpl
 import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSource
 import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSourceImpl
-import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractor
-import ru.kcoder.weatherhelper.domain.place.PlaceAddInteractorImpl
-import ru.kcoder.weatherhelper.presentation.place.ViewModelAddPlace
-import ru.kcoder.weatherhelper.presentation.place.ViewModelAddPlaceImpl
+import ru.kcoder.weatherhelper.features.place.ContaractPlace
+import ru.kcoder.weatherhelper.features.place.PlaceInteractor
+import ru.kcoder.weatherhelper.features.place.ViewModelPlace
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisorImpl
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandlerImpl
 import java.util.*
 
+const val PLACE_SCOPE = "place_scope"
 
-val placeModule = module {
-    factory<PlaceRepository> { PlaceRepositoryImpl(get(), get(), get()) }
-    factory<PlaceAddInteractor> { PlaceAddInteractorImpl(get(), get()) }
-    factory { Geocoder(get(), Locale.getDefault()) }
-    factory<TimeZoneSource> { TimeZoneSourceImpl() }
-    viewModel<ViewModelAddPlace> { ViewModelAddPlaceImpl(get()) }
+val placeModule = module("place") {
+    viewModel<ContaractPlace.ViewModel> {
+        ViewModelPlace(
+            get(),
+            get(name = "place.ScopeHandler"),
+            get(name = "place.ErrorSupervisor")
+        )
+    }
+    scope<ErrorSupervisor>(PLACE_SCOPE) { ErrorSupervisorImpl() }
+    scope<ScopeHandler>(PLACE_SCOPE) { ScopeHandlerImpl() }
+    scope<PlaceRepository>(PLACE_SCOPE) { PlaceRepositoryImpl(get(), get(), get()) }
+    scope(PLACE_SCOPE) { Geocoder(get(), Locale.getDefault()) }
+    scope<TimeZoneSource>(PLACE_SCOPE) { TimeZoneSourceImpl() }
+    scope<ContaractPlace.Interactor>(PLACE_SCOPE) {
+        PlaceInteractor(
+            get(), get(),
+            get(name = "place.ScopeHandler"),
+            get(name = "place.ErrorSupervisor")
+        )
+    }
 }

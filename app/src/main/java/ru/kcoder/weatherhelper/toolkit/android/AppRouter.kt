@@ -3,12 +3,12 @@ package ru.kcoder.weatherhelper.toolkit.android
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import ru.kcoder.weatherhelper.presentation.main.MainActivity
-import ru.kcoder.weatherhelper.presentation.main.MainFragment
-import ru.kcoder.weatherhelper.presentation.place.FragmentAddPlace
-import ru.kcoder.weatherhelper.presentation.settings.FragmentSettings
-import ru.kcoder.weatherhelper.presentation.weather.detail.FragmentWeatherDetail
-import ru.kcoder.weatherhelper.presentation.weather.list.FragmentWeatherList
+import ru.kcoder.weatherhelper.features.main.MainActivity
+import ru.kcoder.weatherhelper.features.main.MainFragment
+import ru.kcoder.weatherhelper.features.place.FragmentPlace
+import ru.kcoder.weatherhelper.features.settings.FragmentSettings
+import ru.kcoder.weatherhelper.features.weather.detail.FragmentWeatherDetail
+import ru.kcoder.weatherhelper.features.weather.list.FragmentWeatherList
 
 object AppRouter {
     fun showMainFragment(activity: FragmentActivity) {
@@ -27,8 +27,8 @@ object AppRouter {
     fun showAddWeatherFragment(activity: FragmentActivity) {
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
-            FragmentAddPlace.newInstance(),
-            FragmentAddPlace.TAG, true
+            FragmentPlace.newInstance(),
+            FragmentPlace.TAG, true
         )
     }
 

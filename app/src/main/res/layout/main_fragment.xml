@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="ru.kcoder.weatherhelper.presentation.main.MainActivity" android:orientation="vertical">
+        tools:context="ru.kcoder.weatherhelper.features.main.MainActivity" android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

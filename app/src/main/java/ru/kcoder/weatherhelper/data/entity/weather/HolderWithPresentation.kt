@@ -3,13 +3,13 @@ package ru.kcoder.weatherhelper.data.entity.weather
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class HolderWithPresentation(
+class HolderWithPresentation{
     @Embedded
-    val weatherHolder: WeatherHolder,
+    var weatherHolder: WeatherHolder = WeatherHolder()
 
     @Relation(parentColumn = "id", entityColumn = "holderId")
-    val list: List<WeatherPresentation>
-)
+    var list: List<WeatherPresentation> = emptyList()
+}
 
 fun HolderWithPresentation.mapToPresentation(): WeatherHolder {
 
