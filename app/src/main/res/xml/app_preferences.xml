@@ -4,15 +4,26 @@
 
     <ListPreference
             app:key="degree"
-            android:entries="@array/degree_arr"
-            android:entryValues="@array/degree_arr"
+            android:entries="@array/settings_degree_arr"
+            android:entryValues="@array/settings_degree_arr"
             android:defaultValue="\u2103"
             android:summary="%s"
             app:title="@string/settings_unit"/>
 
-    <Preference
-            app:key="feedback"
-            app:title="Send feedback"
-            app:summary="Report technical issues or suggest new features"/>
+    <ListPreference
+            app:key="update"
+            android:entries="@array/settings_update_arr_names"
+            android:entryValues="@array/settings_update_arr_values"
+            android:defaultValue="@string/settings_update_default"
+            android:summary="%s"
+            app:title="@string/settings_update"/>
+
+    <ListPreference
+            app:key="hours"
+            android:entries="@array/settings_hours_arr_names"
+            android:entryValues="@array/settings_hours_arr_names"
+            android:defaultValue="@string/settings_hours_default"
+            android:summary="%s"
+            app:title="@string/settings_hours"/>
 
 </androidx.preference.PreferenceScreen>

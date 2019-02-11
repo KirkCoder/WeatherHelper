@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- settings -->
+    <integer name="settings_server_time_jump">3</integer>
+    <integer name="settings_end_night">6</integer>
+    <integer name="settings_start_night">19</integer>
+</resources>

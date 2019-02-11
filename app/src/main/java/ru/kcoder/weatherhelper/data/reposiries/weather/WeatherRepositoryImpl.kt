@@ -203,8 +203,7 @@ class WeatherRepositoryImpl(
             }
             }"
             tempNow = data.main?.temp?.let {
-                it -
-                        settings.degreeDifference
+                it - settings.degreeDifference
             }?.toInt()?.toString() ?: "XX"
             degreeThumbnail = settings.degreeThumbnail
             tempNowWithThumbnail = "$tempNow$degreeThumbnail"

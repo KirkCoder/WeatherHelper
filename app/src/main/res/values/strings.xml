@@ -35,12 +35,49 @@
 
     <!--settings-->
     <string name="settings_unit">Unit of measurement</string>
-    <string-array name="degree_arr">
-        <item>\u2103</item>
-        <item>F</item>
+    <string name="settings_unit_key">degree</string>
+    <string name="settings_unit_default">\u2103</string>
+    <string-array name="settings_degree_arr">
+        <item>@string/settings_unit_default</item>
         <item>K</item>
     </string-array>
-    
+
+    <string name="settings_update">Update period</string>
+    <string name="settings_update_key">update</string>
+    <string name="settings_update_default">6</string>
+    <string-array name="settings_update_arr_names">
+        <item>Do not update</item>
+        <item>1 hour</item>
+        <item>2 hour</item>
+        <item>3 hour</item>
+        <item>6 hour</item>
+        <item>12 hour</item>
+    </string-array>
+
+    <string-array name="settings_update_arr_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+    </string-array>
+
+    <string name="settings_hours">Max hours points</string>
+    <string name="settings_hours_key">hours</string>
+    <string name="settings_hours_default">6</string>
+    <string-array name="settings_hours_arr_names">
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+
+    <string name="settings_degree_difference_celsius">273.15</string>
+    <string name="settings_degree_difference_kelvin">0.0</string>
+    <string name="settings_bg_update_time">-10800000</string>
+
     <!--weatherUpdate description-->
     <string name="thunderstorm_with_light_rain">thunderstorm with light rain</string>
     <string name="thunderstorm_with_rain">thunderstorm with rain</string>
