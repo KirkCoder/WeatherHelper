@@ -1,17 +1,17 @@
-package ru.kcoder.weatherhelper.features.weather.detail
+package ru.kcoder.weatherhelper.features.weather.detail.item
 
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
-import ru.kcoder.weatherhelper.features.weather.detail.recycler.ClickedItem
+import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.ClickedItem
 
-class ViewModelWeatherDetail(
-    private val interactor: ContractWeatherDetail.Interactor,
+class ViewModelWeatherDetailItem(
+    private val interactor: ContractWeatherDetailItem.Interactor,
     private val id: Long,
     forceUpdate: Boolean,
     scopeHandler: ScopeHandler,
     errorSupervisor: ErrorSupervisor
-) : ContractWeatherDetail.ViewModel(scopeHandler, errorSupervisor) {
+) : ContractWeatherDetailItem.ViewModel(scopeHandler, errorSupervisor) {
 
     override val weather = MutableLiveData<List<Any>>()
     override val status = MutableLiveData<Boolean>()

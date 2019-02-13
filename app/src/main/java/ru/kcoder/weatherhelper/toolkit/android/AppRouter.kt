@@ -7,7 +7,7 @@ import ru.kcoder.weatherhelper.features.main.MainActivity
 import ru.kcoder.weatherhelper.features.main.MainFragment
 import ru.kcoder.weatherhelper.features.place.FragmentPlace
 import ru.kcoder.weatherhelper.features.settings.FragmentSettings
-import ru.kcoder.weatherhelper.features.weather.detail.FragmentWeatherDetail
+import ru.kcoder.weatherhelper.features.weather.detail.host.FragmentWeatherDetailHost
 import ru.kcoder.weatherhelper.features.weather.list.FragmentWeatherList
 
 object AppRouter {
@@ -32,13 +32,21 @@ object AppRouter {
         )
     }
 
-    fun showWeatherDetailFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
+    fun showWeatherDetailHostFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
-            FragmentWeatherDetail.newInstance(id, needUpdate),
-            FragmentWeatherDetail.TAG, true
+            FragmentWeatherDetailHost.newInstance(id, needUpdate),
+            FragmentWeatherDetailHost.TAG, true
         )
     }
+
+//    fun showWeatherDetailHostFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
+//        showNewFragment(
+//            getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
+//            FragmentWeatherDetailItem.newInstance(id, needUpdate),
+//            FragmentWeatherDetailItem.TAG, true
+//        )
+//    }
 
     fun showSettingsFragment(activity: FragmentActivity){
         showNewFragment(

@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.features.weather.detail
+package ru.kcoder.weatherhelper.features.weather.detail.item
 
 import androidx.lifecycle.Observer
 import android.os.Bundle
@@ -15,21 +15,26 @@ import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_SCOPE
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
-import ru.kcoder.weatherhelper.features.weather.detail.recycler.AdapterWeatherDetail
+import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.AdapterWeatherDetail
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class FragmentWeatherDetail : AbstractFragment() {
+class FragmentWeatherDetailItem : AbstractFragment() {
 
-    private lateinit var viewModel: ContractWeatherDetail.ViewModel
+    private lateinit var viewModel: ContractWeatherDetailItem.ViewModel
     override lateinit var errorLiveData: LiveData<Int>
-    private val adapter = AdapterWeatherDetail{ viewModel.clickInform(it) }
+    private val adapter =
+        AdapterWeatherDetail { viewModel.clickInform(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindScope(getOrCreateScope(WEATHER_DETAIL_SCOPE))
         arguments?.let {
-            setProperty(ID_KEY, it.getLong(ID_KEY))
-            setProperty(NEED_UPDATE, it.getBoolean(NEED_UPDATE))
+            setProperty(
+                ID_KEY, it.getLong(ID_KEY)
+            )
+            setProperty(
+                NEED_UPDATE, it.getBoolean(NEED_UPDATE)
+            )
             viewModel = getViewModel()
         }
     }
@@ -50,7 +55,7 @@ class FragmentWeatherDetail : AbstractFragment() {
         swipeLayoutDetail.setOnRefreshListener { viewModel.forceUpdate() }
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@FragmentWeatherDetail.adapter
+            adapter = this@FragmentWeatherDetailItem.adapter
         }
     }
 
@@ -70,12 +75,11 @@ class FragmentWeatherDetail : AbstractFragment() {
     }
 
     companion object {
-        const val TAG = "FRAGMENT_WEATHER_DETAIL_TAG"
         const val ID_KEY = "id_key"
         const val NEED_UPDATE = "need_update_key"
         @JvmStatic
-        fun newInstance(weatherId: Long, needUpdate: Boolean): FragmentWeatherDetail {
-            val fragment = FragmentWeatherDetail()
+        fun newInstance(weatherId: Long, needUpdate: Boolean): FragmentWeatherDetailItem {
+            val fragment = FragmentWeatherDetailItem()
             val bundle = Bundle()
             bundle.putLong(ID_KEY, weatherId)
             bundle.putBoolean(NEED_UPDATE, needUpdate)

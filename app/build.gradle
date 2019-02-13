@@ -22,7 +22,7 @@ android {
         release {
             minifyEnabled false
             buildConfigField "String", "API_URL", "\"http://api.openweathermap.org/data/2.5/\""
-            buildConfigField "String", "API_KEY", "10fad01b4946d8ffa0c27d14d69a0333"
+            buildConfigField "String", "API_KEY", "\"10fad01b4946d8ffa0c27d14d69a0333\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {

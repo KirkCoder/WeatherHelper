@@ -8,7 +8,7 @@ import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
-class PlaceInteractor(
+class InteractorPlace(
     private val repository: PlaceRepository,
     settingsRepository: SettingsRepository,
     scopeHandler: ScopeHandler,

@@ -1,8 +1,10 @@
 package ru.kcoder.weatherhelper.data.database.room.weather
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
+import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 
@@ -65,4 +67,7 @@ abstract class WeatherHolderDao {
             changePosition(holder.id, i)
         }
     }
+
+    @Query("SELECT id, position FROM weather_holder")
+    abstract fun getWeatherPositions(): LiveData<List<WeatherPosition>>
 }

@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.features.weather.detail.recycler
+package ru.kcoder.weatherhelper.features.weather.detail.item.recycler
 
 import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
 
@@ -9,7 +9,11 @@ class AdapterWeatherDetail(
     private var clicked: Int? = null
 
     init {
-        delegatesManager.addDelegate(HourDetailDelegate(this::unClicked))
+        delegatesManager.addDelegate(
+            HourDetailDelegate(
+                this::unClicked
+            )
+        )
             .addDelegate(DayDelegate(this::onDetailClick))
             .addDelegate(DayDetailDelegate(this::unClicked))
             .addDelegate(TitleDelegate())

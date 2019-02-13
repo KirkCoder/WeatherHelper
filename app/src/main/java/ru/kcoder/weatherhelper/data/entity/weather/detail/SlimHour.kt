@@ -1,7 +1,7 @@
 package ru.kcoder.weatherhelper.data.entity.weather.detail
 
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
-import ru.kcoder.weatherhelper.features.weather.detail.recycler.ClickedItem
+import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.ClickedItem
 
 class SlimHour(
     val hour: WeatherPresentation,

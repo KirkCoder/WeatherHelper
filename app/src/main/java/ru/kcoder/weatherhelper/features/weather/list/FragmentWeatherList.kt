@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.scope.ext.android.bindScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_SCOPE
 import ru.kcoder.weatherhelper.di.WEATHER_LIST_SCOPE
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.list.adapter.AdapterWeatherList
@@ -42,7 +43,7 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     private var isEdit = false
 
     private fun showDetailFragment(id: Long) {
-        activity?.let { AppRouter.showWeatherDetailFragment(it, id) }
+        activity?.let { AppRouter.showWeatherDetailHostFragment(it, id) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

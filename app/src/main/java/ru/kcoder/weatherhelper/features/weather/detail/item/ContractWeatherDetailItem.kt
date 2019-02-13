@@ -1,11 +1,11 @@
-package ru.kcoder.weatherhelper.features.weather.detail
+package ru.kcoder.weatherhelper.features.weather.detail.item
 
 import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
-interface ContractWeatherDetail {
+interface ContractWeatherDetailItem {
 
     abstract class ViewModel(
         scopeHandler: ScopeHandler,

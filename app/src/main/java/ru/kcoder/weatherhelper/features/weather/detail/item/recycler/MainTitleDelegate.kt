@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.features.weather.detail.recycler
+package ru.kcoder.weatherhelper.features.weather.detail.item.recycler
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
 class MainTitleDelegate : AbsListItemAdapterDelegate<MainTitle, Any, MainTitleDelegate.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup): MainTitleDelegate.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.weather_detail_adapter_main_title, parent, false)

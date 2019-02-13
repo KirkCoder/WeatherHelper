@@ -8,7 +8,7 @@ import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepositoryImpl
 import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSource
 import ru.kcoder.weatherhelper.data.resourses.timezone.TimeZoneSourceImpl
 import ru.kcoder.weatherhelper.features.place.ContaractPlace
-import ru.kcoder.weatherhelper.features.place.PlaceInteractor
+import ru.kcoder.weatherhelper.features.place.InteractorPlace
 import ru.kcoder.weatherhelper.features.place.ViewModelPlace
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisorImpl
@@ -32,7 +32,7 @@ val placeModule = module("place") {
     scope(PLACE_SCOPE) { Geocoder(get(), Locale.getDefault()) }
     scope<TimeZoneSource>(PLACE_SCOPE) { TimeZoneSourceImpl() }
     scope<ContaractPlace.Interactor>(PLACE_SCOPE) {
-        PlaceInteractor(
+        InteractorPlace(
             get(), get(),
             get(name = "place.ScopeHandler"),
             get(name = "place.ErrorSupervisor")

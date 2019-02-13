@@ -76,6 +76,8 @@ class WeatherRepositoryImpl(
         database.changePositions(list)
     }
 
+    override fun getWeatherPositions() = database.getWeatherPositions()
+
     private fun WeatherHolder.bindDaysAndHours(
         settings: Settings,
         main: Data,

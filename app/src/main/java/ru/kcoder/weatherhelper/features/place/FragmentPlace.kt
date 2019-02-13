@@ -20,7 +20,6 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.place_add_fragment.*
 import org.koin.androidx.scope.ext.android.bindScope
-import org.koin.androidx.scope.ext.android.createScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -140,7 +139,7 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
                 if (holder != null) {
                     weatherViewModel.addPlace(holder)
                     AppRouter.popBackStack(it)
-                    AppRouter.showWeatherDetailFragment(it, holder.id, true)
+                    AppRouter.showWeatherDetailHostFragment(it, holder.id, true)
                 }
             }
         })

@@ -29,5 +29,8 @@ class WeatherHolder {
     var nights = mutableListOf<WeatherPresentation>()
 
     @Ignore
+    var any = emptyList<Any>()
+
+    @Ignore
     var isUpdating = false
 }

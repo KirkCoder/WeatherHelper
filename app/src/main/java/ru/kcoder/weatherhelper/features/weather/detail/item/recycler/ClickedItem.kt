@@ -1,4 +1,4 @@
-package ru.kcoder.weatherhelper.features.weather.detail.recycler
+package ru.kcoder.weatherhelper.features.weather.detail.item.recycler
 
 interface ClickedItem {
     fun setClick()
