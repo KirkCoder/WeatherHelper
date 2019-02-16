@@ -52,6 +52,7 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setTitle(getString(R.string.app_name))
         initView()
         super.onViewCreated(view, savedInstanceState)
     }
@@ -153,7 +154,7 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
             else progressBar.hide()
         })
 
-        viewModel.errorLiveData.observe(this, Observer {error ->
+        viewModel.errorLiveData.observe(this, Observer { error ->
             error?.let { showError(it) }
         })
     }

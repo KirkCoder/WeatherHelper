@@ -68,6 +68,6 @@ abstract class WeatherHolderDao {
         }
     }
 
-    @Query("SELECT id, position FROM weather_holder")
+    @Query("SELECT id, position, name FROM weather_holder")
     abstract fun getWeatherPositions(): LiveData<List<WeatherPosition>>
 }

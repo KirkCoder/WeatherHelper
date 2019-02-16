@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
-import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
 interface ContractWeatherDetailItem {
 

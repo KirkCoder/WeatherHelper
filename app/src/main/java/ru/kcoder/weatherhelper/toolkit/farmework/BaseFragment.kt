@@ -9,6 +9,10 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
             return (activity as? AppCompatActivity)
         }
 
+    protected fun setTitle(title: String){
+        addCompatActivity?.supportActionBar?.title = title
+    }
+
     open fun onBackPressed(): Boolean {
         return true
     }

@@ -17,7 +17,6 @@ class AdapterWeatherDetail(
             .addDelegate(DayDelegate(this::onDetailClick))
             .addDelegate(DayDetailDelegate(this::unClicked))
             .addDelegate(TitleDelegate())
-            .addDelegate(MainTitleDelegate())
             .addDelegate(HoursDelegate(this::onDetailClick))
     }
 

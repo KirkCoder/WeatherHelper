@@ -1,12 +1,10 @@
 package ru.kcoder.weatherhelper.features.weather.detail.item
 
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
-import ru.kcoder.weatherhelper.data.entity.weather.detail.MainTitle
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimDay
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
-import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
@@ -27,16 +25,15 @@ class InteractorWeatherDetailItem(
     ) {
         runWithSettings { settings ->
             loadingProgress({
-                repository.getWeather(settings, whId, forceUpdate).mapToAnyList()
+                repository.getWeather(settings, whId, forceUpdate).mapToWeatherDetail()
             }, callback, statusCallback)
         }
     }
 
-    private fun WeatherHolder.mapToAnyList(): List<Any> {
+    private fun WeatherHolder.mapToWeatherDetail(): List<Any> {
         val res = mutableListOf<Any>()
-        res.add(MainTitle(name))
         res.addAll(hours.map { SlimHour(it) })
-        if (res.size > 1 && res[1] is SlimHour) (res[1] as SlimHour).isChecked = true
+        if (res.size > 1 && res[0] is SlimHour) (res[0] as SlimHour).isChecked = true
         res.add(repository.getDayTitle())
         for ((i) in days.withIndex()) {
             res.add(

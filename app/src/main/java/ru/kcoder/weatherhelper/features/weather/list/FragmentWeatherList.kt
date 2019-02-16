@@ -52,6 +52,7 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setTitle(getString(R.string.app_name))
         initView(view)
         super.onViewCreated(view, savedInstanceState)
     }
@@ -59,7 +60,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     private fun initView(view: View) {
         errorLiveData = viewModel.errorLiveData
         setHasOptionsMenu(true)
-        addCompatActivity?.title = resources.getString(R.string.app_name)
         initRecycler(view.context)
         fabAdd.setOnClickListener { _ ->
             activity?.let { AppRouter.showAddWeatherFragment(it) }
