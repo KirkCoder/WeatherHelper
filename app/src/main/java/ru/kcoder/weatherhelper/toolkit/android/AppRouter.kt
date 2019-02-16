@@ -40,14 +40,6 @@ object AppRouter {
         )
     }
 
-//    fun showWeatherDetailHostFragment(activity: FragmentActivity, id: Long, needUpdate: Boolean = false) {
-//        showNewFragment(
-//            getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,
-//            FragmentWeatherDetailItem.newInstance(id, needUpdate),
-//            FragmentWeatherDetailItem.TAG, true
-//        )
-//    }
-
     fun showSettingsFragment(activity: FragmentActivity){
         showNewFragment(
             getFragmentManager(activity), MainFragment.FRAGMENT_CONTAINER,

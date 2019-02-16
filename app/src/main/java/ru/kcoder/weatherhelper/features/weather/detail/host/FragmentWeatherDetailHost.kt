@@ -8,7 +8,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.weather_detail_host_fragment.*
 import org.koin.android.ext.android.setProperty
 import org.koin.androidx.scope.ext.android.bindScope
@@ -16,6 +15,7 @@ import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_HOST_SCOPE
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+import ru.kcoder.weatherhelper.toolkit.android.selectedPageListener
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 
 class FragmentWeatherDetailHost : AbstractFragment() {
@@ -53,34 +53,17 @@ class FragmentWeatherDetailHost : AbstractFragment() {
         errorLiveData = viewModel.errorLiveData
         adapter = ViewPagerAdapter(childFragmentManager)
         viewPager.adapter = adapter
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-                viewModel.selectedPage(position)
-            }
-        })
+        viewPager.selectedPageListener { viewModel.selectedPage(it) }
     }
 
     override fun subscribeUi() {
         super.subscribeUi()
         viewModel.positions.observe(this, Observer { data ->
-            data?.let { list ->
-                adapter.list = list
-
-                viewModel.selectedFirst.observe(this, Observer { item ->
-                    item?.let {
-                        viewPager.currentItem = it.position
-                        adapter.selected = it
-                    }
-                })
-
+            data?.let { model ->
+                adapter.setData(model)
+                model.selectedItem?.let { viewPager.currentItem = it.position }
                 viewModel.selected.observe(this, Observer { item ->
-                    item?.let {
-                        viewPager.currentItem = it
-                    }
+                    item?.let { viewPager.currentItem = it }
                 })
             }
         })
