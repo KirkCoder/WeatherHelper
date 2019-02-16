@@ -11,6 +11,7 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
+import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
@@ -22,9 +23,10 @@ class WeatherRepositoryImpl(
 ) : WeatherRepository {
 
     override fun updateWeatherById(settings: Settings, id: Long): WeatherModel {
+        log("updateWeatherById")
 
         database.getSingleWeatherHolder(id)?.let {
-
+            log("updateWeatherById deep")
             val weatherData = network
                 .getWeather(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
@@ -32,6 +34,8 @@ class WeatherRepositoryImpl(
             val weatherForecast = network
                 .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
+
+            log("updateWeatherById net success")
 
             it.bindDaysAndHours(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
 
@@ -55,7 +59,9 @@ class WeatherRepositoryImpl(
 
     // todo replace when create view pager and common view model
     override fun getWeather(settings: Settings, id: Long, update: Boolean): WeatherHolder {
+        log("get weather repository start, is update $update")
         return if (update) {
+            log("start update")
             updateWeatherById(settings, id).list.filter { it.id == id }[0]
         } else {
             database.getWeather(id)?.let {

@@ -9,9 +9,8 @@ import ru.kcoder.weatherhelper.toolkit.farmework.components.SingleLiveData
 
 class ViewModelPlace(
     private val interactor: ContaractPlace.Interactor,
-    scopeHandler: ScopeHandler,
     errorSupervisor: ErrorSupervisor
-) : ContaractPlace.ViewModel(scopeHandler, errorSupervisor) {
+) : ContaractPlace.ViewModel(interactor, errorSupervisor) {
 
     private var cashPlace: PlaceMarker? = null
 

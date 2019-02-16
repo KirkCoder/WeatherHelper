@@ -5,21 +5,21 @@ import ru.kcoder.weatherhelper.data.entity.weather.detail.SelectedItem
 import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
-import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
 
 interface ContractWeatherDetailHost {
 
     abstract class ViewModel(
-        scopeHandler: ScopeHandler,
+        scopeController: ScopeController,
         errorSupervisor: ErrorSupervisor
-    ) : BaseViewModel(scopeHandler, errorSupervisor) {
+    ) : BaseViewModel(scopeController, errorSupervisor) {
         abstract val positions: LiveData<List<WeatherPosition>>
         abstract val selectedFirst: LiveData<SelectedItem>
         abstract val selected: LiveData<Int>
         abstract fun selectedPage(position: Int)
     }
 
-    interface Interactor {
+    interface Interactor: ScopeController {
         fun getWeatherHolderPositions(): LiveData<List<WeatherPosition>>
     }
 }

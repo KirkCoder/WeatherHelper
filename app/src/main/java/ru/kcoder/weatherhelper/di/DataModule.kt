@@ -16,6 +16,8 @@ import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSource
 import ru.kcoder.weatherhelper.data.resourses.imageres.ImageResSourceImpl
 import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSourceImpl
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandlerImpl
 
 val networkModule = module {
     single {
@@ -38,6 +40,10 @@ val settingsModule = module {
 val resourceModule = module {
     factory<WeatherStringSource> { WeatherStringSourceImpl(get())}
     factory<ImageResSource> { ImageResSourceImpl() }
+}
+
+val supervisorsModule = module {
+    factory<ScopeHandler>{ ScopeHandlerImpl() }
 }
 
 private fun getWeatherHelperDb(context: Context): WeatherHelperRoomDb {

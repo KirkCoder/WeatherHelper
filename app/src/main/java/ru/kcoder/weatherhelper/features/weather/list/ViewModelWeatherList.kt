@@ -5,13 +5,11 @@ import kotlinx.coroutines.GlobalScope
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
-import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
 class ViewModelWeatherList(
     private val interactor: ContractWeatherList.Interactor,
-    scopeHandler: ScopeHandler,
     errorSupervisor: ErrorSupervisor
-) : ContractWeatherList.ViewModel(scopeHandler, errorSupervisor) {
+) : ContractWeatherList.ViewModel(interactor, errorSupervisor) {
 
     override val weatherList = MutableLiveData<WeatherModel>()
     override val updateStatus = MutableLiveData<Pair<Long, Boolean>>()

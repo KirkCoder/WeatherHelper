@@ -6,11 +6,12 @@ import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimDay
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
+import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
-class WeatherDetailInteractorItem(
+class InteractorWeatherDetailItem(
     private val repository: WeatherRepository,
     settingsRepository: SettingsRepository,
     scopeHandler: ScopeHandler,

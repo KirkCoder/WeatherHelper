@@ -3,14 +3,15 @@ package ru.kcoder.weatherhelper.features.weather.detail.item
 import androidx.lifecycle.LiveData
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
 interface ContractWeatherDetailItem {
 
     abstract class ViewModel(
-        scopeHandler: ScopeHandler,
+        scopeController: ScopeController,
         errorSupervisor: ErrorSupervisor
-    ) : BaseViewModel(scopeHandler, errorSupervisor) {
+    ) : BaseViewModel(scopeController, errorSupervisor) {
         abstract val weather: LiveData<List<Any>>
         abstract val status: LiveData<Boolean>
         abstract val checked: LiveData<Int>
@@ -18,7 +19,7 @@ interface ContractWeatherDetailItem {
         abstract fun clickInform(position: Int?)
     }
 
-    interface Interactor{
+    interface Interactor: ScopeController{
         fun updateWeather(
             whId: Long,
             forceUpdate: Boolean,

@@ -5,4 +5,5 @@ import kotlinx.coroutines.CoroutineScope
 interface ScopeHandler {
     val scope: CoroutineScope
     val globalScope: CoroutineScope
+    fun cancel()
 }

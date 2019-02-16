@@ -22,19 +22,16 @@ val placeModule = module("place") {
     viewModel<ContaractPlace.ViewModel> {
         ViewModelPlace(
             get(),
-            get(name = "place.ScopeHandler"),
             get(name = "place.ErrorSupervisor")
         )
     }
     scope<ErrorSupervisor>(PLACE_SCOPE) { ErrorSupervisorImpl() }
-    scope<ScopeHandler>(PLACE_SCOPE) { ScopeHandlerImpl() }
     scope<PlaceRepository>(PLACE_SCOPE) { PlaceRepositoryImpl(get(), get(), get()) }
     scope(PLACE_SCOPE) { Geocoder(get(), Locale.getDefault()) }
     scope<TimeZoneSource>(PLACE_SCOPE) { TimeZoneSourceImpl() }
     scope<ContaractPlace.Interactor>(PLACE_SCOPE) {
         InteractorPlace(
-            get(), get(),
-            get(name = "place.ScopeHandler"),
+            get(), get(), get(),
             get(name = "place.ErrorSupervisor")
         )
     }

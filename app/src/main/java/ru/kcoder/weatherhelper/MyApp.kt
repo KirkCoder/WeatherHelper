@@ -19,6 +19,7 @@ class MyApp: Application() {
             networkModule,
             weatherModule,
             databaseModule,
+            supervisorsModule,
             weatherListModule,
             weatherDetailModule,
             weatherDetailHostModule,

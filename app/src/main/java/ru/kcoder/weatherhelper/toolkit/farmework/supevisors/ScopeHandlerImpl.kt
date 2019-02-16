@@ -1,11 +1,11 @@
 package ru.kcoder.weatherhelper.toolkit.farmework.supevisors
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 
 class ScopeHandlerImpl : ScopeHandler {
     override val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     override val globalScope = GlobalScope
+    override fun cancel() {
+        scope.coroutineContext.cancel()
+    }
 }

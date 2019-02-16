@@ -1,6 +1,7 @@
 package ru.kcoder.weatherhelper.toolkit.farmework
 
 import kotlinx.coroutines.*
+import org.koin.ext.checkedStringValue
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
@@ -8,6 +9,7 @@ import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 import java.io.IOException
 
@@ -15,7 +17,7 @@ abstract class BaseInteractor(
     private val settingsRepository: SettingsRepository,
     private val scopeHandler: ScopeHandler,
     private val errorSupervisor: ErrorSupervisor
-) {
+) : ScopeController {
 
     protected fun onError(error: Throwable) {
         if (error is LocalException) errorSupervisor.onError(error)
@@ -42,7 +44,7 @@ abstract class BaseInteractor(
         callback: (data: B) -> Unit,
         loadingStatus: (Boolean) -> Unit,
         errorCallback: ((Throwable) -> Unit)? = null
-        ) {
+    ) {
         loadingStatus(true)
         loading(load, {
             loadingStatus(false)
@@ -64,6 +66,7 @@ abstract class BaseInteractor(
                     }
                 )
             } catch (err: Throwable) {
+                err.printStackTrace()
                 errorParser(err, null)
             }
         }
@@ -93,5 +96,9 @@ abstract class BaseInteractor(
                 .also { errorCallback?.invoke(it) ?: errorSupervisor.onError(it) }
             else -> errorCallback?.invoke(err) ?: log("Unexpected exception ${err.message ?: err.toString()}")
         }
+    }
+
+    override fun cancel() {
+        scopeHandler.cancel()
     }
 }

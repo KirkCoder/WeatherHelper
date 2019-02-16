@@ -6,14 +6,14 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
-import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
+import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
 
 interface ContractWeatherList {
 
     abstract class ViewModel(
-        scopeHandler: ScopeHandler,
+        scopeController: ScopeController,
         errorSupervisor: ErrorSupervisor
-    ) : BaseViewModel(scopeHandler, errorSupervisor) {
+    ) : BaseViewModel(scopeController, errorSupervisor) {
         abstract val weatherList: LiveData<WeatherModel>
         abstract val updateStatus: LiveData<Pair<Long, Boolean>>
         abstract val editStatus: LiveData<Boolean>
@@ -26,7 +26,7 @@ interface ContractWeatherList {
         abstract fun notifyChange(model: WeatherModel)
     }
 
-    interface Interactor {
+    interface Interactor: ScopeController {
 
         fun getAllWeather(
             callback: (WeatherModel) -> Unit,

@@ -12,9 +12,8 @@ class ViewModelWeatherDetailHost(
     interactor: ContractWeatherDetailHost.Interactor,
     id: Long?,
     needUpdate: Boolean,
-    scopeHandler: ScopeHandler,
     errorSupervisor: ErrorSupervisor
-) : ContractWeatherDetailHost.ViewModel(scopeHandler, errorSupervisor) {
+) : ContractWeatherDetailHost.ViewModel(interactor, errorSupervisor) {
 
     override val positions = MediatorLiveData<List<WeatherPosition>>()
     override val selectedFirst = SingleLiveData<SelectedItem>()
