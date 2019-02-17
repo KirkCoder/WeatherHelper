@@ -25,14 +25,13 @@ abstract class BaseInteractor(
 
     fun <B> loading(
         load: () -> B,
-        callback: (data: B) -> Unit,
+        callback: ((data: B) -> Unit)? = null,
         errorCallback: ((Throwable) -> Unit)? = null
     ) {
         scopeHandler.scope.launch {
             try {
-                callback(
-                    withContext(Dispatchers.IO) { load() }
-                )
+                val res = withContext(Dispatchers.IO) { load() }
+                callback?.invoke(res)
             } catch (err: Throwable) {
                 errorParser(err, errorCallback)
             }
@@ -74,13 +73,19 @@ abstract class BaseInteractor(
 
     fun <B> uploading(
         upload: () -> B,
+        success: ((Boolean) -> Unit)? = null,
         scope: CoroutineScope = scopeHandler.globalScope
     ) {
         scope.launch {
             try {
-                withContext(Dispatchers.IO) { upload() }
+                withContext(Dispatchers.IO) {
+                    upload()
+                    success?.invoke(true)
+                    Unit
+                }
             } catch (err: Throwable) {
                 errorParser(err, null)
+                success?.invoke(false)
             }
         }
     }

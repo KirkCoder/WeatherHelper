@@ -25,12 +25,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getSingleWeatherHolder(id)
     }
 
-    override fun updateWeatherPresentations(id: Long, insertion: List<WeatherPresentation>) {
-        database.weatherPresentation().updateWeatherPresentations(id, insertion)
-    }
-
-    override fun insertWeatherPresentations(items: List<WeatherPresentation>) {
-        database.weatherPresentation().insertOrReplace(items)
+    override fun updateWeatherPresentations(holder: WeatherHolder, insertion: List<WeatherPresentation>) {
+        database.weatherHolder().updateWeatherPresentations(holder, insertion)
     }
 
     override fun getWeather(id: Long): HolderWithPresentation? {
@@ -51,5 +47,22 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
 
     override fun getWeatherPositions(): LiveData<List<WeatherPosition>> {
         return database.weatherHolder().getWeatherPositions()
+    }
+
+
+    override fun getAllWeatherLd(): LiveData<List<HolderWithPresentation>> {
+        return database.weatherHolder().getAllWeatherLd()
+    }
+
+    override fun setLoadingStatus(id: Long) {
+        database.weatherHolder().setStatus(id, 1)
+    }
+
+    override fun clearStatus(id: Long) {
+        database.weatherHolder().setStatus(id, 0)
+    }
+
+    override fun clearAllStatus() {
+        database.weatherHolder().clearStatus()
     }
 }

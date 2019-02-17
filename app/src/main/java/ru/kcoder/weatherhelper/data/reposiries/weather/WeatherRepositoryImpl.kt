@@ -1,5 +1,8 @@
 package ru.kcoder.weatherhelper.data.reposiries.weather
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import kotlinx.coroutines.*
 import ru.kcoder.weatherhelper.data.database.weather.WeatherDbSource
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.*
@@ -11,7 +14,6 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
-import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
@@ -22,11 +24,11 @@ class WeatherRepositoryImpl(
     private val imageSource: ImageResSource
 ) : WeatherRepository {
 
+    private val allWeatherLiveData = MediatorLiveData<List<WeatherHolder>>()
+
     override fun updateWeatherById(settings: Settings, id: Long): WeatherModel {
-        log("updateWeatherById")
 
         database.getSingleWeatherHolder(id)?.let {
-            log("updateWeatherById deep")
             val weatherData = network
                 .getWeather(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
@@ -35,8 +37,6 @@ class WeatherRepositoryImpl(
                 .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
 
-            log("updateWeatherById net success")
-
             it.bindDaysAndHours(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
 
             val insertion = mutableListOf<WeatherPresentation>()
@@ -44,7 +44,7 @@ class WeatherRepositoryImpl(
             insertion.addAll(it.days)
             insertion.addAll(it.nights)
 
-            database.updateWeatherPresentations(id, insertion)
+            database.updateWeatherPresentations(it, insertion)
 
             return getAllWeather(settings, it.id)
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
@@ -57,11 +57,22 @@ class WeatherRepositoryImpl(
         return WeatherModel(holders, listMap, updatedId)
     }
 
+    override fun getAllWeatherLd(
+        settings: Settings,
+        scope: CoroutineScope
+    ): LiveData<List<WeatherHolder>> {
+        allWeatherLiveData.addSource(database.getAllWeatherLd()) { list ->
+            scope.launch(Dispatchers.IO) { // todo test exceptions
+                allWeatherLiveData.postValue(list.map { it.mapToPresentation() }.sortedBy { it.position })
+            }
+        }
+        return allWeatherLiveData
+    }
+
+
     // todo replace when create view pager and common view model
     override fun getWeather(settings: Settings, id: Long, update: Boolean): WeatherHolder {
-        log("get weather repository start, is update $update")
         return if (update) {
-            log("start update")
             updateWeatherById(settings, id).list.filter { it.id == id }[0]
         } else {
             database.getWeather(id)?.let {
@@ -91,30 +102,23 @@ class WeatherRepositoryImpl(
         timeUTCoffset: Int,
         holderID: Long
     ) {
-
         val tmpMainTime = main.dt
 
-        if (tmpMainTime != null) {
-            hours.add(
-                getWeatherPresentation(
-                    settings,
-                    main,
-                    tmpMainTime.addMilliseconds() + timeUTCoffset,
-                    holderID,
-                    WeatherPresentation.HOURS
-                )
-            )
+        lustUpdate = if (tmpMainTime != null) {
+            tmpMainTime.addMilliseconds() + timeUTCoffset
         } else {
-            hours.add(
-                getWeatherPresentation(
-                    settings,
-                    main,
-                    TimeUtils.getCurrentUtcTime() + timeUTCoffset,
-                    holderID,
-                    WeatherPresentation.HOURS
-                )
-            )
+            TimeUtils.getCurrentUtcTime() + timeUTCoffset
         }
+
+        hours.add(
+            getWeatherPresentation(
+                settings,
+                main,
+                lustUpdate,
+                holderID,
+                WeatherPresentation.HOURS
+            )
+        )
 
         if (!data.isNullOrEmpty()) {
             data[0].dt?.let { long ->
@@ -235,4 +239,14 @@ class WeatherRepositoryImpl(
         }
         return weather
     }
+
+    override fun setLoadingStatus(id: Long) {
+        database.setLoadingStatus(id)
+    }
+
+    override fun clearStatus(id: Long) {
+        database.clearStatus(id)
+    }
+
+    override fun clearAllStatus() = database.clearAllStatus()
 }

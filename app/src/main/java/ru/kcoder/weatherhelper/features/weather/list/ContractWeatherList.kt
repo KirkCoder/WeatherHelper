@@ -2,6 +2,7 @@ package ru.kcoder.weatherhelper.features.weather.list
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
+import ru.kcoder.weatherhelper.data.entity.weather.HolderWithPresentation
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherModel
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseViewModel
@@ -17,6 +18,7 @@ interface ContractWeatherList {
         abstract val weatherList: LiveData<WeatherModel>
         abstract val updateStatus: LiveData<Pair<Long, Boolean>>
         abstract val editStatus: LiveData<Boolean>
+        abstract val weatherHolders: LiveData<List<WeatherHolder>>
 
         abstract fun addPlace(holder: WeatherHolder)
         abstract fun forceUpdate(id: Long)
@@ -24,6 +26,7 @@ interface ContractWeatherList {
         abstract fun delete(id: Long, list: List<WeatherHolder>)
         abstract fun changedData(list: List<WeatherHolder>)
         abstract fun notifyChange(model: WeatherModel)
+        abstract fun notifyChange(list: List<WeatherHolder>)
     }
 
     interface Interactor: ScopeController {
@@ -39,12 +42,14 @@ interface ContractWeatherList {
             onFail: () -> Unit
         )
 
-        fun delete(
-            id: Long,
-            scope: CoroutineScope
-        )
+        fun delete(id: Long)
 
         fun changedData(list: List<WeatherHolder>)
 
+        fun getAllWeatherLd() : LiveData<List<WeatherHolder>>
+
+        fun forceUpdate(id: Long)
+
+        fun clearStatus()
     }
 }

@@ -15,7 +15,6 @@ import ru.kcoder.weatherhelper.data.entity.weather.*
 abstract class WeatherHelperRoomDb : RoomDatabase() {
 
     abstract fun weatherHolder(): WeatherHolderDao
-    abstract fun weatherPresentation(): WeatherPresentationDao
 
     companion object {
         const val DATABASE = "weather_helper"

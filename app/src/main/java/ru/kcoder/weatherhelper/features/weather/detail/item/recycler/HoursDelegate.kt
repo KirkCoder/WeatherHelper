@@ -44,5 +44,5 @@ class HoursDelegate(
         }
     }
 
-    inner class HourViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class HourViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

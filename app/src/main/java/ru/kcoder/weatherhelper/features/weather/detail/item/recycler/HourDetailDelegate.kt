@@ -46,5 +46,5 @@ class HourDetailDelegate(
         }
     }
 
-    inner class CommonViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class CommonViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

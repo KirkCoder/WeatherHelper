@@ -11,11 +11,15 @@ interface WeatherDbSource {
     fun getLastPosition(): Int?
     fun insertWeatherHolder(holder: WeatherHolder): WeatherHolder
     fun getSingleWeatherHolder(id: Long): WeatherHolder?
-    fun insertWeatherPresentations(items: List<WeatherPresentation>)
     fun getWeather(id: Long): HolderWithPresentation?
     fun getAllWeather(): List<HolderWithPresentation>
-    fun updateWeatherPresentations(id: Long, insertion: List<WeatherPresentation>)
+    fun updateWeatherPresentations(holder: WeatherHolder, insertion: List<WeatherPresentation>)
     fun deleteWeatherHolder(id: Long)
     fun changePositions(list: List<WeatherHolder>)
     fun getWeatherPositions(): LiveData<List<WeatherPosition>>
+
+    fun getAllWeatherLd(): LiveData<List<HolderWithPresentation>>
+    fun setLoadingStatus(id: Long)
+    fun clearStatus(id: Long)
+    fun clearAllStatus()
 }

@@ -36,7 +36,6 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
 
     private val viewModel: ContaractPlace.ViewModel by viewModel()
     override lateinit var errorLiveData: LiveData<Int>
-    private val weatherViewModel: ContractWeatherList.ViewModel by sharedViewModel()
     private var map: GoogleMap? = null
     private var mapView: MapView? = null
 
@@ -138,7 +137,6 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
         viewModel.addedPlaceIdLiveData.observe(this, Observer { holder ->
             activity?.let {
                 if (holder != null) {
-                    weatherViewModel.addPlace(holder)
                     AppRouter.popBackStack(it)
                     AppRouter.showWeatherDetailHostFragment(it, holder.id, true)
                 }

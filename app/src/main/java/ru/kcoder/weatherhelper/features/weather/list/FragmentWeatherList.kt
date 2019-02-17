@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.features.weather.list
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
@@ -11,19 +12,30 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.weather_list_fragment.*
 import org.koin.androidx.scope.ext.android.bindScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_SCOPE
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.di.WEATHER_LIST_SCOPE
-import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.list.adapter.AdapterWeatherList
+import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.list.adapter.TouchCallback
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
 
 class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
-    private val viewModel: ContractWeatherList.ViewModel by sharedViewModel()
+    private val viewModel: ContractWeatherList.ViewModel by viewModel()
     override lateinit var errorLiveData: LiveData<Int>
+//    private val adapter = AdapterWeatherListOld({
+//        showDetailFragment(it)
+//    }, {
+//        viewModel.forceUpdate(it)
+//    }, { id, name ->
+//        askDelete(id, name)
+//    }, {
+//        viewModel.changedData(it)
+//    }, {
+//        viewModel.notifyChange(it)
+//    }, this::startMotion)
+
     private val adapter = AdapterWeatherList({
         showDetailFragment(it)
     }, {
@@ -83,14 +95,19 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun subscribeUi() {
         super.subscribeUi()
-        viewModel.weatherList.observe(this, Observer { list ->
-            list?.let { adapter.setData(it) }
-        })
+//        viewModel.weatherList.observe(this, Observer { list ->
+//            list?.let { adapter.setData(it) }
+//        })
 
-        viewModel.updateStatus.observe(this, Observer { item ->
-            item?.let { adapter.updateStatus(it) }
+//        viewModel.updateStatus.observe(this, Observer { item ->
+//            item?.let { adapter.updateStatus(it) }
+//        })
+
+        viewModel.weatherHolders.observe(this, Observer { list ->
+            list?.let { adapter.setData(it) }
         })
 
         viewModel.editStatus.observe(this, Observer { status ->

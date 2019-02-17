@@ -15,6 +15,9 @@ class WeatherHolder {
     var lon: Double = 0.0
     var name: String = ""
     var timeUTCoffset: Int = 0
+    var lustUpdate: Long = 0
+    var isUpdating = false
+
 
     @Ignore
     var hours = mutableListOf<WeatherPresentation>()
@@ -30,7 +33,4 @@ class WeatherHolder {
 
     @Ignore
     var any = emptyList<Any>()
-
-    @Ignore
-    var isUpdating = false
 }
