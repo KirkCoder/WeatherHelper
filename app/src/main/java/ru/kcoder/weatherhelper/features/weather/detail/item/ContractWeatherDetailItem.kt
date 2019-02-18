@@ -14,15 +14,17 @@ interface ContractWeatherDetailItem {
         abstract val weather: LiveData<List<Any>>
         abstract val status: LiveData<Boolean>
         abstract val checked: LiveData<Int>
-        abstract fun forceUpdate()
         abstract fun clickInform(position: Int?)
+
+        abstract fun updateWeather()
     }
 
     interface Interactor: ScopeController{
+
+        fun getWeather(id: Long): LiveData<List<Any>>
+
         fun updateWeather(
-            whId: Long,
-            forceUpdate: Boolean,
-            callback: (List<Any>) -> Unit,
+            id: Long,
             statusCallback: (Boolean) -> Unit
         )
     }

@@ -25,7 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.di.PLACE_SCOPE
-import ru.kcoder.weatherhelper.features.weather.list.ContractWeatherList
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter

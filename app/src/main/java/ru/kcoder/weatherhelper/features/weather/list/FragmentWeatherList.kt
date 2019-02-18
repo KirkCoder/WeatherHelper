@@ -24,17 +24,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
     private val viewModel: ContractWeatherList.ViewModel by viewModel()
     override lateinit var errorLiveData: LiveData<Int>
-//    private val adapter = AdapterWeatherListOld({
-//        showDetailFragment(it)
-//    }, {
-//        viewModel.forceUpdate(it)
-//    }, { id, name ->
-//        askDelete(id, name)
-//    }, {
-//        viewModel.changedData(it)
-//    }, {
-//        viewModel.notifyChange(it)
-//    }, this::startMotion)
 
     private val adapter = AdapterWeatherList({
         showDetailFragment(it)
@@ -98,13 +87,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     @SuppressLint("RestrictedApi")
     override fun subscribeUi() {
         super.subscribeUi()
-//        viewModel.weatherList.observe(this, Observer { list ->
-//            list?.let { adapter.setData(it) }
-//        })
-
-//        viewModel.updateStatus.observe(this, Observer { item ->
-//            item?.let { adapter.updateStatus(it) }
-//        })
 
         viewModel.weatherHolders.observe(this, Observer { list ->
             list?.let { adapter.setData(it) }

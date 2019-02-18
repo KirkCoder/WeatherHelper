@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.toolkit.farmework
 
 import kotlinx.coroutines.*
-import org.koin.ext.checkedStringValue
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
@@ -15,7 +14,7 @@ import java.io.IOException
 
 abstract class BaseInteractor(
     private val settingsRepository: SettingsRepository,
-    private val scopeHandler: ScopeHandler,
+    protected val scopeHandler: ScopeHandler,
     private val errorSupervisor: ErrorSupervisor
 ) : ScopeController {
 
@@ -40,14 +39,14 @@ abstract class BaseInteractor(
 
     fun <B> loadingProgress(
         load: () -> B,
-        callback: (data: B) -> Unit,
+        callback: ((data: B) -> Unit)? = null,
         loadingStatus: (Boolean) -> Unit,
         errorCallback: ((Throwable) -> Unit)? = null
     ) {
         loadingStatus(true)
         loading(load, {
             loadingStatus(false)
-            callback(it)
+            callback?.invoke(it)
         }, { err ->
             loadingStatus(false)
             errorParser(err, errorCallback)

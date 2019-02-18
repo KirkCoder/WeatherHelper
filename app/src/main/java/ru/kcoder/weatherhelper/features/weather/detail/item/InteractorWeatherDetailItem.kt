@@ -1,5 +1,7 @@
 package ru.kcoder.weatherhelper.features.weather.detail.item
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimDay
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
@@ -11,26 +13,37 @@ import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 
 class InteractorWeatherDetailItem(
     private val repository: WeatherRepository,
-    settingsRepository: SettingsRepository,
     scopeHandler: ScopeHandler,
+    settingsRepository: SettingsRepository,
     errorSupervisor: ErrorSupervisor
 ) : BaseInteractor(settingsRepository, scopeHandler, errorSupervisor),
     ContractWeatherDetailItem.Interactor {
 
+    private val liveData = MediatorLiveData<List<Any>>()
+
+    override fun getWeather(id: Long): LiveData<List<Any>> {
+        liveData.addSource(repository.getWeather(id, scopeHandler.scope)) { holder ->
+            holder?.let { nh ->
+                loading({ nh.mapToAnyList() }, {
+                    liveData.value = it
+                })
+            }
+        }
+        return liveData
+    }
+
     override fun updateWeather(
-        whId: Long,
-        forceUpdate: Boolean,
-        callback: (List<Any>) -> Unit,
+        id: Long,
         statusCallback: (Boolean) -> Unit
     ) {
         runWithSettings { settings ->
             loadingProgress({
-                repository.getWeather(settings, whId, forceUpdate).mapToWeatherDetail()
-            }, callback, statusCallback)
+                repository.updateWeatherById(settings, id)
+            }, loadingStatus = statusCallback)
         }
     }
 
-    private fun WeatherHolder.mapToWeatherDetail(): List<Any> {
+    private fun WeatherHolder.mapToAnyList(): List<Any> {
         val res = mutableListOf<Any>()
         res.addAll(hours.map { SlimHour(it) })
         if (res.size > 1 && res[0] is SlimHour) (res[0] as SlimHour).isChecked = true

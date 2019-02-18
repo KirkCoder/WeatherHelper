@@ -23,7 +23,7 @@ abstract class WeatherHolderDao {
 
     @Transaction
     @Query("SELECT * FROM weather_holder WHERE id = :id LIMIT 1")
-    abstract fun getWeather(id: Long): HolderWithPresentation?
+    abstract fun getWeather(id: Long): LiveData<HolderWithPresentation>
 
     @Query("SELECT * FROM weather_holder WHERE id = :id LIMIT 1")
     abstract fun getWeatherHolder(id: Long): WeatherHolder?

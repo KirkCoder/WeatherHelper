@@ -25,8 +25,9 @@ class WeatherRepositoryImpl(
 ) : WeatherRepository {
 
     private val allWeatherLiveData = MediatorLiveData<List<WeatherHolder>>()
+    private val weatherLiveData = MediatorLiveData<WeatherHolder>()
 
-    override fun updateWeatherById(settings: Settings, id: Long): WeatherModel {
+    override fun updateWeatherById(settings: Settings, id: Long) {
 
         database.getSingleWeatherHolder(id)?.let {
             val weatherData = network
@@ -37,7 +38,7 @@ class WeatherRepositoryImpl(
                 .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
                 .executeCall()
 
-            it.bindDaysAndHours(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
+            it.bindData(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
 
             val insertion = mutableListOf<WeatherPresentation>()
             insertion.addAll(it.hours)
@@ -46,39 +47,34 @@ class WeatherRepositoryImpl(
 
             database.updateWeatherPresentations(it, insertion)
 
-            return getAllWeather(settings, it.id)
         } ?: throw LocalException(LocalExceptionMsg.UNEXPECTED_ERROR)
     }
 
-    override fun getAllWeather(settings: Settings, updatedId: Long): WeatherModel {
-        val list = database.getAllWeather()
-        val holders = list.map { it.mapToPresentation() }.sortedBy { it.position }
-        val listMap = holders.map { it.id to holders.indexOf(it) }.toMap()
-        return WeatherModel(holders, listMap, updatedId)
-    }
-
-    override fun getAllWeatherLd(
+    override fun getAllWeather(
         settings: Settings,
         scope: CoroutineScope
     ): LiveData<List<WeatherHolder>> {
         allWeatherLiveData.addSource(database.getAllWeatherLd()) { list ->
-            scope.launch(Dispatchers.IO) { // todo test exceptions
-                allWeatherLiveData.postValue(list.map { it.mapToPresentation() }.sortedBy { it.position })
+            list?.let { nList ->
+                scope.launch(Dispatchers.IO) {
+                    allWeatherLiveData.postValue(
+                        nList.map { it.mapToPresentation() }.sortedBy { it.position }
+                    )
+                }
             }
         }
         return allWeatherLiveData
     }
 
-
-    // todo replace when create view pager and common view model
-    override fun getWeather(settings: Settings, id: Long, update: Boolean): WeatherHolder {
-        return if (update) {
-            updateWeatherById(settings, id).list.filter { it.id == id }[0]
-        } else {
-            database.getWeather(id)?.let {
-                return@let it.mapToPresentation()
-            } ?: updateWeatherById(settings, id).list.filter { it.id == id }[0]
+    override fun getWeather(id: Long, scope: CoroutineScope): LiveData<WeatherHolder> {
+        weatherLiveData.addSource(database.getWeather(id)) { holder ->
+            holder?.let { nHolder ->
+                scope.launch(Dispatchers.IO) {
+                    weatherLiveData.postValue(nHolder.mapToPresentation())
+                }
+            }
         }
+        return weatherLiveData
     }
 
     override fun getDayTitle(): String {
@@ -95,7 +91,7 @@ class WeatherRepositoryImpl(
 
     override fun getWeatherPositions() = database.getWeatherPositions()
 
-    private fun WeatherHolder.bindDaysAndHours(
+    private fun WeatherHolder.bindData(
         settings: Settings,
         main: Data,
         data: List<Data>?,
@@ -103,6 +99,8 @@ class WeatherRepositoryImpl(
         holderID: Long
     ) {
         val tmpMainTime = main.dt
+
+        isUpdating = false
 
         lustUpdate = if (tmpMainTime != null) {
             tmpMainTime.addMilliseconds() + timeUTCoffset

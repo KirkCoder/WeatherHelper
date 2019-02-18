@@ -1,5 +1,6 @@
 package ru.kcoder.weatherhelper.features.weather.detail.item
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.ClickedItem
@@ -11,23 +12,22 @@ class ViewModelWeatherDetailItem(
     errorSupervisor: ErrorSupervisor
 ) : ContractWeatherDetailItem.ViewModel(interactor, errorSupervisor) {
 
-    override val weather = MutableLiveData<List<Any>>()
+    override val weather = MediatorLiveData<List<Any>>()
     override val status = MutableLiveData<Boolean>()
     override val checked = MutableLiveData<Int>()
 
     init {
-        updateWeather(id, forceUpdate)
+        weather.addSource(interactor.getWeather(id)) {
+            weather.value = it
+        }
+        if (forceUpdate) updateWeather()
+        updateWeather()
     }
 
-    private fun updateWeather(whId: Long, update: Boolean) {
-        interactor.updateWeather(whId, update, { list ->
-            getChecked(list)?.let{ checked.value = it }
-            weather.value = list
-        }, {
-            if (update) {
-                status.value = it
-            }
-        })
+    override fun updateWeather() {
+        interactor.updateWeather(id) {
+            status.value = it
+        }
     }
 
     private fun getChecked(list: List<Any>): Int? {
@@ -40,9 +40,5 @@ class ViewModelWeatherDetailItem(
 
     override fun clickInform(position: Int?) {
         checked.value = position
-    }
-
-    override fun forceUpdate() {
-        updateWeather(id, true)
     }
 }

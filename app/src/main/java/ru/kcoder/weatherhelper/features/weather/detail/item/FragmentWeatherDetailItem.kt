@@ -52,7 +52,7 @@ class FragmentWeatherDetailItem : AbstractFragment() {
 
     private fun initViews() {
         errorLiveData = viewModel.errorLiveData
-        swipeLayoutDetail.setOnRefreshListener { viewModel.forceUpdate() }
+        swipeLayoutDetail.setOnRefreshListener { viewModel.updateWeather() }
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@FragmentWeatherDetailItem.adapter

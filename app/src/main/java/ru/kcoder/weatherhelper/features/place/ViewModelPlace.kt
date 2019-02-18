@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
-import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 import ru.kcoder.weatherhelper.toolkit.farmework.components.SingleLiveData
 
 class ViewModelPlace(
