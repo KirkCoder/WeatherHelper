@@ -13,7 +13,6 @@ import org.koin.android.ext.android.setProperty
 import org.koin.androidx.scope.ext.android.bindScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
 import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_HOST_SCOPE
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.selectedPageListener
@@ -24,7 +23,6 @@ class FragmentWeatherDetailHost : AbstractFragment() {
     override lateinit var errorLiveData: LiveData<Int>
     private lateinit var viewModel: ContractWeatherDetailHost.ViewModel
     private lateinit var adapter: ViewPagerAdapter
-    private var tmpList: List<WeatherPosition>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +53,7 @@ class FragmentWeatherDetailHost : AbstractFragment() {
         errorLiveData = viewModel.errorLiveData
         adapter = ViewPagerAdapter(childFragmentManager)
         viewPager.adapter = adapter
-        viewPager.selectedPageListener {
-            val mTmpList = tmpList
-            if (!mTmpList.isNullOrEmpty()) setTitle(mTmpList[it].name)
-            viewModel.selectedPage(it)
-        }
+        viewPager.selectedPageListener { viewModel.selectedPage(it) }
     }
 
     override fun subscribeUi() {
@@ -67,13 +61,15 @@ class FragmentWeatherDetailHost : AbstractFragment() {
         viewModel.positions.observe(this, Observer { data ->
             data?.let { model ->
                 adapter.setData(model)
-                tmpList = model.list
                 model.selectedItem?.let {
-                    setTitle(model.list[it.position].name)
+                    viewModel.selectedPage(it.position)
                     viewPager.currentItem = it.position
                 }
                 viewModel.selected.observe(this, Observer { item ->
-                    item?.let { viewPager.currentItem = it }
+                    item?.let {
+                        viewPager.currentItem = it.position
+                        setTitle(it.name)
+                    }
                 })
             }
         })

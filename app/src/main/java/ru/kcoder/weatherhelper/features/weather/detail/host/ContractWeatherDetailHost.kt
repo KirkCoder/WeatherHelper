@@ -15,7 +15,7 @@ interface ContractWeatherDetailHost {
         errorSupervisor: ErrorSupervisor
     ) : BaseViewModel(scopeController, errorSupervisor) {
         abstract val positions: LiveData<WeatherDetailModel>
-        abstract val selected: LiveData<Int>
+        abstract val selected: LiveData<WeatherPosition>
         abstract fun selectedPage(position: Int)
     }
 

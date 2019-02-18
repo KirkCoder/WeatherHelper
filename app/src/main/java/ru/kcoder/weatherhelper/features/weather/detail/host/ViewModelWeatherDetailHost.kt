@@ -3,6 +3,7 @@ package ru.kcoder.weatherhelper.features.weather.detail.host
 import androidx.lifecycle.MutableLiveData
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SelectedItem
 import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherDetailModel
+import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 
 class ViewModelWeatherDetailHost(
@@ -13,7 +14,7 @@ class ViewModelWeatherDetailHost(
 ) : ContractWeatherDetailHost.ViewModel(interactor, errorSupervisor) {
 
     override val positions = LiveDataWeatherHost()
-    override val selected = MutableLiveData<Int>()
+    override val selected = MutableLiveData<WeatherPosition>()
 
     init {
         positions.addSource(interactor.getWeatherHolderPositions()) { list ->
@@ -25,6 +26,8 @@ class ViewModelWeatherDetailHost(
     }
 
     override fun selectedPage(position: Int) {
-        selected.value = position
+        positions.value?.let {
+            selected.value = it.list[position]
+        }
     }
 }
