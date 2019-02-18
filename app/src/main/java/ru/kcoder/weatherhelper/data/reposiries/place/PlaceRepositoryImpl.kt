@@ -27,7 +27,7 @@ class PlaceRepositoryImpl(
         throw LocalException(LocalExceptionMsg.CANT_LOAD_ADDRESS)
     }
 
-    override fun savePlace(place: PlaceMarker): WeatherHolder {
+    override fun savePlace(place: PlaceMarker): Long {
         val weatherHolder = mapToWeatherHolder(place)
         if (weatherDbSource.getWeatherHolderId(place.lat, place.lon) != null) {
             throw LocalException(LocalExceptionMsg.PLACE_EXIST)

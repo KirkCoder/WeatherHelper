@@ -54,7 +54,7 @@ class WeatherRepositoryImpl(
         settings: Settings,
         scope: CoroutineScope
     ): LiveData<List<WeatherHolder>> {
-        allWeatherLiveData.addSource(database.getAllWeatherLd()) { list ->
+        allWeatherLiveData.addSource(database.getAllWeather()) { list ->
             list?.let { nList ->
                 scope.launch(Dispatchers.IO) {
                     allWeatherLiveData.postValue(

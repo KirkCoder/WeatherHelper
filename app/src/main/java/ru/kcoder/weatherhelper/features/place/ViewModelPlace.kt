@@ -14,7 +14,7 @@ class ViewModelPlace(
     private var cashPlace: PlaceMarker? = null
 
     override val markerLiveData = MutableLiveData<PlaceMarker>()
-    override val addedPlaceIdLiveData = MutableLiveData<WeatherHolder>()
+    override val addedPlaceIdLiveData = MutableLiveData<Long>()
     override val fabVisibility = MutableLiveData<Boolean>()
     override val progressLiveData = MutableLiveData<Boolean>()
     override val showDialog = SingleLiveData<Boolean>()

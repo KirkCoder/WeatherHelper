@@ -32,7 +32,7 @@ class InteractorPlace(
 
     override fun savePlace(
         place: PlaceMarker,
-        callback: (WeatherHolder) -> Unit
+        callback: (Long) -> Unit
     ) {
         loading({
             repository.savePlace(place)

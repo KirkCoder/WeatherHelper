@@ -15,7 +15,7 @@ interface ContaractPlace {
     ) : BaseViewModel(scopeController, errorSupervisor) {
 
         abstract val markerLiveData: LiveData<PlaceMarker>
-        abstract val addedPlaceIdLiveData: LiveData<WeatherHolder>
+        abstract val addedPlaceIdLiveData: LiveData<Long>
         abstract val fabVisibility: LiveData<Boolean>
         abstract val showDialog: LiveData<Boolean>
         abstract val progressLiveData: LiveData<Boolean>
@@ -35,7 +35,7 @@ interface ContaractPlace {
 
         fun savePlace(
             place: PlaceMarker,
-            callback: (WeatherHolder) -> Unit
+            callback: (Long) -> Unit
         )
 
         fun getUTCoffset(

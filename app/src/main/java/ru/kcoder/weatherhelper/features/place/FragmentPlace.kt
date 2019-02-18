@@ -21,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.place_add_fragment.*
 import org.koin.androidx.scope.ext.android.bindScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
 import ru.kcoder.weatherhelper.di.PLACE_SCOPE
@@ -121,6 +120,7 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun subscribeUi() {
         super.subscribeUi()
         viewModel.fabVisibility.observe(this, Observer { loading ->
@@ -133,11 +133,11 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
             }
         })
 
-        viewModel.addedPlaceIdLiveData.observe(this, Observer { holder ->
+        viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
             activity?.let {
-                if (holder != null) {
+                if (id != null) {
                     AppRouter.popBackStack(it)
-                    AppRouter.showWeatherDetailHostFragment(it, holder.id, true)
+                    AppRouter.showWeatherDetailHostFragment(it, id, true)
                 }
             }
         })

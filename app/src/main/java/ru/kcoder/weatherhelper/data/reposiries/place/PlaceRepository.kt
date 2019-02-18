@@ -5,6 +5,6 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 
 interface PlaceRepository {
     fun getAddress(lat: Double, lon: Double): Pair<String?, String?>
-    fun savePlace(place: PlaceMarker): WeatherHolder
+    fun savePlace(place: PlaceMarker): Long
     fun getUTCoffset(lat: Double, lon: Double): Int
 }

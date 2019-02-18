@@ -32,7 +32,11 @@ class DialogFragmentPlace : DialogFragment() {
                 .setView(view)
                 .setPositiveButton(R.string.common_ok) { _, _ ->
                     val editText = view.findViewById<AppCompatEditText>(R.id.editTextPlaceName)
-                    callback?.selectName(editText.text?.toString() ?: act.resources.getString(R.string.place_add_not_found))
+                    val tmpText = editText.text
+                    callback?.selectName(
+                        if (tmpText == null || tmpText.isEmpty()) act.resources.getString(R.string.place_add_not_found)
+                        else tmpText.toString()
+                    )
                 }
                 .setNegativeButton(R.string.common_cancel) { _, _ ->
                     callback?.selectName(null)

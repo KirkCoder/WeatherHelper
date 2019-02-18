@@ -13,11 +13,7 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getWeatherHolderId(lat, lon)
     }
 
-    override fun getLastPosition(): Int? {
-        return database.weatherHolder().getLastPosition()
-    }
-
-    override fun insertWeatherHolder(holder: WeatherHolder): WeatherHolder {
+    override fun insertWeatherHolder(holder: WeatherHolder): Long {
         return database.weatherHolder().insertWeatherHolder(holder)
     }
 
@@ -33,10 +29,6 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
         return database.weatherHolder().getWeather(id)
     }
 
-    override fun getAllWeather(): List<HolderWithPresentation> {
-        return database.weatherHolder().getAllWeather()
-    }
-
     override fun deleteWeatherHolder(id: Long) {
         database.weatherHolder().delete(id)
     }
@@ -50,8 +42,8 @@ class WeatherDbSourceImpl(private val database: WeatherHelperRoomDb) : WeatherDb
     }
 
 
-    override fun getAllWeatherLd(): LiveData<List<HolderWithPresentation>> {
-        return database.weatherHolder().getAllWeatherLd()
+    override fun getAllWeather(): LiveData<List<HolderWithPresentation>> {
+        return database.weatherHolder().getAllWeather()
     }
 
     override fun setLoadingStatus(id: Long) {
