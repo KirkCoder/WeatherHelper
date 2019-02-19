@@ -10,6 +10,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.seekbar_with_names.view.*
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
+
 class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
     private var tickMarkOne: Drawable? = null
@@ -85,11 +86,8 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
     }
 
     private fun displayNames(list: List<String>) {
-        if (linerLayoutLabels.childCount == 0) {
-            for (names in list) {
-                val textView = createTextView(names)
-                linerLayoutLabels.addView(textView)
-            }
+        for (names in list) {
+            linerLayoutLabels.addView(createTextView(names))
         }
     }
 
@@ -100,7 +98,7 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         }
     }
 
-    fun setListener(callback: ((position: Int) -> Unit)?){
-        seekBarWithTickMarks.setListener (callback)
+    fun setListener(callback: ((position: Int) -> Unit)?) {
+        seekBarWithTickMarks.setListener(callback)
     }
 }
