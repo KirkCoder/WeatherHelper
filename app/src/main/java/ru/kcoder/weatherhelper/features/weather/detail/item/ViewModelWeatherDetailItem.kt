@@ -21,7 +21,6 @@ class ViewModelWeatherDetailItem(
             weather.value = it
         }
         if (forceUpdate) updateWeather()
-        updateWeather()
     }
 
     override fun updateWeather() {

@@ -24,6 +24,7 @@ class InteractorWeatherList(
 
     @Volatile
     private var updatingId: Long? = null
+    private val failBgUpdate = mutableListOf<Long>()
 
     private val allWeatherLiveData = MediatorLiveData<List<WeatherHolder>>()
 
@@ -64,7 +65,10 @@ class InteractorWeatherList(
     }
 
     private fun clearUpdateStatus(id: Long) {
-        if (id == updatingId) updatingId = null
+        if (id == updatingId) {
+            updatingId = null
+            failBgUpdate.add(id)
+        }
         uploading({ repository.clearStatus(id) })
     }
 
@@ -83,9 +87,10 @@ class InteractorWeatherList(
             val updateTime = settings.updateTime
             if (!data.isNullOrEmpty()
                 && TimeUtils.isHourDifference(data[0].timeLong - holder.timeUTCoffset, updateTime)
+                && !failBgUpdate.contains(holder.id)
             ) {
-                updatingId = data[0].holderId
-                forceUpdate(data[0].holderId)
+                updatingId = holder.id
+                forceUpdate(holder.id)
             }
         }
     }

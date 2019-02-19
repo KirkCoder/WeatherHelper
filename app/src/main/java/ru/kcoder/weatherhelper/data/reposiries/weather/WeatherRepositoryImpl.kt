@@ -228,7 +228,7 @@ class WeatherRepositoryImpl(
             timeLong = time
             day = time.tryFormatDay()
             val tmpTime = time.tryFormatHour()
-            val isDay = tmpTime > settings.startNight || tmpTime < settings.endNight
+            val isDay = tmpTime < settings.startNight && tmpTime > settings.endNight
             icoRes = data.weather?.let {
                 if (it.isNotEmpty()) {
                     imageSource.getImageIdByCod(it[0].id, isDay)
