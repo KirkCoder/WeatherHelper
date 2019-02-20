@@ -56,11 +56,10 @@
                 android:text="@string/weather_mock_tmp"
                 style="@style/TempTextStyle"
                 android:layout_marginTop="@dimen/layout_margin"
-                android:paddingStart="@dimen/layout_padding"
-                android:paddingEnd="0dp"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 android:includeFontPadding="false"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewIco"
                 app:layout_constraintTop_toBottomOf="@id/textViewTimeDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -79,10 +78,8 @@
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageViewIco"
                 app:layout_constraintLeft_toRightOf="@+id/textViewTemp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingStart="0dp"
-                android:paddingEnd="@dimen/layout_padding"
-                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintEnd_toStartOf="@+id/textViewHumidityDescription"
+                app:layout_constraintStart_toEndOf="@+id/textViewTemp"
                 app:layout_constraintTop_toTopOf="@id/textViewTemp"
                 app:layout_constraintBottom_toBottomOf="@id/textViewTemp"
                 app:srcCompat="@drawable/ic_sun"
@@ -91,38 +88,25 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewHumidityDescription"
-                android:layout_marginTop="@dimen/layout_margin"
                 android:drawableStart="@drawable/ic_drop"
                 android:text="@string/weather_mock_humidity"
-                android:paddingStart="@dimen/layout_padding"
-                android:paddingEnd="0dp"
                 android:gravity="center_vertical"
                 android:drawablePadding="@dimen/layout_padding"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewIco"
+                app:layout_constraintStart_toEndOf="@+id/imageViewIco"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewWindDescription"
-                android:layout_marginTop="@dimen/layout_margin"
-                android:layout_marginStart="@dimen/layout_margin"
                 android:drawableStart="@drawable/mist2"
                 android:text="@string/weather_mock_wind"
-                android:paddingStart="0dp"
-                android:paddingEnd="@dimen/layout_padding"
                 android:gravity="center_vertical"
                 android:drawablePadding="@dimen/layout_padding"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTemp"
-                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewIco"
+                app:layout_constraintStart_toStartOf="@+id/textViewHumidityDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
