@@ -62,8 +62,8 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
         errorLiveData = viewModel.errorLiveData
         setHasOptionsMenu(true)
         initRecycler(view.context)
-        fabAdd.setOnClickListener { _ ->
-            activity?.let { AppRouter.showAddWeatherFragment(it) }
+        fabAdd.setOnClickListener {
+            activity?.let {ctx -> AppRouter.showAddWeatherFragment(ctx) }
         }
         fabOk.setOnClickListener { finishEdit() }
     }
@@ -71,12 +71,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     private fun finishEdit() = viewModel.setEditStatus(false)
 
     private fun initRecycler(context: Context) {
-        val width = resources.configuration.screenWidthDp
-        adapter.maxSeekBarPoints = when {
-            width < SCREEN_SMALL -> MIN_SEEK_POINTS
-            width > SCREEN_BIG -> MAX_SEEK_POINTS
-            else -> NORMAL_SEEK_POINTS
-        }
         with(recyclerViewWeatherList) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@FragmentWeatherList.adapter
@@ -157,11 +151,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
     companion object {
         const val TAG = "WEATHER_FRAGMENT_LIST_TAG"
-        const val SCREEN_SMALL = 360
-        const val SCREEN_BIG = 640
-        const val MAX_SEEK_POINTS = 7
-        const val NORMAL_SEEK_POINTS = 6
-        const val MIN_SEEK_POINTS = 4
         @JvmStatic
         fun newInstance() = FragmentWeatherList()
     }

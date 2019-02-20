@@ -3,5 +3,6 @@
     <declare-styleable name="SeekBarWithNames">
         <attr name="tickMarkOne" format="integer"/>
         <attr name="tickMarkSecond" format="integer"/>
+        <attr name="pointCount" format="integer"/>
     </declare-styleable>
 </resources>

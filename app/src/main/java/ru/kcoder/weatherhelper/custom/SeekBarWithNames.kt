@@ -17,6 +17,7 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
     private var tickMarkSecond: Drawable? = null
     private var widthMeasureSpec = 0
     private var heightMeasureSpec = 0
+    private var pointCount = 4
 
     init {
         val attrs = context.obtainStyledAttributes(
@@ -27,6 +28,7 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         try {
             tickMarkOne = attrs.getDrawable(R.styleable.SeekBarWithNames_tickMarkOne)
             tickMarkSecond = attrs.getDrawable(R.styleable.SeekBarWithNames_tickMarkSecond)
+            pointCount = attrs.getInt(R.styleable.SeekBarWithNames_pointCount, 0)
         } finally {
             attrs.recycle()
         }
@@ -35,8 +37,13 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
     fun setNames(list: List<String>) {
         visibility = if (list.size < 2) View.GONE
         else View.VISIBLE
-        displayNames(list)
-        seekBarWithTickMarks.setMarksCount(list.size)
+        val tmpCount = if (list.size > pointCount) {
+            pointCount
+        } else {
+            list.size
+        }
+        displayNames(list, tmpCount)
+        seekBarWithTickMarks.setMarksCount(tmpCount)
     }
 
     override fun onFinishInflate() {
@@ -53,8 +60,6 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
 
         if (changed) {
             alignIntervals()
-
-            // We've changed the intervals layout, we need to refresh.
 
             linerLayoutLabels.measure(widthMeasureSpec, heightMeasureSpec)
             linerLayoutLabels.layout(
@@ -85,9 +90,15 @@ class SeekBarWithNames(context: Context, attributeSet: AttributeSet) : LinearLay
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    private fun displayNames(list: List<String>) {
-        for (names in list) {
-            linerLayoutLabels.addView(createTextView(names))
+    private fun displayNames(list: List<String>, tmpCount: Int) {
+        if (linerLayoutLabels.childCount == 0) {
+            for (i in 0 until pointCount) {
+                linerLayoutLabels.addView(createTextView(list[i]))
+            }
+        } else {
+            for (i in 0 until tmpCount) {
+                (linerLayoutLabels.getChildAt(i) as TextView).text = list[i]
+            }
         }
     }
 

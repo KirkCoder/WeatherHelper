@@ -4,4 +4,7 @@
     <integer name="settings_server_time_jump">3</integer>
     <integer name="settings_end_night">6</integer>
     <integer name="settings_start_night">19</integer>
+    <integer name="seek_bar_small">4</integer>
+    <integer name="seek_bar_norm">6</integer>
+    <integer name="seek_bar_big">7</integer>
 </resources>

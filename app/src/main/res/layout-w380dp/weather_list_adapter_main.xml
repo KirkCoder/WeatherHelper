@@ -29,23 +29,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageViewMotion"
-                android:text="@string/weather_mock_place_name"
-                style="@style/TextStyleTitle"
-                android:paddingTop="@dimen/layout_padding"
-                android:paddingStart="@dimen/layout_padding"
-                android:paddingEnd="@dimen/layout_padding"
-                app:layout_constraintTop_toTopOf="@+id/textViewTitle"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
-                android:visibility="invisible"
-                tools:visibility="visible"
-                app:srcCompat="@drawable/ic_swap"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTimeDescription"
                 android:text="@string/weather_mock_description"
@@ -150,6 +133,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:tickMarkOne="@drawable/separator"
                 app:tickMarkSecond="@drawable/separator_half"
+                app:pointCount="@integer/seek_bar_norm"
                 android:paddingStart="@dimen/layout_padding"
                 android:paddingEnd="@dimen/layout_padding"
                 android:paddingTop="@dimen/layout_padding"
@@ -157,25 +141,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewWindDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-        <View
-                android:id="@+id/viewDelimiter"
-                app:layout_constraintTop_toBottomOf="@+id/seekBarWeather"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:background="@color/colorGray"
-                android:layout_height="@dimen/delimiter_height"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonDelete"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/DeleteBtn"
-                android:text="@string/weather_delete"
-                app:layout_constraintTop_toBottomOf="@+id/viewDelimiter"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

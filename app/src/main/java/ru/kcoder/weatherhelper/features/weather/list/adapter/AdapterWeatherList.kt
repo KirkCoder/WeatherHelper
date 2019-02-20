@@ -7,17 +7,16 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import java.util.*
 
 class AdapterWeatherList(
-    private val showDetail: (Long) -> Unit,
-    private val update: (Long) -> Unit,
-    private val delete: (Long, String) -> Unit,
+    showDetail: (Long) -> Unit,
+    update: (Long) -> Unit,
+    delete: (Long, String) -> Unit,
     private val change: (List<WeatherHolder>) -> Unit,
     private val notifyChange: (List<WeatherHolder>) -> Unit,
-    private val motion: (RecyclerView.ViewHolder) -> Unit
+    motion: (RecyclerView.ViewHolder) -> Unit
 ) : ListDelegationAdapter<List<WeatherHolder>>(), AdapterSupervisor {
 
     private var isEditStatus = false
     private var isMoved = false
-    var maxSeekBarPoints: Int? = null
 
     init {
         items = emptyList()
@@ -44,10 +43,6 @@ class AdapterWeatherList(
 
     override fun isEditStatus(): Boolean {
         return isEditStatus
-    }
-
-    override fun getSeekBarPoints(): Int? {
-        return maxSeekBarPoints
     }
 
     fun deleteItem(id: Long): List<WeatherHolder>? {

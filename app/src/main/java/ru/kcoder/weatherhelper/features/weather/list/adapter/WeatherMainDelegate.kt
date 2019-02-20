@@ -59,13 +59,8 @@ class WeatherMainDelegate(
             setOnClickListener { showDetail(item.id) }
 
             if (hours.isNotEmpty()) {
-                val tmpHoursNames = adapterSupervisor.getSeekBarPoints()?.let {
-                    return@let if (item.timeNames.size > it) {
-                        item.timeNames.subList(0, it)
-                    } else item.timeNames
-                } ?: item.timeNames
                 bind(0, hours)
-                seekBarWeather.setNames(tmpHoursNames)
+                seekBarWeather.setNames(item.timeNames)
                 seekBarWeather.setListener {
                     bind(it, hours)
                 }
