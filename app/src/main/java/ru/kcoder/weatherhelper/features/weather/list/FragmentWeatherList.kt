@@ -1,8 +1,8 @@
 package ru.kcoder.weatherhelper.features.weather.list
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.Observer
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.LiveData
@@ -15,6 +15,7 @@ import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kcoder.weatherhelper.di.WEATHER_LIST_SCOPE
 import ru.kcoder.weatherhelper.features.weather.list.adapter.AdapterWeatherList
+import ru.kcoder.weatherhelper.features.weather.list.adapter.DecoratorList
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.list.adapter.TouchCallback
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
@@ -63,7 +64,7 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
         setHasOptionsMenu(true)
         initRecycler(view.context)
         fabAdd.setOnClickListener {
-            activity?.let {ctx -> AppRouter.showAddWeatherFragment(ctx) }
+            activity?.let { ctx -> AppRouter.showAddWeatherFragment(ctx) }
         }
         fabOk.setOnClickListener { finishEdit() }
     }
@@ -75,10 +76,12 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
             layoutManager = LinearLayoutManager(context)
             adapter = this@FragmentWeatherList.adapter
             touchHelper.attachToRecyclerView(this)
+            addItemDecoration(
+                DecoratorList(context.resources.getDimension(R.dimen.layout_margin_half).toInt())
+            )
         }
     }
 
-    @SuppressLint("RestrictedApi")
     override fun subscribeUi() {
         super.subscribeUi()
 
@@ -87,19 +90,21 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
         })
 
         viewModel.editStatus.observe(this, Observer { status ->
-            status?.let {
-                isEdit = it
-                activity?.invalidateOptionsMenu()
-                adapter.setEditStatus(it)
-                if (it) {
-                    fabAdd.visibility = View.GONE
-                    fabOk.visibility = View.VISIBLE
-                } else {
-                    fabAdd.visibility = View.VISIBLE
-                    fabOk.visibility = View.GONE
-                }
-            }
+            status?.let { setEditStatus(it) }
         })
+    }
+
+    private fun setEditStatus(it: Boolean) {
+        isEdit = it
+        activity?.invalidateOptionsMenu()
+        adapter.setEditStatus(it)
+        if (it) {
+            fabAdd.hide()
+            fabOk.show()
+        } else {
+            fabAdd.show()
+            fabOk.hide()
+        }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

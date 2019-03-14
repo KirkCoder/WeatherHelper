@@ -46,18 +46,19 @@
             style="@style/TextStyleMiddle"
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginEnd="@dimen/layout_margin"
+            android:paddingBottom="@dimen/layout_padding_half"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <View
-            android:id="@+id/viewDelimiter"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-            app:layout_constraintStart_toEndOf="@id/imageViewIcoDetail"
-            android:layout_marginTop="@dimen/layout_margin_half"
-            android:layout_marginStart="@dimen/layout_margin"
-            android:background="@color/colorWhite"
-            android:layout_width="wrap_content"
-            tools:background="@color/colorBlack"
-            android:layout_height="@dimen/delimiter_height"/>
+    <!--<View-->
+            <!--android:id="@+id/viewDelimiter"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textViewDescription"-->
+            <!--app:layout_constraintStart_toEndOf="@id/imageViewIcoDetail"-->
+            <!--android:layout_marginTop="@dimen/layout_margin_half"-->
+            <!--android:layout_marginStart="@dimen/layout_margin"-->
+            <!--android:background="@color/colorWhite"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--tools:background="@color/colorBlack"-->
+            <!--android:layout_height="@dimen/delimiter_height"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

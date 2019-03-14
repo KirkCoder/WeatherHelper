@@ -17,6 +17,8 @@ import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_SCOPE
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.AdapterWeatherDetail
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+import androidx.core.content.ContextCompat
+import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.DecoratorDetail
 
 class FragmentWeatherDetailItem : AbstractFragment() {
 
@@ -42,7 +44,7 @@ class FragmentWeatherDetailItem : AbstractFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme_White)
         val inf = inflater.cloneInContext(contextThemeWrapper)
-        return inf.inflate(R.layout.weather_detail_fragment, container, false)
+        return inf.inflate(ru.kcoder.weatherhelper.ru.weatherhelper.R.layout.weather_detail_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,6 +58,12 @@ class FragmentWeatherDetailItem : AbstractFragment() {
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@FragmentWeatherDetailItem.adapter
+            ContextCompat.getDrawable(context, R.drawable.devider)?.let {
+                addItemDecoration(
+                    DecoratorDetail(it, context.resources.getDimension(R.dimen.layout_padding).toInt())
+                )
+            }
+            Unit
         }
     }
 
