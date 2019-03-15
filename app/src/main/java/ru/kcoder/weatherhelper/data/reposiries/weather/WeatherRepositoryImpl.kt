@@ -17,6 +17,7 @@ import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
+
 class WeatherRepositoryImpl(
     private val network: WeatherNetworkSource,
     private val database: WeatherDbSource,
@@ -27,18 +28,23 @@ class WeatherRepositoryImpl(
     private val allWeatherLiveData = MediatorLiveData<List<WeatherHolder>>()
     private val weatherLiveData = MediatorLiveData<WeatherHolder>()
 
-    override fun updateWeatherById(settings: Settings, id: Long) {
+    override suspend fun updateWeatherById(settings: Settings, id: Long, scope: CoroutineScope) {
 
         database.getSingleWeatherHolder(id)?.let {
-            val weatherData = network
-                .getWeather(it.lat, it.lon, BuildConfig.API_KEY)
-                .executeCall()
 
-            val weatherForecast = network
-                .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
-                .executeCall()
+            val weatherData = scope.async(Dispatchers.IO) {
+                network
+                    .getWeather(it.lat, it.lon, BuildConfig.API_KEY)
+                    .executeCall()
+            }
 
-            it.bindData(settings, weatherData, weatherForecast.data, it.timeUTCoffset, id)
+            val weatherForecast = scope.async(Dispatchers.IO) {
+                network
+                    .getWeatherForecast(it.lat, it.lon, BuildConfig.API_KEY)
+                    .executeCall()
+            }
+
+            it.bindData(settings, weatherData.await(), weatherForecast.await().data, it.timeUTCoffset, id)
 
             val insertion = mutableListOf<WeatherPresentation>()
             insertion.addAll(it.hours)

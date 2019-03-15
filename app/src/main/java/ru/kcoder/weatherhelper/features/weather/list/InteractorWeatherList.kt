@@ -52,7 +52,7 @@ class InteractorWeatherList(
                 if (it) {
                     runWithSettings { settings ->
                         loading({
-                            repository.updateWeatherById(settings, id)
+                            repository.updateWeatherById(settings, id, scopeHandler.scope)
                         }, errorCallback = {
                             clearUpdateStatus(id)
                         })

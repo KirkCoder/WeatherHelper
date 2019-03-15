@@ -88,9 +88,10 @@ class FragmentWeatherDetailItem : AbstractFragment() {
         @JvmStatic
         fun newInstance(weatherId: Long, needUpdate: Boolean): FragmentWeatherDetailItem {
             val fragment = FragmentWeatherDetailItem()
-            val bundle = Bundle()
-            bundle.putLong(ID_KEY, weatherId)
-            bundle.putBoolean(NEED_UPDATE, needUpdate)
+            val bundle = Bundle().apply {
+                putLong(ID_KEY, weatherId)
+                putBoolean(NEED_UPDATE, needUpdate)
+            }
             fragment.arguments = bundle
             return fragment
         }

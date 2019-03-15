@@ -38,7 +38,7 @@ class InteractorWeatherDetailItem(
     ) {
         runWithSettings { settings ->
             loadingProgress({
-                repository.updateWeatherById(settings, id)
+                repository.updateWeatherById(settings, id, scopeHandler.scope)
             }, loadingStatus = statusCallback)
         }
     }

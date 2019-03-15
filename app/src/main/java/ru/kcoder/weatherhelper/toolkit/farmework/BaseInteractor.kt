@@ -23,7 +23,7 @@ abstract class BaseInteractor(
     }
 
     fun <B> loading(
-        load: () -> B,
+        load: suspend () -> B,
         callback: ((data: B) -> Unit)? = null,
         errorCallback: ((Throwable) -> Unit)? = null
     ) {
@@ -38,7 +38,7 @@ abstract class BaseInteractor(
     }
 
     fun <B> loadingProgress(
-        load: () -> B,
+        load: suspend () -> B,
         callback: ((data: B) -> Unit)? = null,
         loadingStatus: (Boolean) -> Unit,
         errorCallback: ((Throwable) -> Unit)? = null
@@ -79,9 +79,9 @@ abstract class BaseInteractor(
             try {
                 withContext(Dispatchers.IO) {
                     upload()
-                    success?.invoke(true)
                     Unit
                 }
+                success?.invoke(true)
             } catch (err: Throwable) {
                 errorParser(err, null)
                 success?.invoke(false)

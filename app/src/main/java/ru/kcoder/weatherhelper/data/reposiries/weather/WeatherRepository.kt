@@ -7,7 +7,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
 
 interface WeatherRepository {
-    fun updateWeatherById(settings: Settings, id: Long)
+    suspend fun updateWeatherById(settings: Settings, id: Long, scope: CoroutineScope)
     fun getWeather(id: Long, scope: CoroutineScope): LiveData<WeatherHolder>
     fun delete(id: Long)
     fun changedData(list: List<WeatherHolder>)

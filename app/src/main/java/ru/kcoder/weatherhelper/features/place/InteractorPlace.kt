@@ -1,7 +1,6 @@
 package ru.kcoder.weatherhelper.features.place
 
 import ru.kcoder.weatherhelper.data.entity.place.PlaceMarker
-import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.place.PlaceRepository
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
