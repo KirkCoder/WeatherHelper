@@ -5,10 +5,11 @@ import kotlinx.coroutines.CoroutineScope
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherPosition
+import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 
 interface WeatherRepository {
     suspend fun updateWeatherById(settings: Settings, id: Long, scope: CoroutineScope)
-    fun getWeather(id: Long, scope: CoroutineScope): LiveData<WeatherHolder>
+    fun getWeather(id: Long, async: Async): LiveData<WeatherHolder>
     fun delete(id: Long)
     fun changedData(list: List<WeatherHolder>)
     fun getDayTitle(): String
@@ -16,7 +17,7 @@ interface WeatherRepository {
 
     fun getAllWeather(
         settings: Settings,
-        scope: CoroutineScope
+        async: Async
     ): LiveData<List<WeatherHolder>>
 
     fun setLoadingStatus(id: Long)

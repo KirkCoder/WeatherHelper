@@ -7,6 +7,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimDay
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
+import ru.kcoder.weatherhelper.toolkit.android.set
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
@@ -19,17 +20,15 @@ class InteractorWeatherDetailItem(
 ) : BaseInteractor(settingsRepository, scopeHandler, errorSupervisor),
     ContractWeatherDetailItem.Interactor {
 
-    private val liveData = MediatorLiveData<List<Any>>()
+    private val weatherLiveData = MediatorLiveData<List<Any>>()
 
     override fun getWeather(id: Long): LiveData<List<Any>> {
-        liveData.addSource(repository.getWeather(id, scopeHandler.scope)) { holder ->
-            holder?.let { nh ->
-                loading({ nh.mapToAnyList() }, {
-                    liveData.value = it
-                })
-            }
-        }
-        return liveData
+        weatherLiveData.addSource(repository.getWeather(id, getAsync()), set { holder ->
+            loading({ holder.mapToAnyList() }, {
+                weatherLiveData.value = it
+            })
+        })
+        return weatherLiveData
     }
 
     override fun updateWeather(
@@ -37,8 +36,8 @@ class InteractorWeatherDetailItem(
         statusCallback: (Boolean) -> Unit
     ) {
         runWithSettings { settings ->
-            loadingProgress({
-                repository.updateWeatherById(settings, id, scopeHandler.scope)
+            loadingProgress({ scope ->
+                repository.updateWeatherById(settings, id, scope)
             }, loadingStatus = statusCallback)
         }
     }

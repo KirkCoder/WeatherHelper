@@ -4,6 +4,7 @@ import kotlinx.coroutines.*
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
+import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeController
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
@@ -71,4 +72,6 @@ abstract class BaseInteractor(
     override fun cancel() {
         scopeHandler.cancel()
     }
+
+    protected fun getAsync() = Async(scopeHandler.scope, errorSupervisor.getCoroutineErrorHandler())
 }

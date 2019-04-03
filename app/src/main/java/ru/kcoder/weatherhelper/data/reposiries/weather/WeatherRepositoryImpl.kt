@@ -14,6 +14,8 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
+import ru.kcoder.weatherhelper.toolkit.android.set
+import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
 
@@ -58,28 +60,25 @@ class WeatherRepositoryImpl(
 
     override fun getAllWeather(
         settings: Settings,
-        scope: CoroutineScope
+        async: Async
     ): LiveData<List<WeatherHolder>> {
-        allWeatherLiveData.addSource(database.getAllWeather()) { list ->
-            list?.let { nList ->
-                scope.launch(Dispatchers.IO) {
-                    allWeatherLiveData.postValue(
-                        nList.map { it.mapToPresentation() }.sortedBy { it.position }
-                    )
-                }
+
+        allWeatherLiveData.addSource(database.getAllWeather(), set { list ->
+            async.invoke {
+                allWeatherLiveData.postValue(
+                    list.map { it.mapToPresentation() }.sortedBy { it.position }
+                )
             }
-        }
+        })
         return allWeatherLiveData
     }
 
-    override fun getWeather(id: Long, scope: CoroutineScope): LiveData<WeatherHolder> {
-        weatherLiveData.addSource(database.getWeather(id)) { holder ->
-            holder?.let { nHolder ->
-                scope.launch(Dispatchers.IO) {
-                    weatherLiveData.postValue(nHolder.mapToPresentation())
-                }
-            }
-        }
+    override fun getWeather(id: Long, async: Async): LiveData<WeatherHolder> {
+
+        weatherLiveData.addSource(database.getWeather(id), set {
+            async.invoke { weatherLiveData.postValue(it.mapToPresentation()) }
+        })
+
         return weatherLiveData
     }
 

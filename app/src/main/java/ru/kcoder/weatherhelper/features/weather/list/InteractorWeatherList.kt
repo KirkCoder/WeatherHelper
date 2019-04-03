@@ -9,7 +9,9 @@ import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
+import ru.kcoder.weatherhelper.toolkit.android.set
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
+import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
@@ -32,13 +34,11 @@ class InteractorWeatherList(
         runWithSettings { settings ->
             loading({ repository.clearAllStatus() }, {
                 allWeatherLiveData.addSource(
-                    repository.getAllWeather(settings, scopeHandler.scope)
-                ) { list -> list?.let {
-                    scopeHandler.scope.launch (Dispatchers.IO){
-                        if (updatingId == null) findNotUpdatedItem(settings, it)
+                    repository.getAllWeather(settings, getAsync()), set {
+                        getAsync().invoke { if (updatingId == null) findNotUpdatedItem(settings, it) }
+                        allWeatherLiveData.value = it
                     }
-                    allWeatherLiveData.value = it
-                } }
+                )
             })
         }
         return allWeatherLiveData
@@ -48,20 +48,18 @@ class InteractorWeatherList(
         uploading(
             scope = scopeHandler.scope,
             upload = { repository.setLoadingStatus(id) },
-            success = {
-                if (it) {
-                    runWithSettings { settings ->
-                        loading({
-                            repository.updateWeatherById(settings, id, scopeHandler.scope)
-                        }, errorCallback = {
-                            clearUpdateStatus(id)
-                        })
-                    }
-                } else {
-                    clearUpdateStatus(id)
-                }
-            }
+            success = { if (it) updateWeatherById(id) else clearUpdateStatus(id) }
         )
+    }
+
+    private fun updateWeatherById(id: Long) {
+        runWithSettings { settings ->
+            loading({ scope ->
+                repository.updateWeatherById(settings, id, scope)
+            }, errorCallback = {
+                clearUpdateStatus(id)
+            })
+        }
     }
 
     private fun clearUpdateStatus(id: Long) {
