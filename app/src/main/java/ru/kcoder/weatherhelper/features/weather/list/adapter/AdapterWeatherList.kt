@@ -87,12 +87,8 @@ class AdapterWeatherList(
 
         override fun getNewListSize() = newItems.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldItems[oldItemPosition]
-            val newItem = newItems[newItemPosition]
-
-            return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldItems[oldItemPosition].id == newItems[newItemPosition].id
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val oldItem = oldItems[oldItemPosition]
