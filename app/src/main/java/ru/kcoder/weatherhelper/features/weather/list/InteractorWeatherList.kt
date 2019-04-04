@@ -3,15 +3,12 @@ package ru.kcoder.weatherhelper.features.weather.list
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.kcoder.weatherhelper.data.entity.settings.Settings
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
-import ru.kcoder.weatherhelper.toolkit.android.set
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
-import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
@@ -34,7 +31,7 @@ class InteractorWeatherList(
         runWithSettings { settings ->
             loading({ repository.clearAllStatus() }, {
                 allWeatherLiveData.addSource(
-                    repository.getAllWeather(settings, getAsync()), set {
+                    repository.getAllWeather(settings, getAsync()), mObserver {
                         getAsync().invoke { if (updatingId == null) findNotUpdatedItem(settings, it) }
                         allWeatherLiveData.value = it
                     }

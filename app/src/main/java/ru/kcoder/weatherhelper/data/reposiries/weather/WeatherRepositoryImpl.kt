@@ -14,7 +14,7 @@ import ru.kcoder.weatherhelper.data.resourses.string.WeatherStringSource
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.LocalException
 import ru.kcoder.weatherhelper.toolkit.android.LocalExceptionMsg
-import ru.kcoder.weatherhelper.toolkit.android.set
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 import ru.kcoder.weatherhelper.toolkit.farmework.components.Async
 import ru.kcoder.weatherhelper.toolkit.kotlin.*
 import ru.kcoder.weatherhelper.toolkit.utils.TimeUtils
@@ -63,7 +63,7 @@ class WeatherRepositoryImpl(
         async: Async
     ): LiveData<List<WeatherHolder>> {
 
-        allWeatherLiveData.addSource(database.getAllWeather(), set { list ->
+        allWeatherLiveData.addSource(database.getAllWeather(), mObserver { list ->
             async.invoke {
                 allWeatherLiveData.postValue(
                     list.map { it.mapToPresentation() }.sortedBy { it.position }
@@ -75,7 +75,7 @@ class WeatherRepositoryImpl(
 
     override fun getWeather(id: Long, async: Async): LiveData<WeatherHolder> {
 
-        weatherLiveData.addSource(database.getWeather(id), set {
+        weatherLiveData.addSource(database.getWeather(id), mObserver {
             async.invoke { weatherLiveData.postValue(it.mapToPresentation()) }
         })
 

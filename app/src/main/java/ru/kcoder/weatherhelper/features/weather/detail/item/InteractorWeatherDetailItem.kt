@@ -7,7 +7,7 @@ import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimDay
 import ru.kcoder.weatherhelper.data.entity.weather.detail.SlimHour
 import ru.kcoder.weatherhelper.data.reposiries.settings.SettingsRepository
 import ru.kcoder.weatherhelper.data.reposiries.weather.WeatherRepository
-import ru.kcoder.weatherhelper.toolkit.android.set
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 import ru.kcoder.weatherhelper.toolkit.farmework.BaseInteractor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ErrorSupervisor
 import ru.kcoder.weatherhelper.toolkit.farmework.supevisors.ScopeHandler
@@ -23,7 +23,7 @@ class InteractorWeatherDetailItem(
     private val weatherLiveData = MediatorLiveData<List<Any>>()
 
     override fun getWeather(id: Long): LiveData<List<Any>> {
-        weatherLiveData.addSource(repository.getWeather(id, getAsync()), set { holder ->
+        weatherLiveData.addSource(repository.getWeather(id, getAsync()), mObserver { holder ->
             loading({ holder.mapToAnyList() }, {
                 weatherLiveData.value = it
             })
