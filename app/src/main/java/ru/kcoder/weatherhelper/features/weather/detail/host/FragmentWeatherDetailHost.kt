@@ -6,22 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.weather_detail_host_fragment.*
 import org.koin.android.ext.android.setProperty
 import org.koin.androidx.scope.ext.android.bindScope
 import org.koin.androidx.scope.ext.android.getOrCreateScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import ru.kcoder.weatherhelper.data.entity.weather.detail.WeatherDetailModel
 import ru.kcoder.weatherhelper.di.WEATHER_DETAIL_HOST_SCOPE
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 import ru.kcoder.weatherhelper.toolkit.android.selectedPageListener
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 
 class FragmentWeatherDetailHost : AbstractFragment() {
 
-    override lateinit var errorLiveData: LiveData<Int>
-    private lateinit var viewModel: ContractWeatherDetailHost.ViewModel
+    override lateinit var viewModel: ContractWeatherDetailHost.ViewModel
     private lateinit var adapter: ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +49,6 @@ class FragmentWeatherDetailHost : AbstractFragment() {
     }
 
     private fun initViews() {
-        errorLiveData = viewModel.errorLiveData
         adapter = ViewPagerAdapter(childFragmentManager)
         viewPager.adapter = adapter
         viewPager.selectedPageListener { viewModel.selectedPage(it) }
@@ -58,20 +56,20 @@ class FragmentWeatherDetailHost : AbstractFragment() {
 
     override fun subscribeUi() {
         super.subscribeUi()
-        viewModel.positions.observe(this, Observer { data ->
-            data?.let { model ->
-                adapter.setData(model)
-                model.selectedItem?.let {
-                    viewModel.selectedPage(it.position)
-                    viewPager.currentItem = it.position
-                }
-                viewModel.selected.observe(this, Observer { item ->
-                    item?.let {
-                        viewPager.currentItem = it.position
-                        setTitle(it.name)
-                    }
-                })
-            }
+        viewModel.positions.observe(this, mObserver { model ->
+            adapter.setData(model)
+            subscribeForSelectedItem(model)
+        })
+    }
+
+    private fun subscribeForSelectedItem(model: WeatherDetailModel) {
+        model.selectedItem?.let {
+            viewModel.selectedPage(it.position)
+            viewPager.currentItem = it.position
+        }
+        viewModel.selected.observe(this, mObserver { item ->
+            viewPager.currentItem = item.position
+            setTitle(item.name)
         })
     }
 

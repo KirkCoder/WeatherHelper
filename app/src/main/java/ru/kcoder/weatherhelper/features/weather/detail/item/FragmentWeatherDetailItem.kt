@@ -6,7 +6,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.weather_detail_fragment.*
 import org.koin.android.ext.android.setProperty
@@ -19,11 +18,12 @@ import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.AdapterWeat
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import androidx.core.content.ContextCompat
 import ru.kcoder.weatherhelper.features.weather.detail.item.recycler.DecoratorDetail
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 
 class FragmentWeatherDetailItem : AbstractFragment() {
 
-    private lateinit var viewModel: ContractWeatherDetailItem.ViewModel
-    override lateinit var errorLiveData: LiveData<Int>
+    override lateinit var viewModel: ContractWeatherDetailItem.ViewModel
+
     private val adapter =
         AdapterWeatherDetail { viewModel.clickInform(it) }
 
@@ -53,7 +53,6 @@ class FragmentWeatherDetailItem : AbstractFragment() {
     }
 
     private fun initViews() {
-        errorLiveData = viewModel.errorLiveData
         swipeLayoutDetail.setOnRefreshListener { viewModel.updateWeather() }
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context)
@@ -73,13 +72,9 @@ class FragmentWeatherDetailItem : AbstractFragment() {
             if (!list.isNullOrEmpty()) adapter.setData(list)
         })
 
-        viewModel.status.observe(this, Observer { status ->
-            status?.let { swipeLayoutDetail.isRefreshing = it }
-        })
+        viewModel.status.observe(this, mObserver { swipeLayoutDetail.isRefreshing = it })
 
-        viewModel.checked.observe(this, Observer { data ->
-            data?.let { adapter.setChecked(it) }
-        })
+        viewModel.checked.observe(this, mObserver { adapter.setChecked(it) })
     }
 
     companion object {

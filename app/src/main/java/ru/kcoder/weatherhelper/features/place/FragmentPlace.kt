@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
+import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,13 +27,13 @@ import ru.kcoder.weatherhelper.di.PLACE_SCOPE
 import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.ru.weatherhelper.BuildConfig
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 import ru.kcoder.weatherhelper.toolkit.debug.log
 import ru.kcoder.weatherhelper.toolkit.utils.Permissions
 
 class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
 
-    private val viewModel: ContaractPlace.ViewModel by viewModel()
-    override lateinit var errorLiveData: LiveData<Int>
+    override val viewModel: ContaractPlace.ViewModel by viewModel()
     private var map: GoogleMap? = null
     private var mapView: MapView? = null
 
@@ -73,7 +73,7 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
                 }
                 setMarker(this)
 
-                setOnMapLongClickListener { it ->
+                setOnMapLongClickListener {
                     clear()
                     updateViewModel(PlaceMarker(it.latitude, it.longitude))
                 }
@@ -91,6 +91,10 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
             .replace(R.id.frameLayoutPlaceContainer, placeFragment, PLACES_FRAGMENT_TAG)
             .commit()
 
+        setPlaceListeners(placeFragment)
+    }
+
+    private fun setPlaceListeners(placeFragment: SupportPlaceAutocompleteFragment) {
         placeFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 map?.let {
@@ -114,46 +118,34 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
     }
 
     private fun initView() {
-        errorLiveData = viewModel.errorLiveData
-        fabSelectPlace.setOnClickListener { _ ->
-            viewModel.savePlace()
-        }
+        fabSelectPlace.setOnClickListener { viewModel.savePlace() }
     }
 
-    @SuppressLint("RestrictedApi")
     override fun subscribeUi() {
         super.subscribeUi()
-        viewModel.fabVisibility.observe(this, Observer { loading ->
-            loading?.let {
-                if (it) {
-                    fabSelectPlace.visibility = View.VISIBLE
-                } else {
-                    fabSelectPlace.visibility = View.GONE
-                }
-            }
+        viewModel.fabVisibility.observe(this, mObserver {
+            if (it) fabSelectPlace.show() else fabSelectPlace.hide()
         })
 
         viewModel.addedPlaceIdLiveData.observe(this, Observer { id ->
             activity?.let {
-                if (id != null) {
-                    AppRouter.popBackStack(it)
-                    AppRouter.showWeatherDetailHostFragment(it, id, true)
-                }
+                if (id != null) showWeatherDetail(it, id)
             }
         })
 
-        viewModel.showDialog.observe(this, Observer { bool ->
-            bool?.let { if (it) showPlaceDialog() }
-        })
+        viewModel.showDialog.observe(this, mObserver { if (it) showPlaceDialog() })
 
         viewModel.progressLiveData.observe(this, Observer {
             if (it) progressBar.show()
             else progressBar.hide()
         })
 
-        viewModel.errorLiveData.observe(this, Observer { error ->
-            error?.let { showError(it) }
-        })
+        viewModel.errorLiveData.observe(this, mObserver { showError(it) })
+    }
+
+    private fun showWeatherDetail(it: FragmentActivity, id: Long) {
+        AppRouter.popBackStack(it)
+        AppRouter.showWeatherDetailHostFragment(it, id, true)
     }
 
     private fun showPlaceDialog() {
@@ -161,17 +153,14 @@ class FragmentPlace : AbstractFragment(), DialogFragmentPlace.Callback {
             .show(childFragmentManager, DialogFragmentPlace.TAG)
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setMarker(mMap: GoogleMap) {
-        viewModel.markerLiveData.observe(this, androidx.lifecycle.Observer {
-            it?.let { place ->
-                mMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(place.lat, place.lon))
-                        .title(place.name).also { option ->
-                            place.address?.let { option.snippet(place.address.toString()) }
-                        })
-            }
+        viewModel.markerLiveData.observe(this, mObserver { place ->
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(LatLng(place.lat, place.lon))
+                    .title(place.name).also { option ->
+                        place.address?.let { option.snippet(place.address.toString()) }
+                    })
         })
     }
 

@@ -1,8 +1,9 @@
 package ru.kcoder.weatherhelper.toolkit.farmework
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
-abstract class BaseFragment : androidx.fragment.app.Fragment() {
+abstract class BaseFragment : Fragment() {
 
     protected val addCompatActivity: AppCompatActivity?
         get() {

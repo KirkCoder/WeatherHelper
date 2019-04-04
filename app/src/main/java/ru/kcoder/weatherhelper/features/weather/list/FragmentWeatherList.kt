@@ -1,11 +1,8 @@
 package ru.kcoder.weatherhelper.features.weather.list
 
-import androidx.lifecycle.Observer
 import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +17,11 @@ import ru.kcoder.weatherhelper.toolkit.farmework.AbstractFragment
 import ru.kcoder.weatherhelper.features.weather.list.adapter.TouchCallback
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 import ru.kcoder.weatherhelper.toolkit.android.AppRouter
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 
 class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
 
-    private val viewModel: ContractWeatherList.ViewModel by viewModel()
-    override lateinit var errorLiveData: LiveData<Int>
+    override val viewModel: ContractWeatherList.ViewModel by viewModel()
 
     private val adapter = AdapterWeatherList({
         showDetailFragment(it)
@@ -60,7 +57,6 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     }
 
     private fun initView(view: View) {
-        errorLiveData = viewModel.errorLiveData
         setHasOptionsMenu(true)
         initRecycler(view.context)
         fabAdd.setOnClickListener {
@@ -85,13 +81,9 @@ class FragmentWeatherList : AbstractFragment(), DialogFragmentDelete.Callback {
     override fun subscribeUi() {
         super.subscribeUi()
 
-        viewModel.weatherHolders.observe(this, Observer { list ->
-            list?.let { adapter.setData(it) }
-        })
+        viewModel.weatherHolders.observe(this, mObserver { adapter.setData(it) })
 
-        viewModel.editStatus.observe(this, Observer { status ->
-            status?.let { setEditStatus(it) }
-        })
+        viewModel.editStatus.observe(this, mObserver { setEditStatus(it) })
     }
 
     private fun setEditStatus(it: Boolean) {

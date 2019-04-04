@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import ru.kcoder.weatherhelper.toolkit.android.mObserver
 
-abstract class AbstractFragment: BaseFragment() {
+abstract class AbstractFragment : BaseFragment() {
 
-    abstract val errorLiveData: LiveData<Int>
+    abstract val viewModel: BaseViewModel
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -19,9 +19,7 @@ abstract class AbstractFragment: BaseFragment() {
 
     @CallSuper
     protected open fun subscribeUi() {
-        errorLiveData.observe(this, Observer {error ->
-            error?.let { showError(it) }
-        })
+        viewModel.errorLiveData.observe(this, mObserver { showError(it) })
     }
 
     protected open fun showError(resErr: Int) {

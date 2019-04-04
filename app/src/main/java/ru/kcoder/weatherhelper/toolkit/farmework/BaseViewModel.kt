@@ -10,7 +10,7 @@ abstract class BaseViewModel(
     errorSupervisor: ErrorSupervisor
 ) : ViewModel() {
 
-    open val errorLiveData = errorSupervisor.errorLiveData
+    val errorLiveData = errorSupervisor.errorLiveData
 
     @CallSuper
     override fun onCleared() {
