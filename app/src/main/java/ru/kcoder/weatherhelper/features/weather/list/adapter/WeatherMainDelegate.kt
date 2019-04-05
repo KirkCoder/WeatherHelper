@@ -76,7 +76,7 @@ class WeatherMainDelegate(
         textViewTimeDescription.text = hours[hourPosition].dateAndDescription
         textViewTemp.text = hours[hourPosition].tempNow
         textViewCalvin.text = hours[hourPosition].degreeThumbnail
-        imageViewIco.setImageResource(hours[hourPosition].icoRes)
+        imageViewIco.setImageResource(hours[hourPosition].icoResColored)
         textViewHumidityDescription.text = hours[hourPosition].humidity
         textViewWindDescription.text = hours[hourPosition].wind
     }

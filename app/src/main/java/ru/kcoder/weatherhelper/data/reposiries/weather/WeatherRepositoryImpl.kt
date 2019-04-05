@@ -239,6 +239,12 @@ class WeatherRepositoryImpl(
                     imageSource.getImageIdByCod(it[0].id, isDay)
                 } else imageSource.getImageIdByCod(null, isDay)
             } ?: imageSource.getImageIdByCod(null, isDay)
+
+            icoResColored = data.weather?.let {
+                if (it.isNotEmpty()) {
+                    imageSource.getColoredImageIdByCod(it[0].id, isDay)
+                } else imageSource.getColoredImageIdByCod(null, isDay)
+            } ?: imageSource.getColoredImageIdByCod(null, isDay)
         }
         return weather
     }

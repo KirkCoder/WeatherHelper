@@ -2,11 +2,16 @@ package ru.kcoder.weatherhelper.data.resourses.imageres
 
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
 
-class ImageResSourceImpl: ImageResSource {
+class ImageResSourceImpl : ImageResSource {
 
     override fun getImageIdByCod(cod: Int?, isDay: Boolean): Int {
         return if (isDay) icoIdMapDay[cod] ?: R.drawable.ic_sun
         else icoIdMapNight[cod] ?: R.drawable.ic_crescent
+    }
+
+    override fun getColoredImageIdByCod(cod: Int?, isDay: Boolean): Int {
+        return if (isDay) icoIdMapDayColored[cod] ?: R.drawable.ic_sun
+        else icoIdMapNightColored[cod] ?: R.drawable.ic_crescent
     }
 
     private val icoIdMapDay = mapOf(
@@ -67,6 +72,63 @@ class ImageResSourceImpl: ImageResSource {
         804 to R.drawable.ic_brocken_clouds
     )
 
+    private val icoIdMapDayColored = mapOf(
+        200 to R.drawable.storm_colored,
+        201 to R.drawable.storm_colored,
+        202 to R.drawable.storm_colored,
+        210 to R.drawable.storm_colored,
+        211 to R.drawable.storm_colored,
+        212 to R.drawable.storm_colored,
+        221 to R.drawable.storm_colored,
+        230 to R.drawable.storm_colored,
+        231 to R.drawable.storm_colored,
+        232 to R.drawable.storm_colored,
+        300 to R.drawable.drizzle_colored,
+        301 to R.drawable.drizzle_colored,
+        302 to R.drawable.drizzle_colored,
+        310 to R.drawable.drizzle_colored,
+        311 to R.drawable.drizzle_colored,
+        312 to R.drawable.drizzle_colored,
+        313 to R.drawable.drizzle_colored,
+        314 to R.drawable.drizzle_colored,
+        321 to R.drawable.drizzle_colored,
+        500 to R.drawable.rain_colored,
+        501 to R.drawable.rain_colored,
+        502 to R.drawable.rain_colored,
+        503 to R.drawable.rain_colored,
+        504 to R.drawable.rain_colored,
+        511 to R.drawable.drizzle_colored,
+        520 to R.drawable.drizzle_colored,
+        521 to R.drawable.drizzle_colored,
+        522 to R.drawable.drizzle_colored,
+        531 to R.drawable.drizzle_colored,
+        600 to R.drawable.ic_snow_colored,
+        601 to R.drawable.ic_snow_colored,
+        602 to R.drawable.ic_snow_colored,
+        611 to R.drawable.ic_snow_colored,
+        612 to R.drawable.ic_snow_colored,
+        615 to R.drawable.ic_snow_colored,
+        616 to R.drawable.ic_snow_colored,
+        620 to R.drawable.ic_snow_colored,
+        621 to R.drawable.ic_snow_colored,
+        622 to R.drawable.ic_snow_colored,
+        701 to R.drawable.mist_colored,
+        711 to R.drawable.mist_colored,
+        721 to R.drawable.mist_colored,
+        731 to R.drawable.mist_colored,
+        741 to R.drawable.mist_colored,
+        751 to R.drawable.mist_colored,
+        761 to R.drawable.mist_colored,
+        762 to R.drawable.mist_colored,
+        771 to R.drawable.mist_colored,
+        781 to R.drawable.mist_colored,
+        800 to R.drawable.ic_sun,
+        801 to R.drawable.ic_fiew_cloud_colored,
+        802 to R.drawable.ic_cloud_colored,
+        803 to R.drawable.ic_brocken_clouds_colored,
+        804 to R.drawable.ic_brocken_clouds_colored
+    )
+
     private val icoIdMapNight = mapOf(
         200 to R.drawable.storm,
         201 to R.drawable.storm,
@@ -122,5 +184,62 @@ class ImageResSourceImpl: ImageResSource {
         802 to R.drawable.ic_cloud,
         803 to R.drawable.ic_brocken_clouds_night,
         804 to R.drawable.ic_brocken_clouds_night
+    )
+
+    private val icoIdMapNightColored = mapOf(
+        200 to R.drawable.storm_colored,
+        201 to R.drawable.storm_colored,
+        202 to R.drawable.storm_colored,
+        210 to R.drawable.storm_colored,
+        211 to R.drawable.storm_colored,
+        212 to R.drawable.storm_colored,
+        221 to R.drawable.storm_colored,
+        230 to R.drawable.storm_colored,
+        231 to R.drawable.storm_colored,
+        232 to R.drawable.storm_colored,
+        300 to R.drawable.drizzle_colored,
+        301 to R.drawable.drizzle_colored,
+        302 to R.drawable.drizzle_colored,
+        310 to R.drawable.drizzle_colored,
+        311 to R.drawable.drizzle_colored,
+        312 to R.drawable.drizzle_colored,
+        313 to R.drawable.drizzle_colored,
+        314 to R.drawable.drizzle_colored,
+        321 to R.drawable.drizzle_colored,
+        500 to R.drawable.rain_colored,
+        501 to R.drawable.rain_colored,
+        502 to R.drawable.rain_colored,
+        503 to R.drawable.rain_colored,
+        504 to R.drawable.rain_colored,
+        511 to R.drawable.drizzle_colored,
+        520 to R.drawable.drizzle_colored,
+        521 to R.drawable.drizzle_colored,
+        522 to R.drawable.drizzle_colored,
+        531 to R.drawable.drizzle_colored,
+        600 to R.drawable.ic_snow_colored,
+        601 to R.drawable.ic_snow_colored,
+        602 to R.drawable.ic_snow_colored,
+        611 to R.drawable.ic_snow_colored,
+        612 to R.drawable.ic_snow_colored,
+        615 to R.drawable.ic_snow_colored,
+        616 to R.drawable.ic_snow_colored,
+        620 to R.drawable.ic_snow_colored,
+        621 to R.drawable.ic_snow_colored,
+        622 to R.drawable.ic_snow_colored,
+        701 to R.drawable.mist_colored,
+        711 to R.drawable.mist_colored,
+        721 to R.drawable.mist_colored,
+        731 to R.drawable.mist_colored,
+        741 to R.drawable.mist_colored,
+        751 to R.drawable.mist_colored,
+        761 to R.drawable.mist_colored,
+        762 to R.drawable.mist_colored,
+        771 to R.drawable.mist_colored,
+        781 to R.drawable.mist_colored,
+        800 to R.drawable.ic_crescent,
+        801 to R.drawable.ic_fiew_cloud_night_colored,
+        802 to R.drawable.ic_cloud_colored,
+        803 to R.drawable.ic_brocken_clouds_night_colored,
+        804 to R.drawable.ic_brocken_clouds_night_colored
     )
 }

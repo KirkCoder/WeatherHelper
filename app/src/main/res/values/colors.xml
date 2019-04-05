@@ -11,6 +11,7 @@
     <color name="colorBgGradient">#644075FF</color>
     <color name="colorBgGradient2">#647B82FF</color>
     <color name="colorClouds">#FFFFFF</color>
+    <color name="colorCloudsColored">#D1A3B3FF</color>
     <color name="colorSunAndCrescent">#FFD336</color>
     <color name="colorDrop">#00D5FF</color>
 </resources>

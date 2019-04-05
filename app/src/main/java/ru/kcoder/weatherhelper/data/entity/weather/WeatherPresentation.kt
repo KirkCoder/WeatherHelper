@@ -20,6 +20,7 @@ data class WeatherPresentation(
     var tempNowWithThumbnail = ""
     var degreeThumbnail = "\u2103"
     var icoRes = R.drawable.ic_sun
+    var icoResColored = R.drawable.ic_sun
     var humidity = ""
     var wind = ""
     var time = ""
