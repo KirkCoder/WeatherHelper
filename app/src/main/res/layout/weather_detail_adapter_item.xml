@@ -12,7 +12,7 @@
             android:id="@+id/imageViewIcoDetail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_sun"
+            tools:src="@drawable/storm_colored"
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_width="@dimen/weather_detail_adapter_ico_size"

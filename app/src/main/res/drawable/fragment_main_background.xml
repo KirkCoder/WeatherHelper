@@ -7,8 +7,8 @@
             <gradient
                     android:angle="90"
                     android:width="@dimen/fab_margin"
-                    android:startColor="#637EFF"
-                    android:endColor="#eb93ff"
+                    android:startColor="@color/colorPrimaryDark"
+                    android:endColor="@color/colorPrimary"
                     android:type="linear"/>
         </shape>
     </item>
@@ -17,8 +17,8 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:shape="rectangle">
             <gradient
-                    android:startColor="#644075FF"
-                    android:endColor="#647B82FF"
+                    android:startColor="@color/colorBgGradient"
+                    android:endColor="@color/colorBgGradient2"
                     android:type="linear"/>
         </shape>
     </item>

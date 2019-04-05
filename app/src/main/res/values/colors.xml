@@ -8,4 +8,9 @@
     <color name="colorGray">#8a000000</color>
     <color name="colorTextCommon">#8a000000</color>
     <color name="colorGrayLight">#E3E1E3</color>
+    <color name="colorBgGradient">#644075FF</color>
+    <color name="colorBgGradient2">#647B82FF</color>
+    <color name="colorClouds">#FFFFFF</color>
+    <color name="colorSunAndCrescent">#FFD336</color>
+    <color name="colorDrop">#00D5FF</color>
 </resources>

@@ -79,7 +79,7 @@
             android:layout_marginTop="@dimen/layout_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline"
-            android:drawableStart="@drawable/mist2"
+            android:drawableStart="@drawable/mist"
             android:text="@string/weather_mock_wind"
             android:gravity="center_vertical"
             android:drawablePadding="@dimen/layout_padding"
