@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
-import kotlinx.android.synthetic.main.weather_list_adapter_main.view.*
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.weather_list_adapter_main.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherPresentation
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
@@ -33,11 +34,22 @@ class WeatherMainDelegate(
         holder: RecyclerView.ViewHolder,
         p3: MutableList<Any>
     ) {
-        with(holder.itemView) {
-            setOnClickListener(null)
-            seekBarWeather.setListener(null)
+        (holder as MainViewHolder).bind(items[position], showDetail, update)
+    }
 
-            val item = items[position]
+
+    class MainViewHolder(
+        override val containerView: View
+    ) : RecyclerView.ViewHolder(containerView),
+        LayoutContainer {
+
+        fun bind(
+            item: WeatherHolder,
+            showDetail: (Long) -> Unit,
+            update: (Long) -> Unit
+        ) {
+            cardView.setOnClickListener(null)
+            seekBarWeather.setListener(null)
 
             val hours = item.hours
             textViewTitle.text = item.name
@@ -56,30 +68,27 @@ class WeatherMainDelegate(
                 item.isUpdating = true
             }
 
-            setOnClickListener { showDetail(item.id) }
+            cardView.setOnClickListener { showDetail(item.id) }
 
             if (hours.isNotEmpty()) {
-                bind(0, hours)
+                bindLocal(0, hours)
                 seekBarWeather.setNames(item.timeNames)
                 seekBarWeather.setListener {
-                    bind(it, hours)
+                    bindLocal(it, hours)
                 }
             }
-            Unit
+        }
+
+        private fun bindLocal(
+            hourPosition: Int,
+            hours: MutableList<WeatherPresentation>
+        ) {
+            textViewTimeDescription.text = hours[hourPosition].dateAndDescription
+            textViewTemp.text = hours[hourPosition].tempNow
+            textViewCalvin.text = hours[hourPosition].degreeThumbnail
+            imageViewIco.setImageResource(hours[hourPosition].icoResColored)
+            textViewHumidityDescription.text = hours[hourPosition].humidity
+            textViewWindDescription.text = hours[hourPosition].wind
         }
     }
-
-    private fun View.bind(
-        hourPosition: Int,
-        hours: MutableList<WeatherPresentation>
-    ) {
-        textViewTimeDescription.text = hours[hourPosition].dateAndDescription
-        textViewTemp.text = hours[hourPosition].tempNow
-        textViewCalvin.text = hours[hourPosition].degreeThumbnail
-        imageViewIco.setImageResource(hours[hourPosition].icoResColored)
-        textViewHumidityDescription.text = hours[hourPosition].humidity
-        textViewWindDescription.text = hours[hourPosition].wind
-    }
-
-    class MainViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

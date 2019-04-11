@@ -10,6 +10,7 @@ import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
 import kotlinx.android.synthetic.main.weather_list_adapter_edit.view.*
 import ru.kcoder.weatherhelper.data.entity.weather.WeatherHolder
 import ru.kcoder.weatherhelper.ru.weatherhelper.R
+//import kotlinx.android.extensions.LayoutContainer
 
 class WeatherEditDelegate(
     private val adapterSupervisor: AdapterSupervisor,
